@@ -1,1 +1,1 @@
-login should be 
+we assume the "THISISNOTATOKEN" would never be set as a token
