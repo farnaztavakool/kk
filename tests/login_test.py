@@ -7,12 +7,30 @@ email = "tavakolfarnaz@gmail.com"
 password = "123456"
 fname = "farnaz"
 lname = "tavakol"
-longname = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+longname = "a" * 1001 
+li = ["a","a@b.co","a@b","a@b.c","a@b.co","a@b.","a@b,com","a.com"]
 
-def test_login():
+# checking if the register and login works
+def test_register_works():
+    auth_register(email,password,fname,lname)
+    auth_login(email,password)
+
+def test_register():
     with pytest.raises(InputError):
         assert auth_register("123","12345","fl","th")
 
+def test_password():
+
+    with pytest.raises(InputError):
+        assert auth_register(email,"123",fname,lname)
+
+def test_long_first_name():
+    with pytest.raises(InputError):
+        assert auth_register(email,password,longname,lname)
+
+def test_long_last_name():
+    with pytest.raises(InputError):
+        assert auth_register(email,password,fname,longname)
 #token passes to us from login == register
 
 def test_token():
@@ -38,19 +56,11 @@ def test_user_pass():
     with pytest.raises(InputError):
         assert auth_login(email,"123")
 
-# checking if the password is 6 character long
-def test_password():
-
+# entering an unvalid email
+def test_user_login_email():
     with pytest.raises(InputError):
-        assert auth_register(email,"123",fname,lname)
-
-def test_long_first_name():
-    with pytest.raises(InputError):
-        assert auth_register(email,password,longname,lname)
-
-def test_long_last_name():
-    with pytest.raises(InputError):
-        assert auth_register(email,password,fname,longname)
+        assert [auth_register(email,password = "12345678910",name_first = "farnaz",name_last = "jade") for email in li]
+       
 #each user having a unique toke and id 
 def check_unique_token():
 
@@ -76,3 +86,11 @@ def test_unactive_logout():
     auth_logout('token')
     with pytest.raises(Exception):
         assert auth_logout(usr_token) 
+
+
+# tying to log out an unvalid token
+
+def test_unvalid_token():
+
+    with pytest.raises(Exception):
+        assert auth_logout("THISISNOTATOKEN")
