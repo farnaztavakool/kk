@@ -4,7 +4,7 @@
 login_test.py
 ```
 **Assumptions**:
-- User login with email idk.
+- THISISNOTTOKEN would never be a token and in invalid.
 
 ### Ability to reset password if forgotten it
 ```
