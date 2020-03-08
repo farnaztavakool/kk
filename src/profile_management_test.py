@@ -58,7 +58,7 @@ def test_profile():
 
 invalid_name = "a" * 101
 
-def test_invalid_name(given_name):
+def is_invalid_name(given_name):
     length = len(given_name)    
     if length > 100:
         return "Invalid name"
@@ -72,15 +72,15 @@ def test_long_name():
     profile = user_profile(token, uid)
     given_first = profile['user']['name_first'] 
     given_last = profile['user']['name_last']  
-    assert test_invalid_name(given_first) == "Invalid name"
-    assert test_invalid_name(given_last) == "Invalid name"
+    assert is_invalid_name(given_first) == "Invalid name"
+    assert is_invalid_name(given_last) == "Invalid name"
 
 def test_valid_length():
     user1_profile = return_profile()
     given_first = user1_profile['user']['name_first'] 
     given_last = user1_profile['user']['name_last']  
-    assert test_invalid_name(given_first) == "Valid name"
-    assert test_invalid_name(given_last) == "Valid name"    
+    assert is_invalid_name(given_first) == "Valid name"
+    assert is_invalid_name(given_last) == "Valid name"    
 
 ###########################################################
 #                test user_profile_setemail                #         
@@ -107,9 +107,9 @@ def test_email_exception():
 #                test user_profile_sethandle              #         
 ########################################################### 
 
-invalid_handle = "ifeellikeireallyneedtosleepatm"
+# invalid_handle = "ifeellikeireallyneedtosleepatm"
 
-def test_invalid_handle(given_handle):
+def is_invalid_handle(given_handle):
     length = len(given_handle)    
     if length > 4 and length < 15:
         return "Valid handle"
@@ -119,7 +119,7 @@ def test_invalid_handle(given_handle):
 def test_long_handle():
     profile = return_profile()
     given_handle = profile['user']['handle_str']   
-    assert test_invalid_handle(given_handle) == "Valid handle"
+    assert is_invalid_handle(given_handle) == "Valid handle"
 
     
     
