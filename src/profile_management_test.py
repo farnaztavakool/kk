@@ -65,8 +65,8 @@ def test_invalid_name(given_name):
     else:
         return "Valid name"
 
-def test_name_length():
-    user2 = auth_register("hahajk@unless...?", "1234yu!", invalid_name, invalid_name)
+def test_long_name():
+    user2 = auth_register("hkhkhk999@naver.com", "1234yu!", invalid_name, invalid_name)
     token = user2['token']
     uid = user2['u_id'] 
     profile = user_profile(token, uid)
@@ -74,6 +74,13 @@ def test_name_length():
     given_last = profile['user']['name_last']  
     assert test_invalid_name(given_first) == "Invalid name"
     assert test_invalid_name(given_last) == "Invalid name"
+
+def test_valid_length():
+    user1_profile = return_profile()
+    given_first = user1_profile['user']['name_first'] 
+    given_last = user1_profile['user']['name_last']  
+    assert test_invalid_name(given_first) == "Valid name"
+    assert test_invalid_name(given_last) == "Valid name"    
 
 ###########################################################
 #                test user_profile_setemail                #         
@@ -100,6 +107,19 @@ def test_email_exception():
 #                test user_profile_sethandle              #         
 ########################################################### 
 
+invalid_handle = "ifeellikeireallyneedtosleepatm"
+
+def test_invalid_handle(given_handle):
+    length = len(given_handle)    
+    if length > 4 and length < 15:
+        return "Valid handle"
+    else:
+        return "Invalid handle"
+
+def test_long_handle():
+    profile = return_profile()
+    given_handle = profile['user']['handle_str']   
+    assert test_invalid_handle(given_handle) == "Valid handle"
 
     
     
