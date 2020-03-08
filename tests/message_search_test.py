@@ -8,7 +8,7 @@ import pytest
 def messagefunc(message):
     user = auth_register("tavakolfarnaz@gmail.com","0312138261","farnaz","tavakol")
     token = user['token']
-    channel = channels_create(token,"test","is_public")
+    channel = channels_create(token,"test",True)
     cid = channel['channel_id']
     message = message_send(token,cid,message)
     
@@ -67,7 +67,7 @@ def test_differnt_channels():
 
     mess1 = messagefunc("yo how are you today")
     token = mess1['token']
-    ch2 = channels_create(token,"test1","is_public")
+    ch2 = channels_create(token,"test1",True)
     cid2 = ch2['channel_id']
     mess2 = message_send(token,cid2,"tommorow is better")
     result = search(token,"to")
