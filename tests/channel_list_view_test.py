@@ -1,59 +1,84 @@
 # Feature 3: Ability to see a list of channels
 import pytest
-'''
-# channels (outputs only) is a list of dictionaries, 
-# where each dictionary contains types { channel_id, name }
+import channels
 
-# return type: { channels }
-# Provide a list of all channels (and their associated details) 
-that the authorised user is part of
-def channels_list(token):
-    return {
-        'channel1': [
-            {
-                'channel_id': 1,
-                'name': 'My Channel',
-            }
-        ],
-        'channel2': [
-            {
-                'channel_id': 2,
-                'name': 'My Channel 2'
-            }
-        ],
-    }
-
-def channels_listall(token):
-    return {
-        'channel1': [
-            {
-                'channel_id': 1,
-                'name': 'My Channel',
-            }
-        ],
-        'channel2': [
-            {
-                'channel_id': 2,
-                'name': 'My Channel 2'
-            }
-        ],
-    }
-
-def channels_create(token, name, is_public):
-    return {
-        'channel_id': 1,
-    }
-'''
-# returns true if given channel (note, singular) is a valid channel entry.
 @pytest.fixture
-def is_valid_channel(channel):
-    return true
+def get_new_user():
+    user = auth_register('bullshit@gmail.com', '1248901ha', 'Tim', 'Fan')
+    return (user['u_id'], user['token'])
 
-def test_channels_list_valid_channels():
-    # assume register is successful.
-    my_user = auth_register("bullshit@gmail.com", "1248901ha", "Tim", "Fan")
-    # view the channel list that i am authorized to view.
-    my_channels_list = channels_list(my_user['token'])
-    for channel in my_channels_list:
-        assert is_valid_channel(channel) == true
+def test_channels_list_zero_channels(get_new_user):
+    # dummy user.
+    u_id, token = get_new_user
+    # ensure channels list for dummy user only has both channels
+    my_channels_list = channels_list(token)
+    assert len(my_channels_list) == 0
+
+def test_channels_list_one_channels_none_authorized(get_new_user):
+    # dummy user.
+    u_id, token = get_new_user
+    # create one channels. assumes creates valid channels.
+    channel1 = channels_create(token, 'channel1', True)
+    # join channel
+    channel_join(token, channel1)
+    # leave channel.
+    channel_leave(token, channel2)
+    # ensure channels list for dummy user has no channels.
+    my_channels_list = channels_list(token)
+    assert len(my_channels_list) == 0
+
+def test_channels_list_one_channels_one_authorized(get_new_user):
+    # dummy user.
+    u_id, token = get_new_user
+    # create one channels. assumes creates valid channels.
+    channel1 = channels_create(token, 'channel1', True)
+    # join channel
+    channel_join(token, channel1)
+    # ensure channels list for dummy user has one channels.
+    my_channels_list = channels_list(token)
+    assert len(my_channels_list) == 1
+
+def test_channels_list_two_channels_both_authorized(get_new_user):
+    # dummy user.
+    u_id, token = get_new_user
+    # create two channels. assumes creates valid channels.
+    channel1 = channels_create(token, 'channel1', True)
+    channel2 = channels_create(token, 'channel2', True)
+    # join both channels.
+    channel_join(token, channel1)
+    channel_join(token, channel2)
+    # ensure channels list for dummy user only has both channels
+    my_channels_list = channels_list(token)
+    assert len(my_channels_list) == 2
+
+def test_channels_list_two_channels_one_authorized(get_new_user):
+    # dummy user.
+    u_id, token = get_new_user
+    # create two channels. assumes creates valid channels.
+    channel1 = channels_create(token, 'channel1', True) 
+    channel2 = channels_create(token, 'channel2', True)
+    # join both channels.
+    channel_join(token, channel1)
+    channel_join(token, channel2)
+    # leave one channel.
+    channel_leave(token, channel1)
+    # ensure channels list for dummy user only has that one channel
+    my_channels_list = channels_list(token)
+    assert len(my_channels_list) == 1
+
+def test_channels_list_two_channels_none_authorized(get_new_user):
+    # dummy user.
+    u_id, token = get_new_user
+    # create two channels. assumes creates valid channels.
+    channel1 = channels_create(token, 'channel1', True) 
+    channel2 = channels_create(token, 'channel2', True)
+    # join both channels.
+    channel_join(token, channel1)
+    channel_join(token, channel2)
+    # leave one channel.
+    channel_leave(token, channel1)
+    channel_leave(token, channel2)
+    # ensure channels list for dummy user only has that one channel
+    my_channels_list = channels_list(token)
+    assert len(my_channels_list) == 0
 
