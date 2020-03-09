@@ -19,7 +19,7 @@ channel_list_view_test.py
 channel_management_test.py
 ```
 **Assumptions**:
-- User who creates channel is not necessarily a member of the channel immediately after creating the channel?
+- If all users leave a channel, that channel gets removed, and the channel_id of that channel is considered invalid.
 
 ### Within a channel, ability to view all messages, view the members of the channel, and the details of the channel
 ``` 
