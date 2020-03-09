@@ -21,7 +21,7 @@ def message_func(message):
     }
 # returns the right result
 def test_search_message():
-    mess = messagefunc("hello world")
+    mess = message_func("hello world")
     token= mess['token']
     mid = mess['mid']
     result = search(token,"he")
@@ -29,14 +29,14 @@ def test_search_message():
 
 # where there is no matching query 
 def test_serch_empty():
-    mess = messagefunc("hello world")
+    mess = message_func("hello world")
     token= mess['token']
     result = search(token,"tango")
     assert len(result['messages']) == 0
 
 # returns the right author
 def test_search_author():
-    mess = messagefunc("hello world")
+    mess = message_func("hello world")
     token= mess['token']
     uid = mess['uid']
     result = search(token,"he")
@@ -46,7 +46,7 @@ def test_search_author():
 #checks if the functions returns both of them 
 
 def test_mutli_message():
-    mess1 = messagefunc("hello world")
+    mess1 = message_func("hello world")
     mid1 = mess1['mid']
     cid = mess1['cid']
     token = mess1['token']
@@ -65,7 +65,7 @@ def test_mutli_message():
 
 def test_differnt_channels():
 
-    mess1 = messagefunc("yo how are you today")
+    mess1 = message_func("yo how are you today")
     token = mess1['token']
     ch2 = channels_create(token,"test1",True)
     cid2 = ch2['channel_id']
