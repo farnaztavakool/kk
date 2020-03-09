@@ -29,6 +29,15 @@ def return_profile():
 #                   test user_profile                     #
 ###########################################################
 
+<<<<<<< HEAD
+# test if it has errors if it is given the wrong user id 
+def test_incorrect_token():
+    user1 = user1_regist()
+    token = user1['token'] 
+    incorrect_uid = user1['uid']
+    with pytest.raises(InputError):
+        assert user_profile(token, incorrect_uid)
+=======
 # test if it has errors if it is given the wrong token for the user id
 def test_incorrect_token():
     user1 = user1_regist()
@@ -37,6 +46,7 @@ def test_incorrect_token():
     with pytest.raises(InputError):
         user_profile(incorrect_token, uid)
         raise InputError
+>>>>>>> 40ad5c0be62794bfe77974ea51fb64c3489a512a
 
 
 # check if the profile information matches with the expectation
@@ -56,11 +66,19 @@ def test_profile():
 # if the first or last name is more than 100 charactors 
 # it is too long and considered invalid
 
+<<<<<<< HEAD
+invalid_name = "a" * 51
+
+def is_invalid_name(given_name):
+    length = len(given_name)    
+    if length > 50:
+=======
 invalid_name = "a" * 101
 
 def is_invalid_name(given_name):
     length = len(given_name)    
     if length > 100:
+>>>>>>> 40ad5c0be62794bfe77974ea51fb64c3489a512a
         return "Invalid name"
     else:
         return "Valid name"
@@ -71,9 +89,15 @@ def test_long_name():
     uid = user2['u_id'] 
     profile = user_profile(token, uid)
     given_first = profile['user']['name_first'] 
+<<<<<<< HEAD
+    given_last = profile['user']['name_last']
+    with pytest.raises(InputError):
+         assert user_profile_setname(token, given_first, given_last) 
+=======
     given_last = profile['user']['name_last']  
     assert is_invalid_name(given_first) == "Invalid name"
     assert is_invalid_name(given_last) == "Invalid name"
+>>>>>>> 40ad5c0be62794bfe77974ea51fb64c3489a512a
 
 def test_valid_length():
     user1_profile = return_profile()
@@ -100,7 +124,12 @@ def test_email_exception():
     uid = user3['u_id'] 
     profile = user_profile(token, uid)
     given_email = profile['user']['email']
+<<<<<<< HEAD
+    with pytest.raises(InputError):
+         assert user_profile_setemail(token, given_email) 
+=======
     assert check_valid_email(given_email) == "Invalid email"
+>>>>>>> 40ad5c0be62794bfe77974ea51fb64c3489a512a
 
 
 ###########################################################
@@ -111,15 +140,28 @@ def test_email_exception():
 
 def is_invalid_handle(given_handle):
     length = len(given_handle)    
+<<<<<<< HEAD
+    if length > 2 and length < 21:
+=======
     if length > 4 and length < 15:
+>>>>>>> 40ad5c0be62794bfe77974ea51fb64c3489a512a
         return "Valid handle"
     else:
         return "Invalid handle"
 
 def test_long_handle():
+<<<<<<< HEAD
+    user = auth_register("cs1531@cse.unsw.edu.au", "1234yu!", "Hayden", "Jacobs")
+    token = user['token']
+    profile = return_profile()
+    given_handle = profile['user']['handle_str'] 
+    with pytest.raises(InputError):
+        assert user_profile_sethandle(token, given_handle) 
+=======
     profile = return_profile()
     given_handle = profile['user']['handle_str']   
     assert is_invalid_handle(given_handle) == "Valid handle"
+>>>>>>> 40ad5c0be62794bfe77974ea51fb64c3489a512a
 
     
     
@@ -134,8 +176,11 @@ def test_long_handle():
 
 
 
+<<<<<<< HEAD
+=======
 
 
 
 
 
+>>>>>>> 40ad5c0be62794bfe77974ea51fb64c3489a512a
