@@ -35,6 +35,7 @@ message_modification_test.py
 ```
 **Assumptions**:
 - If the message is removed and when you search the removed message, the return value is 0
+- If the message has been edited the message before editing it gone
 
 ### Ability to view user anyone’s user profile, and modify a user’s own profile (name, email, handle, and profile photo)
 ```
