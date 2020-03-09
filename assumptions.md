@@ -29,6 +29,9 @@ channel_details_view_test.py
 ```
 message_send_test.py
 ```
+**Assumptions**:
+- There is no maximum length of a message
+
 ### Within a channel, ability to edit, remove, pin, unpin, react, or unreact to a message
 ```
 message_modification_test.py
