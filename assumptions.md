@@ -33,6 +33,9 @@ message_send_test.py
 ```
 message_modification_test.py
 ```
+**Assumptions**:
+- If the message is removed the length of the message is 0
+
 ### Ability to view user anyone’s user profile, and modify a user’s own profile (name, email, handle, and profile photo)
 ```
 profile_management_test.py
