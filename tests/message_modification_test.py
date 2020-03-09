@@ -7,6 +7,7 @@ from message import *
 from auth import auth_register
 from channels import channels_create
 from other import search
+from error import InputError
 import pytest
 
 
@@ -39,6 +40,16 @@ def test_message_remove():
     message_remove(token, mid)
     result = search(token, "Hellooo world")
     assert len(result['messages']) == 0
+
+# give error if try to remove a message that does not exist
+
+def test_nonexist_remove():
+    mess = message_function("Hellooo world")
+    wrong_token = mess['token'] + '7676'
+    mid = mess['mid']   
+    with pytest.raises(InputError):
+        message_remove(wrong_token, mid)
+        raise InputError
 
     
 ###########################################################
