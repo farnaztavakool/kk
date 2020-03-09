@@ -29,24 +29,13 @@ def return_profile():
 #                   test user_profile                     #
 ###########################################################
 
-<<<<<<< HEAD
 # test if it has errors if it is given the wrong user id 
 def test_incorrect_token():
     user1 = user1_regist()
     token = user1['token'] 
-    incorrect_uid = user1['uid']
+    incorrect_uid = user1['uid'] + 25
     with pytest.raises(InputError):
         assert user_profile(token, incorrect_uid)
-=======
-# test if it has errors if it is given the wrong token for the user id
-def test_incorrect_token():
-    user1 = user1_regist()
-    incorrect_token = user1['token'] + '7676'
-    uid = user1['uid']
-    with pytest.raises(InputError):
-        user_profile(incorrect_token, uid)
-        raise InputError
->>>>>>> 40ad5c0be62794bfe77974ea51fb64c3489a512a
 
 
 # check if the profile information matches with the expectation
@@ -66,38 +55,34 @@ def test_profile():
 # if the first or last name is more than 100 charactors 
 # it is too long and considered invalid
 
-<<<<<<< HEAD
 invalid_name = "a" * 51
 
 def is_invalid_name(given_name):
     length = len(given_name)    
     if length > 50:
-=======
-invalid_name = "a" * 101
-
-def is_invalid_name(given_name):
-    length = len(given_name)    
-    if length > 100:
->>>>>>> 40ad5c0be62794bfe77974ea51fb64c3489a512a
         return "Invalid name"
     else:
         return "Valid name"
 
-def test_long_name():
-    user2 = auth_register("hkhkhk999@naver.com", "1234yu!", invalid_name, invalid_name)
+# test invalid first name
+def test_first_name():
+    user2 = auth_register("hkhkhk999@naver.com", "1234yu!", invalid_name, "Kim")
     token = user2['token']
     uid = user2['u_id'] 
     profile = user_profile(token, uid)
     given_first = profile['user']['name_first'] 
-<<<<<<< HEAD
-    given_last = profile['user']['name_last']
     with pytest.raises(InputError):
-         assert user_profile_setname(token, given_first, given_last) 
-=======
-    given_last = profile['user']['name_last']  
-    assert is_invalid_name(given_first) == "Invalid name"
-    assert is_invalid_name(given_last) == "Invalid name"
->>>>>>> 40ad5c0be62794bfe77974ea51fb64c3489a512a
+         assert user_profile_setname(token, given_first, "Kim") 
+
+# test invalid last name
+def test_last_name():
+    user22 = auth_register("hkhkhk999@gmail.com", "13asdf4yu", "Eunseo", invalid_name)
+    token = user22['token']
+    uid = user22['u_id'] 
+    profile = user_profile(token, uid)
+    given_last = profile['user']['name_last'] 
+    with pytest.raises(InputError):
+         assert user_profile_setname(token, "Eunseo", given_last)    
 
 def test_valid_length():
     user1_profile = return_profile()
@@ -110,7 +95,17 @@ def test_valid_length():
 #                test user_profile_setemail                #         
 ########################################################### 
 
+# test if the email has been updated
+def test_email_updated():
+    user17 = auth_register("valide@gmail.com", "1123!", "Twice", "Special")
+    u_token = user17['token']
+    uid = user17['uid'] 
+    profile = user_profile(u_token, uid)
+    user_profile_setemail(u_token, "updated@gmail.com")
+    assert profile['user']['email'] == "updated@gmail.com"
+
 # invalid_email = "hahajk@unless...?"
+# helper function to check if it is a valid email
 def check_valid_email(given_email):
     if re.match(r"(^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$)", given_email):
         return "Valid email"
@@ -119,68 +114,59 @@ def check_valid_email(given_email):
 
 def test_email_exception():
     # assumtion = if i register a user the token and id is all different
-    user3 = auth_register("hahajk@unless...?", "1234yu!", "Hailey", "Jung")
-    token = user3['token']
-    uid = user3['u_id'] 
-    profile = user_profile(token, uid)
-    given_email = profile['user']['email']
-<<<<<<< HEAD
+    user9 = user1_regist()
+    token = user9['token']
     with pytest.raises(InputError):
-         assert user_profile_setemail(token, given_email) 
-=======
-    assert check_valid_email(given_email) == "Invalid email"
->>>>>>> 40ad5c0be62794bfe77974ea51fb64c3489a512a
+         assert user_profile_setemail(token, "hahajk@unless...?")    
+    with pytest.raises(InputError):
+         assert user_profile_setemail(token, "thisisainvalidemail")    
+    with pytest.raises(InputError):
+         assert user_profile_setemail(token, "wotif@disisnotanemail")
+    with pytest.raises(InputError):
+         assert user_profile_setemail(token, "testingggdifferent.emails")
 
+# test a valid email
+def test_valid_email():
+    user1_profile = return_profile()
+    given_email = user1_profile['user']['email']  
+    assert check_valid_email(given_email) == "Valid email"
+
+# test to change it to a email that already exists
+def test_existing_email():
+    auth_register("v1email@gmail.com", "haha?", "Blackpink", "BOOMBAYA")
+    user_v2 = auth_register("v2email@gmail.com", "hehehe!", "Redvelvet", "psycho")
+    v2_token = user_v2['token']
+    with pytest.raises(InputError):
+         assert user_profile_setemail(v2_token, "v1email@gmail.com")    
 
 ###########################################################
 #                test user_profile_sethandle              #         
 ########################################################### 
 
-# invalid_handle = "ifeellikeireallyneedtosleepatm"
+invalid_handle1 = "ifeellikeireallyneedtosleepatmaaaaa"
+invalid_handle2 = "hi"
 
 def is_invalid_handle(given_handle):
     length = len(given_handle)    
-<<<<<<< HEAD
     if length > 2 and length < 21:
-=======
-    if length > 4 and length < 15:
->>>>>>> 40ad5c0be62794bfe77974ea51fb64c3489a512a
         return "Valid handle"
     else:
         return "Invalid handle"
 
 def test_long_handle():
-<<<<<<< HEAD
-    user = auth_register("cs1531@cse.unsw.edu.au", "1234yu!", "Hayden", "Jacobs")
-    token = user['token']
-    profile = return_profile()
-    given_handle = profile['user']['handle_str'] 
+    userr = user1_regist()
+    token = userr['token']
     with pytest.raises(InputError):
-        assert user_profile_sethandle(token, given_handle) 
-=======
-    profile = return_profile()
-    given_handle = profile['user']['handle_str']   
-    assert is_invalid_handle(given_handle) == "Valid handle"
->>>>>>> 40ad5c0be62794bfe77974ea51fb64c3489a512a
+         assert user_profile_sethandle(token, invalid_handle1)    
+    with pytest.raises(InputError):
+         assert user_profile_sethandle(token, invalid_handle2)    
 
-    
-    
-
-
-    
-
-
-
-
-
-
-
-
-<<<<<<< HEAD
-=======
-
-
-
-
-
->>>>>>> 40ad5c0be62794bfe77974ea51fb64c3489a512a
+# test to change it to a handle that already exists
+def test_existing_handle():
+    user1 = auth_register("user1@gmail.com", "haha???", "Black", "Pink")
+    user1_token = user1['token']
+    user2 = auth_register("user2@gmail.com", "hehe!!", "Red", "Velvet")
+    user2_token = user2['token']
+    user_profile_sethandle(user2_token, "Handle")
+    with pytest.raises(InputError):
+         assert user_profile_setemail(user1_token, "Handle")  
