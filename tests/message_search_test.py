@@ -4,7 +4,7 @@ from auth import auth_register
 from other import search
 import pytest
 
-@pytest.fixture
+
 def message_func(message):
     user = auth_register("tavakolfarnaz@gmail.com","0312138261","farnaz","tavakol")
     token = user['token']
