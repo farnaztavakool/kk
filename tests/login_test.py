@@ -74,9 +74,13 @@ def test_auth_logout():
     auth_register(email,password,fname,lname)
     usr = auth_login(email,password)
     usr_token = usr['token'] 
+
     k = auth_logout(usr_token)
     assert k['is_success'] == True
    
+
+    
+
 
 # raising exception when the token is not active
 
