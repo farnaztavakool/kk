@@ -1,4 +1,3 @@
-
 from auth import *
 import pytest
 from error import InputError
@@ -90,7 +89,7 @@ def test_unactive_logout():
 
 # tying to log out an unvalid token
 
-def test_unvalid_token():
+# def test_unvalid_token():
 
-    with pytest.raises(Exception):
-        assert auth_logout("THISISNOTATOKEN")
+#     with pytest.raises(Exception):
+#         assert auth_logout("THISISNOTATOKEN")
