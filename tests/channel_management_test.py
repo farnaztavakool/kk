@@ -108,7 +108,7 @@ def test_channel_invite_invalid_channel(get_new_user_1, get_new_user_2, get_new_
     # user_1 creates public channel.
     channel1 = channels.channels_create(token_1,valid_channel_name_1,True)
     # user_1 leaves this channel, which causes the channel to be removed, making its channel_id invalid.
-    # so when user_1 attempts to invite to channel, throw InputError.
+    # so when user_2 attempts to invite to channel, throw InputError.
     invalid_channel_id = channel1['channel_id']
     channel.channel_leave(token_1,channel1['channel_id'])
     with pytest.raises(InputError) as e:
@@ -124,6 +124,35 @@ def test_channel_invite_not_member_of_channel(get_new_user_1, get_new_user_2, ge
     # user_1 creates public channel.
     channel1 = channels.channels_create(token_1,valid_channel_name_1,True)
     # user_2 is not a member of the channel.
-    # when user_2 tries to invite user_3 into channel, throw InputError.
+    # when user_2 tries to invite user_3 into channel, throw AccessError.
     with pytest.raises(AccessError) as e:
         channel.channel_invite(token_2,channel1['channel_id'],u_id_3)
+
+'''
+testing channel_leave()
+positive testing for this function in channels_list().
+'''
+
+def test_channel_leave_invalid_channel(get_new_user_1, get_new_user_2):
+    # dummy users.
+    u_id_1, token_1 = get_new_user_1
+    u_id_2, token_2 = get_new_user_2
+    # user_1 creates public channel.
+    channel1 = channels.channels_create(token_1,valid_channel_name_1,True)
+    # user_1 leaves this channel, which causes the channel to be removed, making its channel_id invalid.
+    # so when user_2 attempts to leave this channel, throw InputError.
+    invalid_channel_id = channel1['channel_id']
+    channel.channel_leave(token_1,channel1['channel_id'])
+    with pytest.raises(InputError) as e:
+        channel.channel_leave(token_2,invalid_channel_id)
+
+def test_channel_leave_not_member_of_channel(get_new_user_1, get_new_user_2):
+    # dummy users.
+    u_id_1, token_1 = get_new_user_1
+    u_id_2, token_2 = get_new_user_2
+    # user_1 creates public channel.
+    channel1 = channels.channels_create(token_1,valid_channel_name_1,True)
+    # user_2 is not a member of the channel.
+    # when user_2 tries to leave channel, throw AccessError.
+    with pytest.raises(AccessError) as e:
+        channel.channel_leave(token_2,channel1['channel_id'])
