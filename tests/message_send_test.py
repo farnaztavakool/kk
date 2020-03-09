@@ -36,7 +36,7 @@ def test_message_send_invalid_user(authUser, unAuthUser, channel_id):
         message_send(unAuthUser['token'], channel_id, "I am invalid")
 
 # Test if message is too long
-def test_message_send_invalid_message_length(authUser, unAuthUser, channel_id:
+def test_message_send_invalid_message_length(authUser, unAuthUser, channel_id):
     with pytest.raises(InputError):
        message_send(authUser['token'], channel_id, "Mess"*5000)
        

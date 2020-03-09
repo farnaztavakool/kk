@@ -1,6 +1,7 @@
 # Feature 5: Within a channel, ability to view all messages, view the members of the channel, and the details of the channel
 
 import pytest
+import pytest
 import message
 import auth
 import error
@@ -40,7 +41,7 @@ def test_index_greater(authUser, channel_id):
 # test messages function if user is not member of channel
 def test_messages_user_member(authUser, channel_id):
     with pytest.raises(AccessError):
-        assert(any(channel_messages(authUser['token'], channel_id)['messages']['u_id'] == authUser.'u_id'))
+        assert(any(channel_messages(authUser['token'], channel_id)['messages']['u_id'] == authUser['u_id']))
         
 # test messages function returns 3 elements
 def test_messages_return(authUser, channel_id):
