@@ -74,7 +74,6 @@ def test_channel_join_invalid_channel(get_new_user_1, get_new_user_2):
     u_id_2, token_2 = get_new_user_2
     # user_1 creates public channel, user_2 has access to this channel.
     channel1 = channels.channels_create(token_1,valid_channel_name_1,True)
-    # note that below is based on assumption.
     # user_1 leaves this channel, which causes the channel to be removed, making its channel_id invalid.
     # so when user_2 attempts to join channel, throw InputError.
     invalid_channel_id = channel1['channel_id']
@@ -82,3 +81,12 @@ def test_channel_join_invalid_channel(get_new_user_1, get_new_user_2):
     with pytest.raises(InputError) as e:
         channel.channel_join(token_2,invalid_channel_id)
 
+def test_channel_join_private_channel(get_new_user_1, get_new_user_2):
+    # dummy users.
+    u_id_1, token_1 = get_new_user_1
+    u_id_2, token_2 = get_new_user_2
+    # user_1 creates private channel, user_2 does not have access to this channel.
+    channel1 = channels.channels_create(token_1,valid_channel_name_1,False)
+    # when user_2 attempts to join channel, throw AccessError.
+    with pytest.raises(AccessError) as e:
+        channel.channel_join(token_2,channel1['channel_id'])
