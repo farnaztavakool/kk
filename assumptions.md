@@ -37,6 +37,9 @@ message_modification_test.py
 ```
 profile_management_test.py
 ```
+**Assumptions**:
+- When you register a user they all have different u_id and tokens
+
 ### Ability to search for messages based on a search string
 ```
 message_search_test.py
