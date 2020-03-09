@@ -4,8 +4,10 @@ from datetime import datetime, timedelta
 import pytest
 import message
 import auth
-import error
+from error import InputError
+from error import AccessError
 import channel
+import channels
 
 @pytest.fixture
 def authUser():
@@ -14,31 +16,31 @@ def authUser():
     
 @pytest.fixture
 def unAuthUser():
-    return auth_register("somebody2@gmail.com", "password", "firstName", "lastName")
+    return auth.auth_register("somebody2@gmail.com", "password", "firstName", "lastName")
     
-# authUser's channel (helper function)
+@pytest.fixture
 def channel_id(authUser):
-    channel_id = channels_create(authUser['token'], 'channel1', True)['channel_id']
+    channel_id = channels.channels_create(authUser['token'], 'channel1', True)['channel_id']
     return channel_id
         
 # Test if a member sends messages    
-def test_message_send_valid(authUser, unAuthUser,  channel_id):
-    message_send(authUser['token'], channel_id, "Message 1")
-    message_send(authUser['token'], channel_id, "Message 2")
-    message_send(authUser['token'], channel_id, "Message 3!")
-    assert channel_messages(authUser['token'], channel_id, 0)['messages'][0]['message'] == "Message 3!"
-    assert channel_messages(authUser['token'], channel_id, 0)['messages'][1]['message'] == "Message 2"
-    assert channel_messages(authUser['token'], channel_id, 0)['messages'][2]['message'] == "Message 1"
+def test_message_send_valid(authUser, unAuthUser, channel_id):
+    message.message_send(authUser['token'], channel_id, "Message 1")
+    message.message_send(authUser['token'], channel_id, "Message 2")
+    message.message_send(authUser['token'], channel_id, "Message 3!")
+    assert channel.channel_messages(authUser['token'], channel_id, 0)['messages'][0]['message'] == "Message 3!"
+    assert channel.channel_messages(authUser['token'], channel_id, 0)['messages'][1]['message'] == "Message 2"
+    assert channel.channel_messages(authUser['token'], channel_id, 0)['messages'][2]['message'] == "Message 1"
 
 # Test if an unauthorized member sends messages
 def test_message_send_invalid_user(authUser, unAuthUser, channel_id):
     with pytest.raises(AccessError):
-        message_send(unAuthUser['token'], channel_id, "I am invalid")
+        message.message_send(unAuthUser['token'], channel_id, "I am invalid")
 
 # Test if message is too long
 def test_message_send_invalid_message_length(authUser, unAuthUser, channel_id):
     with pytest.raises(InputError):
-       message_send(authUser['token'], channel_id, "Mess"*5000)
+       message.message_send(authUser['token'], channel_id, "Mess"*5000)
        
 # Test if user sends message in the future
 def test_message_sendlater_success(authUser, unAuthUser, channel_id):
