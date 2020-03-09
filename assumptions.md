@@ -5,6 +5,7 @@ login_test.py
 ```
 **Assumptions**:
 - THISISNOTTOKEN would never be a token and in invalid.
+- the email format should follow xx..x @ xx...x.xxx
 
 ### Ability to reset password if forgotten it
 ```
