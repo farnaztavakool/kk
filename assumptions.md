@@ -25,6 +25,9 @@ channel_management_test.py
 ``` 
 channel_details_view_test.py
 ```
+**Assumptions**:
+- Channel id is valid if it is greater than zero
+
 ### Within a channel, ability to send a message now, or to send a message at a specified time in the future
 ```
 message_send_test.py
