@@ -99,8 +99,8 @@ def test_valid_length():
 def test_email_updated():
     user17 = auth_register("valide@gmail.com", "1123!", "Twice", "Special")
     u_token = user17['token']
-    uid = user17['uid'] 
-    profile = user_profile(u_token, uid)
+    u_id = user17['u_id'] 
+    profile = user_profile(u_token, u_id)
     user_profile_setemail(u_token, "updated@gmail.com")
     assert profile['user']['email'] == "updated@gmail.com"
 
@@ -170,3 +170,5 @@ def test_existing_handle():
     user_profile_sethandle(user2_token, "Handle")
     with pytest.raises(InputError):
          assert user_profile_setemail(user1_token, "Handle")  
+
+    
