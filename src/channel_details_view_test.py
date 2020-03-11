@@ -6,7 +6,7 @@ import message
 import auth
 from error import AccessError
 from error import InputError
-import channel
+from channel import channel_messages, channel_details
 import channels
 
 @pytest.fixture
@@ -31,31 +31,33 @@ def test_channel_id_valid(channel_id):
     
 # test details function if user it not a member of the channel
 def test_details_user_member(authUser, channel_id):
-    with pytest.raises(AccessError):
-        assert(any(channel.channel_details(authUser['token'], channel_id)['all_members']['name_first'] == authUser["firstName"]))
+    for i in range(len(channel_details(authUser['token'], channel_id)['all_members'])):
+        if (channel_details(authUser['token'], channel_id)['all_members'][i]['name_first'] == "firstName"):
+            raise AccessError()
 
 # test if index start is greater than total messages
 def test_index_greater(authUser, channel_id):
     with pytest.raises(AccessError):
-        assert(channel.channel_messages(authUser['token'], channel_id, 0)['start'] > max(channel.channel_messages(authUser['token'], channel_id, 0)['messages']['message_id']))
+        assert(channel_messages(authUser['token'], channel_id, 0)['start'] > channel_messages(authUser['token'], channel_id, 0)['messages'][-1]['message_id'])
         
 # test messages function if user is not member of channel
 def test_messages_user_member(authUser, channel_id):
-    with pytest.raises(AccessError):
-        assert(any(channel.channel_messages(authUser['token'], channel_id)['messages']['u_id'] == authUser['u_id']))
+    for i in range(len(channel_messages(authUser['token'], channel_id, 0)['messages'])):
+        if (channel_messages(authUser['token'], channel_id, 0)['messages'][i]['u_id'] == authUser['u_id']):
+            raise AccessError()
         
 # test messages function returns 3 elements
 def test_messages_return(authUser, channel_id):
-    assert(len(channel.channel_messages(authUser['token'], channel_id)) == 3)
+    assert(len(channel_messages(authUser['token'], channel_id, 0)) == 3)
     
 # test messages function returns -1 in "end" after showing oldest messages
 def test_messages_oldest(authUser, channel_id):
-    if channel.channel_messages(authUser['token'], channel_id)['messages']['message_id'] == channel.channel_messages(authUser['token'], channel_id)['end']:
-        assert (channel.channel_messages(authUser['token'], channel_id)['end'] == -1)
+    if channel_messages(authUser['token'], channel_id, 0)['messages'][0]['message_id'] == channel_messages(authUser['token'], channel_id, 0)['end']:
+        assert(channel_messages(authUser['token'], channel_id)['end'] == -1)
         
 # test messages function only displays 50 messages at most
 def test_messages_display(authUser, channel_id):
-    assert(channel.channel_messages((authUser['token'], channel_id)['start'] + 50) == channel.channel_messages((authUser['token'], channel_id)['end']))
+    assert((channel_messages(authUser['token'], channel_id, 0)['start']) + 50 == channel_messages(authUser['token'], channel_id, 0)['end'])
     
 
 
