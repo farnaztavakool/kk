@@ -109,4 +109,4 @@ def test_auth_edit():
     no_body = auth_register("noone@gmail","1aasdffu!","Aww","Jung")
     n_token = no_body['token']
     with pytest.raises(AccessError):
-         message_edit(n_token, mid) 
+         message_edit(n_token, mid, "Iamtryingtofix") 
