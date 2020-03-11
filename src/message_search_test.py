@@ -4,7 +4,7 @@ from auth import auth_register
 from other import search
 import pytest
 
-
+# the function would make a user/ create a channl/ send a message to the channle/ returns the important info
 def message_func(message):
     user = auth_register("tavakolfarnaz@gmail.com","0312138261","farnaz","tavakol")
     token = user['token']
@@ -19,7 +19,7 @@ def message_func(message):
         'mid': mid,
         'cid': cid
     }
-# returns the right result
+# checks if the function returns the message containing the query 
 def test_search_message():
     mess = message_func("hello world")
     token= mess['token']
@@ -27,14 +27,14 @@ def test_search_message():
     result = search(token,"he")
     assert mid == result['messages'][0]['message_id']
 
-# where there is no matching query 
+# checks the function output when there is no message fitting the query
 def test_serch_empty():
     mess = message_func("hello world")
     token= mess['token']
     result = search(token,"tango")
     assert len(result['messages']) == 0
 
-# returns the right author
+# checks if the result returned by the function has the right author
 def test_search_author():
     mess = message_func("hello world")
     token= mess['token']
@@ -42,9 +42,8 @@ def test_search_author():
     result = search(token,"he")
     assert uid == result['messages'][0]['u_id']
 
-# send two messages containing the query 
-#checks if the functions returns both of them 
 
+# checks the result if there are multiple messages fitting the query
 def test_mutli_message():
     mess1 = message_func("hello world")
     mid1 = mess1['mid']
@@ -61,7 +60,7 @@ def test_mutli_message():
             
     assert check == 2
 
-    #different channels
+# check the function when the messages fitting the query are from different channels
 
 def test_differnt_channels():
 
