@@ -1,5 +1,5 @@
 # Changelog
-**26/02**   Group was formed!!!
+**26/02**   Group was formed!!! <br/>
 **08/03**   Tim Merged "tim_fan_writing_tests_branch" to master ("initial version of his tests") !!!
 **09/09**   Hailey Merged "message_modification_test-Hailey" to master (final version of her tests)
 **09/3**    Farnaz Merged "farnaz" to master ("initial version of her tests")
