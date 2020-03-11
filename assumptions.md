@@ -56,6 +56,7 @@ profile_management_test.py
 **Assumptions**:
 - When you register a user they all have different u_id and tokens
 - Would get an error message if try to change the change email to the one already using
+- When you update an email the previous email will be deleted from the database.
 
 ### Ability to search for messages based on a search string
 ```
