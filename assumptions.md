@@ -5,12 +5,17 @@ login_test.py
 ```
 **Assumptions**:
 - THISISNOTTOKEN would never be a token and in invalid.
-- the email format should follow xx..x @ xx...x.xxx
+- the email format should follow [xx..x] @ [xx...x].[xxx].
+- password doesnt need to contain letters or other characters.
+- password has a size limit.
 
 ### Ability to reset password if forgotten it
 ```
 reset_password_test.py
 ```
+**Assumption**
+-  users cant use any of their previous passwords for the new one.
+
 ### Ability to see a list of channels
 ```
 channel_list_view_test.py
@@ -50,11 +55,15 @@ profile_management_test.py
 ```
 **Assumptions**:
 - When you register a user they all have different u_id and tokens
+- Would get an error message if try to change the change email to the one already using
 
 ### Ability to search for messages based on a search string
 ```
 message_search_test.py
 ```
+- upper/lower letter doesnt matter in the search
+- when there is no match it RETURNS THE MESSAGE LIST but empty
+
 ### Ability to modify a user’s admin privileges: (MEMBER, OWNER)
 ```
 privilege_modification_test.py
