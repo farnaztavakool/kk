@@ -1,6 +1,3 @@
-
-# hello how r u
-
 def auth_login(email, password):
     return {
         'u_id': 1,
