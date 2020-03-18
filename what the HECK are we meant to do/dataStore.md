@@ -15,12 +15,13 @@
     - finish_time, message_queue, is_active.
 
 ## How do we store this data?
-### *Recall a ``*.p`` file is what stores the pickled data.*
-### *Think of it like a ``*.zip`` file, its just a file that stores some data. We can "unpickle" (or "unzip") the file to get what we originally stored back)).*
+### Recall a .p file is what stores the pickled data.
+### Think of it like a .zip file, its just a file that stores some data. 
+### We can "unpickle" (or "unzip") the file to get what we originally stored back)).
 ### I love dictionaries :frowning:
 - Per User:
     - Dictionary? 
-    - Keys: first_name,last_name,email,encrypted_password,token,u_id,handle,permission_id.
+    - Keys: first_name, last_name, email, encrypted_password, token, u_id, handle, permission_id.
 - All Users:``userAll.p``
     - Dictionary of users.
     - Keys: u_id.
