@@ -17,7 +17,7 @@
 ## How do we store this data?
 ### Recall a .p file is what stores the pickled data.
 ### Think of it like a .zip file, its just a file that stores some data. 
-### We can "unpickle" (or "unzip") the file to get what we originally stored back)).
+### We can "unpickle" (or "unzip") the file to get what we originally stored back.
 ### I love dictionaries :frowning:
 - Per User:
     - Dictionary? 
