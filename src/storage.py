@@ -34,7 +34,6 @@ def load_channel_all():
 # typical use case, say in auth.py (EXAMPLE!!!)
 import storage
 def auth_register(email,password,name_first,name_last):
-
     u_id = generate_u_id()                  # "unique" u_id.
     token = generate_token()                # "unique" token.
     handle = generate_handle()              # "unique" handle.
@@ -44,8 +43,8 @@ def auth_register(email,password,name_first,name_last):
     # storage.add_user() is what calls storage.load_user_all() and storage.save_user_all().
     storage.add_user(name_first,name_last,email,encrypted_password,token,u_id,handle,permission_id)
     return {
-        "u_id" : u_id,
-        "token" : token,
+        'u_id': u_id,
+        'token': token,
     }
 '''
 # adds user to database given email, password, name_first, name_last.
@@ -53,14 +52,14 @@ def add_user(name_first,name_last,email,encrypted_password,token,u_id,handle,per
     user_all = load_user_all()
     # generate a user dictionary unique to the given user.
     user_data = {}
-    user_data["name_first"] = name_first
-    user_data["name_last"] = name_last
-    user_data["email"] = email
-    user_data["encrypted_password"] = encrypted_password
-    user_data["token"] = token
-    user_data["u_id"] = u_id
-    user_data["handle"] = handle
-    user_data["permission_id"] = permission_id
+    user_data['name_first'] = name_first
+    user_data['name_last'] = name_last
+    user_data['email'] = email
+    user_data['encrypted_password'] = encrypted_password
+    user_data['token'] = token
+    user_data['u_id'] = u_id
+    user_data['handle'] = handle
+    user_data['permission_id'] = permission_id
     # recall that each u_id is unique.
     user_all['u_id'] = user_data
     save_user_all(user_all)
