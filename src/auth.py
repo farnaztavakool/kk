@@ -16,3 +16,35 @@ def auth_register(email,password,name_first,name_last):
         'token': token,
     }
 '''
+import storage
+import hashlib
+import helper
+
+# creating the database
+storage.new_storage()
+
+def uid(name):
+    return name
+
+def token(fname,lname):
+    return fname+lname
+
+def encrypt_pass(password):
+    
+    return hashlib.sha256(password.encode()).hexdigest()
+    
+
+def auth_register(email,password,name_first,name_last):
+    data = storage.load_user_all()
+    print ([i['email'] for i in data])
+    helper.check_email(email,data)
+    helper.check_name(name_first,name_last)
+    helper.check_pass(password)
+    password = encrypt_pass(password)
+    storage.add_user(name_first,name_last,email,password,token(name_first,name_last),uid(name_first))
+    print(storage.load_user_all())
+    return {
+        'u_id': uid(name_first),
+        'token':token(name_first,name_last)
+    }
+    
