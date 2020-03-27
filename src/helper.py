@@ -1,11 +1,14 @@
 import re
 import error
-def check_email(email,data):
+def check_email(email):
     regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
     if re.search(regex,email): return True
     raise error.InputError
-    print ([True for i in data if i['email'] == email])
         # raise error.InputError
+
+def check_email_exist(email,data):
+    if any([True for i in data if data[i]['email'] == email ]):
+        raise error.InputError
     
 
 def check_name(fname,lname):
