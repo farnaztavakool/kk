@@ -1,59 +1,3 @@
-
-import json
-
-# creates new empty database, stored in json files.
-def new_storage():
-    user_all = {}
-    channel_all = {}
-    user_active = {}
-    save_user_active(user_active)
-    save_user_all(user_all)
-    save_channel_all(channel_all)
-
-# would add the user who logged in 
-def active_user(token):
-    user_active = load_user_active()
-    user_active[token] = True
-    save_user_active(user_active)
-
-def unactivate(token):
-    user_active = load_user_active()
-    del user_active[token]
-    save_user_active(user_active)
-
-# load the file of the users who logged in 
-def load_user_active():
-    with open('user_active.json','r') as FILE:
-        active = json.load(FILE)
-        return active
-
-def save_user_active(user_active):
-    with open('user_active.json','w') as FILE:
-        json.dump(user_active,FILE)
-
-def save_user_all(user_all):
-    with open("user_all.json", "w") as FILE:
-        json.dump(user_all, FILE)
-        return
-
-# saves to locally stored channel_all database.
-def save_channel_all(channel_all):
-    with open("channel_all.json", "w") as FILE:
-        json.dump(channel_all, FILE)
-        return
-
-# loads and returns locally stored user_all database.
-def load_user_all():
-    with open("user_all.json", "r") as FILE:
-        user_all = json.load(FILE)
-        return user_all
-   
-
-# loads and returns locally stored channel_all database.
-def load_channel_all():
-    with open("channel_all.json", "r") as FILE:
-        channel_all = json.load(FILE)
-        return channel_all
 '''
 # typical use case, say in auth.py (EXAMPLE!!!)
 import storage
@@ -70,6 +14,81 @@ def auth_register(email,password,name_first,name_last):
         'u_id': u_id,
         'token': token,
     }
+'''
+
+import json
+
+'''
+database initialization.
+'''
+# creates new empty database, stored in json files.
+def new_storage():
+    user_all = {}
+    channel_all = {}
+    user_active = {}
+    save_user_active(user_active)
+    save_user_all(user_all)
+    save_channel_all(channel_all)
+
+'''
+database of all registered users.
+'''
+# loads and returns locally stored user_all database.
+def load_user_all():
+    with open("user_all.json", "r") as FILE:
+        user_all = json.load(FILE)
+        return user_all
+
+# saves to locally stored user_all database.
+def save_user_all(user_all):
+    with open("user_all.json", "w") as FILE:
+        json.dump(user_all, FILE)
+        return
+
+'''
+database that records which users are active (logged in).
+'''
+# user_active.json is a dictionary indexed by token.
+# if user_active['token1'] == True, then the user with token 'token1' is logged in.
+# load the file of the users who logged in 
+def load_user_active():
+    with open('user_active.json','r') as FILE:
+        active = json.load(FILE)
+        return active
+
+def save_user_active(user_active):
+    with open('user_active.json','w') as FILE:
+        json.dump(user_active,FILE)
+
+# would add the user who logged in 
+# perhaps activate_user(token) makes more sense.
+def active_user(token):
+    user_active = load_user_active()
+    user_active[token] = True
+    save_user_active(user_active)
+
+def unactivate(token):
+    user_active = load_user_active()
+    del user_active[token]
+    save_user_active(user_active)
+
+'''
+database of all channels.
+'''  
+# loads and returns locally stored channel_all database.
+def load_channel_all():
+    with open("channel_all.json", "r") as FILE:
+        channel_all = json.load(FILE)
+        return channel_all
+
+# saves to locally stored channel_all database.
+def save_channel_all(channel_all):
+    with open("channel_all.json", "w") as FILE:
+        json.dump(channel_all, FILE)
+        return
+
+'''
+functions for interacting with user_all
 '''
 # adds user to database given email, password, name_first, name_last.
 def add_user(name_first,name_last,email,encrypted_password,token,u_id):
@@ -88,4 +107,3 @@ def add_user(name_first,name_last,email,encrypted_password,token,u_id):
     user_all[u_id] = user_data
     save_user_all(user_all)
     return
-
