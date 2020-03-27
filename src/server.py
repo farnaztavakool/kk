@@ -4,7 +4,9 @@ from flask import Flask, request
 from flask_cors import CORS
 from error import InputError
 import auth
+
 import message
+import channel_first
 
 # 93858500 -->financial help
 
@@ -95,8 +97,39 @@ def message_send():
         'message_id': returned_data['message_id'],
     })
 
+
 '''
 server initialization
 '''
+
+@APP.route('/channel/invite',methods=['POST'])
+#token channle_id user_id
+def channel_invite():
+    input_data = request.get_json()
+    token = input_data['token']
+    channle_id = input_data['channel_id']
+    u_id = input_data['u_id']
+    channel_first.channel_invite(token, channle_id, u_id)
+    return "right"
+@APP.route('/channel/create',methods=['POST'])
+def channel_create():
+    input_data = request.get_json()
+    token = input_data['token'] 
+    name = input_data['name']
+    is_public = input_data['is_public']
+    returndata =  channel_first.channel_create(token,name,is_public)
+    return returndata
+@APP.route('/channel/detail',methods = ["GET"])
+def channel_detail():
+    token = request.args.get('token')
+    channel_id = request.args.get('channel_id')
+    returndata = channel_first.channel_detail(token,channel_id)
+    return dumps({
+        'owner': returndata['owner'],
+        'number_of_members': returndata['members']
+    })
+   
+
+
 if __name__ == "__main__":
-    APP.run(debug = True,port=(int(sys.argv[1]) if len(sys.argv) == 2 else 8040))
+    APP.run(debug = True,port=(int(sys.argv[1]) if len(sys.argv) == 2 else 8060))
