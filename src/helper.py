@@ -19,5 +19,20 @@ def check_pass(password):
      if len(password) < 6: raise error.InputError
      return True
 
+def check_channel(channel_id,data):
+    if channel_id in data: return True
+    raise error.InputError
+
+def check_user(u_id,data):
+    if u_id in data: return True
+    raise error.InputError
+
+def check_access(token, data, channel_id):
+    if token in data[channel_id]['member']: return True
+    raise error.InputError
+
+def check_channel_name(name):
+    if len(name) > 20: error.InputError
+
 # make it 
     
