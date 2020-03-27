@@ -4,6 +4,7 @@ from flask import Flask, request
 from flask_cors import CORS
 from error import InputError
 import auth
+import message
 
 # 93858500 -->financial help
 
@@ -35,7 +36,7 @@ def echo():
     })
 
 '''
-auth routes
+auth routes.
 '''
 @APP.route("/auth/register", methods=['POST'])
 def auth_register():
@@ -80,5 +81,22 @@ def auth_logout():
     if auth.auth_logout(token) == True: return "is_success"
     return "is_failure"
     '''
+'''
+message routes.
+'''
+@APP.route('/message/login',methods=['POST'])
+def message_send():
+    input_data = request.get_json()
+    token = input_data['token']
+    channel_id = input_data['channel_id']
+    message = input_data['message']
+    returned_data = message.message_send(token,channel_id,message)
+    return dumps({
+        'message_id': returned_data['message_id'],
+    })
+
+'''
+server initialization
+'''
 if __name__ == "__main__":
     APP.run(debug = True,port=(int(sys.argv[1]) if len(sys.argv) == 2 else 8040))
