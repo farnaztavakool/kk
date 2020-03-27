@@ -29,7 +29,7 @@ def check_user(u_id,data):
 
 def check_access(token, data, channel_id):
     if token in data[channel_id]['member']: return True
-    raise error.InputError
+    raise error.AccessError
 
 def check_channel_name(name):
     if len(name) > 20: error.InputError

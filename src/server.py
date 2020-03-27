@@ -87,7 +87,16 @@ def channel_create():
     is_public = input_data['is_public']
     returndata =  channel_first.channel_create(token,name,is_public)
     return returndata
-
+@APP.route('/channel/detail',methods = ["GET"])
+def channel_detail():
+    token = request.args.get('token')
+    channel_id = request.args.get('channel_id')
+    returndata = channel_first.channel_detail(token,channel_id)
+    return dumps({
+        'owner': returndata['owner'],
+        'number_of_members': returndata['members']
+    })
+   
 
 if __name__ == "__main__":
     APP.run(debug = True,port=(int(sys.argv[1]) if len(sys.argv) == 2 else 8060))
