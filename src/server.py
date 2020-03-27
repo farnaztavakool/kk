@@ -182,5 +182,39 @@ def channel_join():
     channel_id = data['channel_id']
     channel_first.channel_join(token, channel_id)
     return dumps({})
+
+'''
+standup routes.
+'''
+@APP.route('/standup/start',methods = ["POST"])
+def standup_start():
+    input_data = request.get_json()
+    token = input_data['token']
+    channel_id = input_data['channel_id']
+    length = input_data['length']
+    returned_data = standup.standup_start(token, channel_id, length)
+    return dumps({
+        'time_finish': returned_data['time_finish'],
+    })
+
+@APP.route('/standup/active',methods = ["GET"])
+def standup_active():
+    input_data = request.get_json()
+    token = input_data['token']
+    channel_id = input_data['channel_id']
+    returned_data = standup.standup_active(token, channel_id)
+    return dumps({
+        'is_active': returned_data['is_active'],
+        'time_finish': returned_data['time_finish'],
+    })
+
+@APP.route('/standup/send',methods = ["POST"])
+def standup_send():
+    input_data = request.get_json()
+    token = input_data['token']
+    channel_id = input_data['channel_id']
+    message = input_data['message']
+    returned_data = standup.standup_send(token, channel_id, message)
+    return dumps({})
 if __name__ == "__main__":
     APP.run(debug = True,port=(int(sys.argv[1]) if len(sys.argv) == 2 else 8060))
