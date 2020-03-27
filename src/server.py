@@ -67,8 +67,18 @@ def auth_login():
 def auth_logout():
     input_data = request.get_json()
     token = input_data['token']
+    '''
+    # remember "is_success" in the spec is a boolean XD.
+    returned_data = auth.auth_logout(token)
+    if returned_data == True:
+        return True
+    else:
+        return False
+    '''
+    return auth.auth_logout(token)
+    '''
     if auth.auth_logout(token) == True: return "is_success"
     return "is_failure"
-
+    '''
 if __name__ == "__main__":
     APP.run(debug = True,port=(int(sys.argv[1]) if len(sys.argv) == 2 else 8040))
