@@ -99,7 +99,7 @@ def message_send():
 
 
 '''
-server initialization
+channel routes
 '''
 
 @APP.route('/channel/invite',methods=['POST'])
@@ -128,8 +128,11 @@ def channel_detail():
         'owner': returndata['owner'],
         'number_of_members': returndata['members']
     })
-   
 
+
+'''
+server initialization
+'''
 
 if __name__ == "__main__":
     APP.run(debug = True,port=(int(sys.argv[1]) if len(sys.argv) == 2 else 8060))
