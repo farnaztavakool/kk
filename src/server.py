@@ -71,11 +71,11 @@ def auth_logout():
     # remember "is_success" in the spec is a boolean XD.
     returned_data = auth.auth_logout(token)
     if returned_data == True:
-        return True
+        return dumps(True)
     else:
-        return False
+        return dumps(False)
     '''
-    return auth.auth_logout(token)
+    return dumps(auth.auth_logout(token))
     '''
     if auth.auth_logout(token) == True: return "is_success"
     return "is_failure"
