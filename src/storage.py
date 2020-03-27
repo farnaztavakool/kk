@@ -5,10 +5,32 @@ import json
 def new_storage():
     user_all = {}
     channel_all = {}
+    user_active = {}
+    save_user_active(user_active)
     save_user_all(user_all)
     save_channel_all(channel_all)
 
-# saves to locally stored user_all database.
+# would add the user who logged in 
+def active_user(token):
+    user_active = load_user_active()
+    user_active[token] = True
+    save_user_active(user_active)
+
+def unactivate(token):
+    user_active = load_user_active()
+    del user_active[token]
+    save_user_active(user_active)
+
+# load the file of the users who logged in 
+def load_user_active():
+    with open('user_active.json','r') as FILE:
+        active = json.load(FILE)
+        return active
+
+def save_user_active(user_active):
+    with open('user_active.json','w') as FILE:
+        json.dump(user_active,FILE)
+
 def save_user_all(user_all):
     with open("user_all.json", "w") as FILE:
         json.dump(user_all, FILE)
@@ -25,6 +47,7 @@ def load_user_all():
     with open("user_all.json", "r") as FILE:
         user_all = json.load(FILE)
         return user_all
+   
 
 # loads and returns locally stored channel_all database.
 def load_channel_all():
@@ -49,7 +72,7 @@ def auth_register(email,password,name_first,name_last):
     }
 '''
 # adds user to database given email, password, name_first, name_last.
-def add_user(name_first,name_last,email,encrypted_password,token,u_id,handle,permission_id):
+def add_user(name_first,name_last,email,encrypted_password,token,u_id):
     user_all = load_user_all()
     # generate a user dictionary unique to the given user.
     user_data = {}
@@ -59,10 +82,10 @@ def add_user(name_first,name_last,email,encrypted_password,token,u_id,handle,per
     user_data['encrypted_password'] = encrypted_password
     user_data['token'] = token
     user_data['u_id'] = u_id
-    user_data['handle'] = handle
-    user_data['permission_id'] = permission_id
+    # user_data['handle'] = handle
+    # user_data['permission_id'] = permission_id
     # recall that each u_id is unique.
-    user_all['u_id'] = user_data
+    user_all[u_id] = user_data
     save_user_all(user_all)
     return
->>>>>>> master
+

@@ -5,22 +5,24 @@ from flask_cors import CORS
 from error import InputError
 import auth
 
-def defaultHandler(err):
-    response = err.get_response()
-    print('response', err, err.get_response())
-    response.data = dumps({
-        "code": err.code,
-        "name": "System Error",
-        "message": err.get_description(),
-    })
-    response.content_type = 'application/json'
-    return response
+# 93858500 -->financial help
+
+# def defaultHandler(err):
+#     response = err.get_response()
+#     print('response', err, err.get_response())
+#     response.data = dumps({
+#         "code": err.code,
+#         "name": "System Error",
+#         "message": err.get_description(),
+#     })
+#     response.content_type = 'application/json'
+#     return response
 
 APP = Flask(__name__)
 CORS(APP)
 
 APP.config['TRAP_HTTP_EXCEPTIONS'] = True
-APP.register_error_handler(Exception, defaultHandler)
+# APP.register_error_handler(Exception, defaultHandler)
 
 # Example
 @APP.route("/echo", methods=['GET'])
@@ -50,5 +52,23 @@ def auth_register():
         'token': returned_data['token'],
     })
 
+@APP.route('/auth/login',methods=['POST'])
+def auth_login():
+    input_data = request.get_json()
+    email = input_data['email']
+    password = input_data['password']
+    returned_data = auth.auth_login(email,password)
+    return dumps({
+        'u_id': returned_data['u_id'],
+        'token': returned_data['token'],
+    })
+
+@APP.route('/auth/logout',methods = ['POST'])
+def auth_logout():
+    input_data = request.get_json()
+    token = input_data['token']
+    if auth.auth_logout(token) == True: return "is_success"
+    return "is_failure"
+
 if __name__ == "__main__":
-    APP.run(port=(int(sys.argv[1]) if len(sys.argv) == 2 else 8080))
+    APP.run(debug = True,port=(int(sys.argv[1]) if len(sys.argv) == 2 else 8040))
