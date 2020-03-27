@@ -38,6 +38,10 @@ def new_storage():
 database of all registered users.
 '''
 # loads and returns locally stored user_all database.
+### user_all.json is a dictionary indexed by u_id.
+### user_all['u_id1'] is a dictionary of information unique to the user with u_id 'u_id1'.
+### the keys in a user dictionary are:
+### 'name_first','name_last','email','encrypted_password','token','u_id'.
 def load_user_all():
     with open("user_all.json", "r") as FILE:
         user_all = json.load(FILE)
@@ -52,9 +56,10 @@ def save_user_all(user_all):
 '''
 database that records which users are active (logged in).
 '''
-# user_active.json is a dictionary indexed by token.
-# if user_active['token1'] == True, then the user with token 'token1' is logged in.
 # load the file of the users who logged in 
+### user_active.json is a dictionary indexed by token.
+### user_active['token1'] is a boolean.
+### if user_active['token1'] == True, then the user with token 'token1' is logged in.
 def load_user_active():
     with open('user_active.json','r') as FILE:
         active = json.load(FILE)
@@ -65,7 +70,7 @@ def save_user_active(user_active):
         json.dump(user_active,FILE)
 
 # would add the user who logged in 
-# perhaps activate_user(token) makes more sense.
+### perhaps activate_user(token) makes more sense.
 def active_user(token):
     user_active = load_user_active()
     user_active[token] = True
