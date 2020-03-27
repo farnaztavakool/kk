@@ -32,10 +32,9 @@ def channel_invite(token,channel_id,u_id):
     print(data_channel)
     helper.check_channel(channel_id,data_channel)
     helper.check_user(u_id,data_user)
-    if data_user[u_id]['token'] not in data_channel[channel_id]['member']:
-        helper.check_access(token, data_channel, channel_id)
-        token = data_user[u_id]['token']
-        storage.add_member(token, channel_id)
+    if data_user[u_id] not in data_channel[channel_id]['member']:
+        helper.check_access(helper.get_id(token,data_user), data_channel, channel_id)
+        storage.add_member(u_id, channel_id)
 
 
 def channel_create(token,name,is_public):
@@ -51,3 +50,20 @@ def channel_detail(token, channel_id):
         "owner":channel_data[channel_id]['owner'],
         "members":len(channel_data[channel_id]['member'])
     }
+
+def channel_leave(token,channel_id):
+    channel_data = get_data()
+    user_data = auth.get_data()
+    u_id = helper.get_id(token,user_data)
+    helper.check_channel(channel_id,channel_data)
+    helper.check_access(u_id,channel_data,channel_id)
+    storage.remove_member(u_id,channel_id)
+
+def channel_join(token, channel_id):
+    channel_data = get_data()
+    user_data = auth.get_data()
+    # if channel_data[channel_id]['access'] == "False" : print("yeet")
+    helper.check_channel(channel_id,channel_data)
+    helper.check_public_channel(channel_data,channel_id)
+    u_id = helper.get_id(token,user_data)
+    storage.add_member(u_id,channel_id)

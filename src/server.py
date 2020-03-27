@@ -128,8 +128,26 @@ def channel_detail():
         'owner': returndata['owner'],
         'number_of_members': returndata['members']
     })
-   
 
-
+# @APP.route('/channel/message',method = ['GET'])
+# def channel_message():
+#     token = request.args.get('token')
+#     channel_id = request.args.get('channel_id')
+#     start_index = request.args.get('start')
+#     channel_first
+@APP.route('/channel/leave',methods = ['POST'])
+def channel_leave():
+    data = request.get_json()
+    token = data['token']
+    channel_id = data['channel_id']
+    channel_first.channel_leave(token,channel_id)
+    return dumps({})
+@APP.route('/channel/join',methods = ['POST'])
+def channel_join():
+    data = request.get_json()
+    token = data['token']
+    channel_id = data['channel_id']
+    channel_first.channel_join(token, channel_id)
+    return dumps({})
 if __name__ == "__main__":
     APP.run(debug = True,port=(int(sys.argv[1]) if len(sys.argv) == 2 else 8060))

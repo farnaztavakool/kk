@@ -126,20 +126,36 @@ def add_user(name_first, name_last, email, encrypted_password, token, u_id):
     return
 
 
-def add_member(token, channel_id):
+def add_member(u_id, channel_id):
+    member = {}
+    data = load_user_all()
+    member['u_id'] = u_id
+    member['name_first'] = data[u_id]['name_first']
+    member['name_last'] = data[u_id]['name_last']
     channel_all = load_channel_all()
-    channel_all[channel_id]['member'].append(token)
+    channel_all[channel_id]['member'].append(member)
+    save_channel_all(channel_all)
+
+def remove_member(u_id, channel_id):
+    channel_all = load_channel_all()
+    delete = [i for i in channel_all[channel_id]['member'] if i['u_id'] == u_id]
+    channel_all[channel_id]['member'].remove(delete[0])
     save_channel_all(channel_all)
 
 def add_channel(token, channel_id,name, is_public):
     channel = {}
-    member = []
+    owner = {}
+    data = load_user_all()
+    u_id = [i for i in data if data[i]['token'] == token]
+    owner['u_id'] = u_id[0]
+    owner['name_first'] = data[u_id[0]]['name_first']
+    owner['name_last'] = data[u_id[0]]['name_last']
     channel_all = load_channel_all()
-    channel['owner'] = token
-    member.append(token)
+    channel['owner'] = []
+    channel['owner'].append(owner)
     channel['name'] = name
     channel['access'] = is_public
-    channel['member'] = member
+    channel['member'] = []
     channel['messages'] = []
     channel_all[channel_id] = channel
     save_channel_all(channel_all)
