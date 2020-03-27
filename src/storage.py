@@ -87,8 +87,8 @@ database of all channels.
 # loads and returns locally stored channel_all database.
 ### channel_all.json is a dictionary indexed by channel_id.
 ### channel_all['channel_id1'] is a dictionary of information unique to the user with channel_id 'channel_id1'.
-### the keys in a user dictionary are:
-### 'channel_id','channel_name','owner_members_list','all_members_list','messages_list','standup'.
+### the keys in a channel dictionary are:
+### 'channel_id','channel_name','owner_members_list','all_members_list','messages_list','standup'.a
 def load_channel_all():
     with open("channel_all.json", "r") as FILE:
         channel_all = json.load(FILE)
