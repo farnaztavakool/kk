@@ -97,12 +97,11 @@ def message_send():
         'message_id': returned_data['message_id'],
     })
 
-<<<<<<< HEAD
+
 '''
 server initialization
 '''
-||||||| merged common ancestors
-=======
+
 @APP.route('/channel/invite',methods=['POST'])
 #token channle_id user_id
 def channel_invite():
@@ -131,6 +130,6 @@ def channel_detail():
     })
    
 
->>>>>>> agreed_structure
+
 if __name__ == "__main__":
     APP.run(debug = True,port=(int(sys.argv[1]) if len(sys.argv) == 2 else 8060))
