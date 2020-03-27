@@ -7,6 +7,7 @@ import auth
 
 import message
 import channel_first
+import user
 
 # 93858500 -->financial help
 
@@ -99,7 +100,7 @@ def message_send():
 
 
 '''
-server initialization
+channel routes
 '''
 
 @APP.route('/channel/invite',methods=['POST'])
@@ -128,8 +129,37 @@ def channel_detail():
         'owner': returndata['owner'],
         'number_of_members': returndata['members']
     })
-   
 
+''' 
+user routes
+'''
+@APP.route('/user/profile/setname',methods=['PUT'])
+def user_profile_setname():
+    input_data = request.get_json()
+    token = input_data['token']
+    name_first = input_data['name_first']
+    name_last = input_data['name_last']
+    user.user_profile_setname(token, name_first, name_last)
+    return ''
+    
+@APP.route('/user/profile/setemail',methods=['PUT'])
+def user_profile_setemail():
+    input_data = request.get_json()
+    token = input_data['token']
+    email = input_data['email']
+    user.user_profile_setemail(token, email)
+    return ''
+
+@APP.route('/user/profile/sethandle',methods = ["PUT"])
+def user_profile_sethandle():
+    input_data = request.get_json()
+    token = input_data['token']
+    handle_str = input_data['handle_str']
+    user.user_profile_sethandle(token, handle_str)
+    return ''
+'''
+server initialization
+'''
 
 if __name__ == "__main__":
     APP.run(debug = True,port=(int(sys.argv[1]) if len(sys.argv) == 2 else 8060))
