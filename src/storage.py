@@ -18,6 +18,10 @@ def auth_register(email,password,name_first,name_last):
 
 import json
 
+################################################################################
+# FUNCTIONS FOR CREATING, SAVING, AND LOADING DATABASES.
+################################################################################
+
 '''
 database initialization.
 '''
@@ -86,6 +90,10 @@ def save_channel_all(channel_all):
     with open("channel_all.json", "w") as FILE:
         json.dump(channel_all, FILE)
         return
+
+################################################################################
+# FUNCTIONS FOR INTERACTING WITH DATABASES.
+################################################################################
 
 '''
 functions for interacting with user_all
