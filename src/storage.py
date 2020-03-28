@@ -157,6 +157,14 @@ def add_channel(token, channel_id,name, is_public):
     channel['access'] = is_public
     channel['member'] = []
     channel['messages'] = []
+    # for use in standup.py
+    channel['standup'] = {
+        # if standup['is_active'] == False, 
+        # then 'length' and 'time_finish' should never be accessed.
+        'is_active': False, 
+        'length': 0,
+        'time_finish': 0,
+    }
     channel_all[channel_id] = channel
     save_channel_all(channel_all)
 
