@@ -7,14 +7,11 @@ from error import InputError, AccessError
 
 def standup_start(token, channel_id, length):
     channel_all = storage.load_channel_all()
-
     ### ERROR: channel_id is not a valid channel.
     if channel_id not in channel_all:
         raise InputError()
-
     channel = channel_all[channel_id]
     standup = channel['standup']
-
     ### ERROR: an active standup is currently running in this channel.
     if standup['is_active'] == True:
         raise InputError()
@@ -32,20 +29,16 @@ def standup_start(token, channel_id, length):
 
     ### sleep for length seconds (during this period standup_send() calls will be successful).
     time.sleep(length)
-
     ### stop standup.
     standup['is_active'] = False
-
-    ### send the message_queue to the channel.
+    ### send the standup['message_queue'] to the channel.
     message.message_send(token, channel_id, standup['message_queue'])
-
     storage.save_channel_all(channel_all)
     return {
         'time_finish': time_finish,
     }
 def standup_active(token, channel_id):
     channel_all = storage.load_channel_all()
-
     ### ERROR: channel_id is not a valid channel.
     if channel_id not in channel_all:
         raise InputError()
@@ -54,7 +47,6 @@ def standup_active(token, channel_id):
     channel = channel_all[channel_id]
     standup = channel['standup']
     is_active = channel['is_active']
-
     ### finding time_finish.
     if is_active == True:
         time_finish = standup['time_finish']
@@ -66,6 +58,7 @@ def standup_active(token, channel_id):
         'time_finish': time_finish,
     }
 def standup_send(token, channel_id, message):
+    ##### ALL ERROR CHECKING.
     channel_all = storage.load_channel_all()
     ### ERROR: channel_id is not a valid channel.
     if channel_id not in channel_all:
@@ -88,22 +81,22 @@ def standup_send(token, channel_id, message):
     ### ERROR: if because of all the above checks the standup becomes not active, dont send the message.
     if standup['is_active'] == False:
         raise InputError()
-    standup['message_queue'] += generate_standup_message(u_id, message)
-    return {}
 
-# helper function, only used in standup so won't include in helper.py for cleanliness.
-def generate_standup_message(u_id, message):
-    user_all_data = storage.load_user_all()
+    ##### ACTUALLY SENDING THE MESSAGE TO THE QUEUE.
     user_data = user_all_data[u_id]
     handlestr = user_data['handlestr']
-    standup_message = handlestr + ': ' + message + '\n'
+    standup['message_queue'] += generate_standup_message(handlestr, message)
+    return {}
+
+# helper function, only used in standup.py so won't include in helper.py for cleanliness.
+def generate_standup_message(handlestr, message):
     # assuming the standup['message_queue'] string starts off as ''.
-    # if a user with the handlestr tfan calls standup_send(),
+    # if a user with the handlestr "tfan" calls standup_send(),
     # then the message that should be added to standup['message_queue'] is:
     # "tfan: hello world!\n"
-    # if another user with handlestr karen calls standup_send() after tfan,
+    # if another user with handlestr "karen" calls standup_send() after "tfan",
     # then the message that should be added to standup['message_queue'] still is:
     # "karen: hello!\n".
     # and the standup['message_queue'] string would be the contatenation of the two strings.
     # "tfan: hello world!\nkaren: hello!\n".
-    return standup_message
+    return handlestr + ': ' + message + '\n'
