@@ -38,6 +38,7 @@ def message_send(token,channel_id,message):
         raise InputError("Message should be under 1000 characters.")
     # if (token not in channel_all[channel_id]) raise AccessError.
     helper.check_access(u_id, data, channel_id)
+    
     message_id = add_message(u_id, message_text, channel_id)
 
     # channel['messages_list'].prepend(message_data)
