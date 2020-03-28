@@ -21,7 +21,7 @@ def standup_start(token, channel_id, length):
     ### we ensure that is_active is set to true AFTER finding the rest of the information.
     standup['length'] = length
     # finding time_finish (a Unix timestamp).
-    now = helper.get_current_time()
+    now = helper.get_current_time_as_datetime()
     now_plus_length = now + datetime.timedelta(seconds = length)
     time_finish = helper.convert_datetime_to_unix_timestamp(now_plus_length)
     standup['time_finish'] = time_finish
