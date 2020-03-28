@@ -160,3 +160,7 @@ def add_channel(token, channel_id,name, is_public):
     channel_all[channel_id] = channel
     save_channel_all(channel_all)
 
+def add_message(message_data,channel_id):
+    data = load_channel_all()
+    data[channel_id]['messages'].append(message_data)
+    save_channel_all(data)
