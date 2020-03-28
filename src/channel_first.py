@@ -67,3 +67,5 @@ def channel_join(token, channel_id):
     helper.check_public_channel(channel_data,channel_id)
     u_id = helper.get_id(token,user_data)
     storage.add_member(u_id,channel_id)
+def channel_message(token,channel_id,start):
+    
