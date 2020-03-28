@@ -8,6 +8,7 @@ import auth
 import message_functions
 import channel_first
 import standup
+import reset
 
 # 93858500 -->financial help
 
@@ -29,14 +30,11 @@ APP.config['TRAP_HTTP_EXCEPTIONS'] = True
 # APP.register_error_handler(Exception, defaultHandler)
 
 # Example
-@APP.route("/echo", methods=['GET'])
-def echo():
-    data = request.args.get('data')
-    if data == 'echo':
-   	    raise InputError(description='Cannot echo "echo"')
-    return dumps({
-        'data': data
-    })
+@APP.route("/workspace/reset",methods = ['POST'])
+def reset_workspace():
+    reset.reset()
+    return dumps({})
+
 
 '''
 auth routes.
@@ -71,19 +69,14 @@ def auth_login():
 def auth_logout():
     input_data = request.get_json()
     token = input_data['token']
-    '''
-    # remember "is_success" in the spec is a boolean XD.
+    
+    
     returned_data = auth.auth_logout(token)
     if returned_data == True:
         return dumps(True)
     else:
         return dumps(False)
-    '''
-    return dumps(auth.auth_logout(token))
-    '''
-    if auth.auth_logout(token) == True: return "is_success"
-    return "is_failure"
-    '''
+    
 '''
 message routes.
 '''

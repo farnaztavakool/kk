@@ -78,7 +78,7 @@ def auth_login(email, password):
 
 
 def auth_logout(token):
-    data = get_data()
+    data = storage.load_user_active()
     if token in data:
         storage.unactivate(token)
         return True
