@@ -39,6 +39,9 @@ def check_channel_name(name):
 
 def check_public_channel(data,channel_id):
     if data[channel_id]['access'] == False: raise error.AccessError
+# usage: 
+# user_all_data = auth.get_data()
+# u_id = helper.get_id(token,user_all_data)
 def get_id(token,data):
     x = [i for i in data if data[i]['token'] == token]
     return x[0]

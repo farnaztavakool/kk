@@ -2,6 +2,7 @@ import storage
 import message
 import helper
 import datetime
+import auth
 from error import InputError, AccessError
 
 def standup_start(token, channel_id, length):
@@ -29,7 +30,6 @@ def standup_start(token, channel_id, length):
     standup['is_active'] = True
 
     ### sleep for length seconds (during this period standup_send() calls will be successful).
-    ### < we assume that the above lines are done almost instaneously :)))) >
     time.sleep(length)
 
     ### stop standup.
@@ -75,5 +75,10 @@ def standup_send(token, channel_id, message):
     if len(message) > 1000:
         raise InputError()
     ### ERROR: user is not a member of the channel that the standup is occurring in.
-    user_all = storage.load_user_all()
+    user_all_data = auth.get_data()
+    u_id = helper.get_id(token, user_all_data)
+    members_list = channel['member']
+    owners_list = channel['owner']
+    if u_id not in (members_list or owners_list):
+        raise AccessError()
     return {}
