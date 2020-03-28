@@ -37,7 +37,7 @@ def standup_start(token, channel_id, length):
     standup['is_active'] = False
 
     ### send the message_queue to the channel.
-    message.message_send(standup['message_queue'])
+    message.message_send(token, channel_id, standup['message_queue'])
 
     storage.save_channel_all(channel_all)
     return {
