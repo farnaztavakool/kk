@@ -36,6 +36,9 @@ def standup_start(token, channel_id, length):
     ### stop standup.
     standup['is_active'] = False
 
+    ### send the message_queue to the channel.
+    message.message_send(standup['message_queue'])
+
     storage.save_channel_all(channel_all)
     return {
         'time_finish': time_finish,
@@ -82,7 +85,7 @@ def standup_send(token, channel_id, message):
     owners_list = channel['owner']
     if u_id not in (members_list or owners_list):
         raise AccessError()
-    ### ERROR: if after all the above checks the standup becomes not active, dont send the message.
+    ### ERROR: if because of all the above checks the standup becomes not active, dont send the message.
     if standup['is_active'] == False:
         raise InputError()
     standup['message_queue'] += generate_standup_message(u_id, message)
