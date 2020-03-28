@@ -18,14 +18,15 @@ def standup_start(token, channel_id, length):
     if standup['is_active'] == True:
         raise InputError()
 
-    ### start standup.
-    standup['is_active'] = True
+    ### we ensure that is_active is set to true AFTER finding the rest of the information.
     standup['length'] = length
     # finding time_finish (a Unix timestamp).
     now = helper.get_current_time()
     now_plus_length = now + datetime.timedelta(seconds = length)
     time_finish = helper.convert_datetime_to_unix_timestamp(now_plus_length)
     standup['time_finish'] = time_finish
+    ### start standup.
+    standup['is_active'] = True
 
     ### sleep for length seconds (during this period standup_send() calls will be successful).
     ### < we assume that the above lines are done almost instaneously :)))) >
