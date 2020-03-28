@@ -15,6 +15,7 @@
 import helper
 import storage
 import auth
+import error
 def get_data():
     try:
         data = storage.load_channel_all()
@@ -68,4 +69,20 @@ def channel_join(token, channel_id):
     u_id = helper.get_id(token,user_data)
     storage.add_member(u_id,channel_id)
 def channel_message(token,channel_id,start):
+    user_data = auth.get_data()
+    u_id = helper.get_id(token, user_data)
+    channel_data = get_data()
+    helper.check_channel(channel_id, channel_data)
+    helper.check_access(u_id, channel_data, channel_id)
+    index = start-1
+    message = channel_data[channel_id]['messages']
+    if start > len(message): raise error.InputError
+    message_list = [i for i in message if message.index(i)>= index and message.index(i) <= 50+index]
+    if len(message_list) < 50: end = -1
+    else: end = 50
     
+    return {
+        'messages': message_list,
+        'start': start,
+        'end': end
+    }

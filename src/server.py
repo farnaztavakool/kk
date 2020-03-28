@@ -162,12 +162,17 @@ user routes
 server initialization
 '''
 
-# @APP.route('/channel/message',method = ['GET'])
-# def channel_message():
-#     token = request.args.get('token')
-#     channel_id = request.args.get('channel_id')
-#     start_index = request.args.get('start')
-#     channel_first.channel_message(token,channel_id, start_index)
+@APP.route('/channel/message',methods = ['GET'])
+def channel_message():
+    token = request.args.get('token')
+    channel_id = request.args.get('channel_id')
+    start_index = int(request.args.get('start'))
+    returnedata = channel_first.channel_message(token,channel_id, start_index)
+    return dumps({
+        'messages': returnedata['messages'],
+        'start': returnedata['start'],
+        'end': returnedata['end']
+    })
 @APP.route('/channel/leave',methods = ['POST'])
 def channel_leave():
     data = request.get_json()

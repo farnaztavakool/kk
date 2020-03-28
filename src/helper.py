@@ -38,7 +38,7 @@ def check_channel_name(name):
     if len(name) > 20: error.InputError
 
 def check_public_channel(data,channel_id):
-    if data[channel_id]['access'] == "False": raise error.AccessError
+    if data[channel_id]['access'] == False: raise error.AccessError
 def get_id(token,data):
     x = [i for i in data if data[i]['token'] == token]
     return x[0]
