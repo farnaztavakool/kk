@@ -1,5 +1,5 @@
 import storage
-import message
+import message_functions
 import helper
 
 def standup_start(token, channel_id, length):
