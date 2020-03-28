@@ -1,5 +1,6 @@
 import re
 import error
+from random import randint
 def check_email(email):
     regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
     if re.search(regex,email): return True
@@ -41,6 +42,11 @@ def get_id(token,data):
     x = [i for i in data if data[i]['token'] == token]
     return x[0]
 
+def u_id():
+    return randint(0,500)
+
+def channel_id():
+    return randint(0,500)
 
 # make it 
     

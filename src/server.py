@@ -5,9 +5,9 @@ from flask_cors import CORS
 from error import InputError
 import auth
 
-import message
+import message_functions
 import channel_first
-import user
+import standup
 
 # 93858500 -->financial help
 
@@ -87,13 +87,13 @@ def auth_logout():
 '''
 message routes.
 '''
-@APP.route('/message/login',methods=['POST'])
+@APP.route('/message/send',methods=['POST'])
 def message_send():
     input_data = request.get_json()
     token = input_data['token']
     channel_id = input_data['channel_id']
     message = input_data['message']
-    returned_data = message.message_send(token,channel_id,message)
+    returned_data = message_functions.message_send(token,channel_id,message)
     return dumps({
         'message_id': returned_data['message_id'],
     })
@@ -134,30 +134,30 @@ def channel_detail():
 ''' 
 user routes
 '''
-@APP.route('/user/profile/setname',methods=['PUT'])
-def user_profile_setname():
-    input_data = request.get_json()
-    token = input_data['token']
-    name_first = input_data['name_first']
-    name_last = input_data['name_last']
-    user.user_profile_setname(token, name_first, name_last)
-    return ''
+# @APP.route('/user/profile/setname',methods=['PUT'])
+# def user_profile_setname():
+#     input_data = request.get_json()
+#     token = input_data['token']
+#     name_first = input_data['name_first']
+#     name_last = input_data['name_last']
+#     user.user_profile_setname(token, name_first, name_last)
+#     return ''
     
-@APP.route('/user/profile/setemail',methods=['PUT'])
-def user_profile_setemail():
-    input_data = request.get_json()
-    token = input_data['token']
-    email = input_data['email']
-    user.user_profile_setemail(token, email)
-    return ''
+# @APP.route('/user/profile/setemail',methods=['PUT'])
+# def user_profile_setemail():
+#     input_data = request.get_json()
+#     token = input_data['token']
+#     email = input_data['email']
+#     user.user_profile_setemail(token, email)
+#     return ''
 
-@APP.route('/user/profile/sethandle',methods = ["PUT"])
-def user_profile_sethandle():
-    input_data = request.get_json()
-    token = input_data['token']
-    handle_str = input_data['handle_str']
-    user.user_profile_sethandle(token, handle_str)
-    return ''
+# @APP.route('/user/profile/sethandle',methods = ["PUT"])
+# def user_profile_sethandle():
+#     input_data = request.get_json()
+#     token = input_data['token']
+#     handle_str = input_data['handle_str']
+#     user.user_profile_sethandle(token, handle_str)
+#     return ''
 '''
 server initialization
 '''
@@ -167,7 +167,7 @@ server initialization
 #     token = request.args.get('token')
 #     channel_id = request.args.get('channel_id')
 #     start_index = request.args.get('start')
-#     channel_first
+#     channel_first.channel_message(token,channel_id, start_index)
 @APP.route('/channel/leave',methods = ['POST'])
 def channel_leave():
     data = request.get_json()
@@ -182,6 +182,7 @@ def channel_join():
     channel_id = data['channel_id']
     channel_first.channel_join(token, channel_id)
     return dumps({})
+
 
 '''
 standup routes.
