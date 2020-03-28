@@ -164,6 +164,7 @@ def add_channel(token, channel_id,name, is_public):
         'is_active': False, 
         'length': 0,
         'time_finish': 0,
+        'message_queue': '',
     }
     channel_all[channel_id] = channel
     save_channel_all(channel_all)

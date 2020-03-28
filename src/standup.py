@@ -26,6 +26,7 @@ def standup_start(token, channel_id, length):
     now_plus_length = now + datetime.timedelta(seconds = length)
     time_finish = helper.convert_datetime_to_unix_timestamp(now_plus_length)
     standup['time_finish'] = time_finish
+    standup['message_queue'] = ''
     ### start standup.
     standup['is_active'] = True
 
@@ -81,4 +82,25 @@ def standup_send(token, channel_id, message):
     owners_list = channel['owner']
     if u_id not in (members_list or owners_list):
         raise AccessError()
+    ### ERROR: if after all the above checks the standup becomes not active, dont send the message.
+    if standup['is_active'] == False:
+        raise InputError()
+    standup['message_queue'] += generate_standup_message(u_id, message)
     return {}
+
+# helper function, only used in standup so won't include in helper.py for cleanliness.
+def generate_standup_message(u_id, message):
+    user_all_data = storage.load_user_all()
+    user_data = user_all_data[u_id]
+    handlestr = user_data['handlestr']
+    standup_message = handlestr + ': ' + message + '\n'
+    # assuming the standup['message_queue'] string starts off as ''.
+    # if a user with the handlestr tfan calls standup_send(),
+    # then the message that should be added to standup['message_queue'] is:
+    # "tfan: hello world!\n"
+    # if another user with handlestr karen calls standup_send() after tfan,
+    # then the message that should be added to standup['message_queue'] still is:
+    # "karen: hello!\n".
+    # and the standup['message_queue'] string would be the contatenation of the two strings.
+    # "tfan: hello world!\nkaren: hello!\n".
+    return standup_message
