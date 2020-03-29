@@ -1,5 +1,5 @@
 import storage
-import message_functions
+import message_functions as message
 import helper
 import datetime
 import auth
