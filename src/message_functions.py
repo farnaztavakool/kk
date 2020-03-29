@@ -32,26 +32,25 @@ def message_send(token,channel_id,message):
 
 # WHY DO THEY NOT INPUT THE CHANNEL_ID REEE.
 def message_pin(token,message_id):
-    channels_all = storage.load_channel_all()
-    # find the message dictionary with message_id message_id.
-    # OH GOD OH FUCK WHAT AM I WRITING. (wait its not that bad).
-    for channel in channels_all:
-        messages = channel['messages']
-        for message in messages:
-            if message['message_id'] == message_id:
-                if message['is_pinned'] == True:
-                    raise InputError()
-                message['is_pinned'] = True
+    message = helper.get_message_dictionary(message_id)
+    if message['is_pinned'] == True:
+        raise InputError()
+    message['is_pinned'] = True
     return {}
 
 def message_unpin(token,message_id):
-    channels_all = storage.load_channel_all()
-    # find the message dictionary with message_id message_id..
-    for channel in channels_all:
-        messages = channel['messages']
-        for message in messages:
-            if message['message_id'] == message_id:
-                if message['is_pinned'] == False:
-                    raise InputError()
-                message['is_pinned'] = False
+    message = helper.get_message_dictionary(message_id)
+    if message['is_pinned'] == False:
+        raise InputError()
+    message['is_pinned'] = False
+    return {}
+
+def message_remove(token,message_id):
+    messages = helper.get_messages_list_containing_message(message_id)
+    message = helper.get_message_dictionary(message_id)
+    ### ERROR: message no longer exists.
+    if message == {}:
+        raise InputError()
+    # remove message from the messages list.
+    messages.remove(message)
     return {}
