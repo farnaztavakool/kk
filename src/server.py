@@ -215,5 +215,18 @@ def standup_send():
     message = input_data['message']
     returned_data = standup.standup_send(token, channel_id, message)
     return dumps({})
+
+''' 
+admin routes
+'''
+
+@APP.route('/admin/userpermission/change',methods=['POST'])
+def admin_userpermission_change():
+    input_data = request.get_json()
+    token = input_data['token']
+    u_id = input_data['u_id']
+    permission_id = input_data['permission_id']
+    returned_data = admin.admin_userpermission_change(token,u_id,permission_id)
+    return dumps({})
 if __name__ == "__main__":
     APP.run(debug = True,port=(int(sys.argv[1]) if len(sys.argv) == 2 else 8060))
