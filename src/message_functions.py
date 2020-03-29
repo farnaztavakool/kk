@@ -20,7 +20,7 @@ def message_send(token,channel_id,message):
     message_data = {
         'message_id': message_id,
         'u_id': u_id,
-        'reacts': [],
+        'reacts': {},
         'is_pinned': False,
         'message_text': message,
         'time_created': time_created,
