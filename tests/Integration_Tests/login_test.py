@@ -1,4 +1,4 @@
-from auth import *
+from  ./../../../src/auth import *
 import pytest
 from error import InputError
 #check the function raise expection for wrong emails

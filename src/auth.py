@@ -22,19 +22,17 @@ import helper
 import error
 
 # creating the database
+def get_data():
+    try:
+        data = storage.load_user_all()
+    except Exception:
+        storage.new_storage()
+        data = storage.load_user_all()
+    return data
 
-try:
-    data = storage.load_user_all()
-except Exception:
-    storage.new_storage()
-    data = storage.load_user_all()
    
     
     # storage.new_storage()
-
-
-def uid(name):
-    return name
 
 def token(fname, lname):
     return fname+lname
@@ -45,22 +43,24 @@ def encrypt_pass(password):
     
 # fix using same emails
 def auth_register(email, password, name_first, name_last):
-    data = storage.load_user_all()
+    data = get_data()
     helper.check_email(email)
     helper.check_email_exist(email, data)
     helper.check_name(name_first, name_last)
     helper.check_pass(password)
     password = encrypt_pass(password)
-    storage.add_user(name_first, name_last, email, password, token(name_first,name_last), uid(name_first))
+    u_id = helper.u_id()
+    storage.add_user(name_first, name_last, email, password, token(name_first,name_last), u_id)
     print(storage.load_user_all())
+    
     return {
-        'u_id': uid(name_first),
+        'u_id':u_id ,
         'token':token(name_first, name_last)
     }
     
 def auth_login(email, password):
     helper.check_email(email)
-    data = data = storage.load_user_all()
+    data = get_data()
    
     
     user = [i for i in data if data[i]['email'] == email]
