@@ -34,10 +34,6 @@ def get_data():
     
     # storage.new_storage()
 
-
-def uid(name):
-    return name
-
 def token(fname, lname):
     return fname+lname
 
@@ -53,10 +49,12 @@ def auth_register(email, password, name_first, name_last):
     helper.check_name(name_first, name_last)
     helper.check_pass(password)
     password = encrypt_pass(password)
-    storage.add_user(name_first, name_last, email, password, token(name_first,name_last), uid(name_first))
+    u_id = helper.u_id()
+    storage.add_user(name_first, name_last, email, password, token(name_first,name_last), u_id)
     print(storage.load_user_all())
+    
     return {
-        'u_id': uid(name_first),
+        'u_id':u_id ,
         'token':token(name_first, name_last)
     }
     
