@@ -54,7 +54,7 @@ def channels_list(token):
     u_id = helper.get_id(token, user_data)
 
     channel_list = []
-    
+
     for channel in channel_data.values():
         for member in channel.get_members():
             if u_id == member['u_id']:
@@ -62,3 +62,6 @@ def channels_list(token):
                                     'name' : channel.get_name()})
 
     return {'channels' : channel_list}
+
+def channels_listall(token):
+    "Provide a list of all channels (and their associated details)"
