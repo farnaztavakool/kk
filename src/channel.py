@@ -65,3 +65,11 @@ def channels_list(token):
 
 def channels_listall(token):
     "Provide a list of all channels (and their associated details)"
+
+    channel_data = get_data()
+    channel_list = []
+
+    for channel in channel_data.values():
+        channel_list.append({'channel_id' : channel.get_channel_id(), 'name' : channel.get_name()})
+
+    return {'channels' : channel_list}
