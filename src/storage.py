@@ -108,7 +108,7 @@ def save_channel_all(channel_all):
 functions for interacting with user_all
 '''
 # adds user to database given email, password, name_first, name_last.
-def add_user(name_first,name_last,email,encrypted_password,token,u_id):
+def add_user(name_first, name_last, email, encrypted_password, token, u_id):
     user_all = load_user_all()
     # generate a user dictionary unique to the given user.
     user_data = {}
@@ -124,3 +124,23 @@ def add_user(name_first,name_last,email,encrypted_password,token,u_id):
     user_all[u_id] = user_data
     save_user_all(user_all)
     return
+
+
+def add_member(token, channel_id):
+    channel_all = load_channel_all()
+    channel_all[channel_id]['member'].append(token)
+    save_channel_all(channel_all)
+
+def add_channel(token, channel_id,name, is_public):
+    channel = {}
+    member = []
+    channel_all = load_channel_all()
+    channel['owner'] = token
+    member.append(token)
+    channel['name'] = name
+    channel['access'] = is_public
+    channel['member'] = member
+    channel['messages'] = []
+    channel_all[channel_id] = channel
+    save_channel_all(channel_all)
+
