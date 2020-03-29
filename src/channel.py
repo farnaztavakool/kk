@@ -54,7 +54,7 @@ def channels_list(token):
     u_id = helper.get_id(token, user_data)
 
     channel_list = []
-
+    
     for channel in channel_data.values():
         for member in channel.get_members():
             if u_id == member['u_id']:
