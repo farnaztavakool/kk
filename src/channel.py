@@ -23,12 +23,6 @@ def channel_addowner(token,channel_id,u_id):
     data_user = auth.get_data()
     if data_user[u_id] in channel_data[channel_id]['owner']:
         raise error.InputError
-
-    # Error if the authorised user is not already a member of the channel
-    channel_data = get_data()
-    helper.check_channel(channel_id, channel_data)
-    helper.check_access(token,channel_data, channel_id)
-
-
+        
     # Add to owner list
     # channel.add_owners(u_id, info['name_first'], info['name_last'], info['profile_img_url'])
