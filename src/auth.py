@@ -82,4 +82,5 @@ def auth_logout(token):
     if token in data:
         storage.unactivate(token)
         return True
-    return False
+    raise Exception
+    # return False
