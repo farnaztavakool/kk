@@ -54,3 +54,8 @@ def message_remove(token,message_id):
     # remove message from the messages list.
     messages.remove(message)
     return {}
+
+def message_edit(token,message_id,message):
+    message_dict = helper.get_message_dictionary(message_id)
+    message_dict['message_text'] = message
+    return {}
