@@ -47,3 +47,18 @@ def channel_remove(token,channel_id,u_id):
     channel_data = get_data()
     helper.check_channel(channel_id, channel_data)
     helper.check_access(token,channel_data, channel_id)
+
+def channels_list(token):
+    channel_data = get_data()
+    user_data = auth.get_data()
+    u_id = helper.get_id(token, user_data)
+
+    channel_list = []
+
+    for channel in channel_data.values():
+        for member in channel.get_members():
+            if u_id == member['u_id']:
+                channel_list.append({'channel_id' : channel.get_channel_id(), \
+                                    'name' : channel.get_name()})
+
+    return {'channels' : channel_list}
