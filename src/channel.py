@@ -42,3 +42,8 @@ def channel_remove(token,channel_id,u_id):
     data_user = auth.get_data()
     if data_user[u_id] not in channel_data[channel_id]['owner']:
         raise error.InputError
+
+    # Error if the authorised user is not already a member of the channel
+    channel_data = get_data()
+    helper.check_channel(channel_id, channel_data)
+    helper.check_access(token,channel_data, channel_id)
