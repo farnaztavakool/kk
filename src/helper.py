@@ -64,5 +64,11 @@ def convert_datetime_to_unix_timestamp(datetime_object):
     # don't bother understanding this code LOL. idek.
     return datetime_object.replace(tzinfo=timezone.utc).timestamp()
 
+# returns current time as a Unix timestamp.
+def get_current_time_as_unix_timestamp():
+    current_time_as_datetime = get_current_time_as_datetime()
+    current_time_as_unix_timestamp = convert_datetime_to_unix_timestamp(current_time_as_datetime)
+    return current_time_as_unix_timestamp
+
 # make it 
     
