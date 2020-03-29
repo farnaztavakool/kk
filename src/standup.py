@@ -86,6 +86,7 @@ def standup_send(token, channel_id, message):
     user_data = user_all_data[u_id]
     handlestr = user_data['handlestr']
     standup['message_queue'] += generate_standup_message(handlestr, message)
+    storage.save_channel_all()
     return {}
 
 # helper function, only used in standup.py so won't include in helper.py for cleanliness.
