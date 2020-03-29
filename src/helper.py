@@ -64,5 +64,35 @@ def convert_datetime_to_unix_timestamp(datetime_object):
     # don't bother understanding this code LOL. idek.
     return datetime_object.replace(tzinfo=timezone.utc).timestamp()
 
+# returns current time as a Unix timestamp.
+def get_current_time_as_unix_timestamp():
+    current_time_as_datetime = get_current_time_as_datetime()
+    current_time_as_unix_timestamp = convert_datetime_to_unix_timestamp(current_time_as_datetime)
+    return current_time_as_unix_timestamp
+
+'''
+message helper functions
+'''
+
+# finds and returns message dictionary corresponding to given message_id.
+def get_message_dictionary(message_id):
+    channels_all = storage.load_channel_all()
+    # find the message dictionary with message_id message_id.
+    for channel in channels_all:
+        messages = channel['messages']
+        for message in messages:
+            if message['message_id'] == message_id:
+                return message
+    return {}
+# finds and returns messages dictionary that contains the message with given message_id.
+def get_messages_list_containing_message(message_id):
+    channels_all = storage.load_channel_all()
+    # find the message dictionary with message_id message_id.
+    for channel in channels_all:
+        messages = channel['messages']
+        for message in messages:
+            if message['message_id'] == message_id:
+                return messages
+    return {}
 # make it 
     
