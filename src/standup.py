@@ -1,5 +1,5 @@
 import storage
-import message_functions as message
+import message_functions
 import helper
 import datetime
 import auth
@@ -32,7 +32,7 @@ def standup_start(token, channel_id, length):
     ### stop standup.
     standup['is_active'] = False
     ### send the standup['message_queue'] to the channel.
-    message.message_send(token, channel_id, standup['message_queue'])
+    message_functions.message_send(token, channel_id, standup['message_queue'])
     storage.save_channel_all(channel_all)
     return {
         'time_finish': time_finish,
