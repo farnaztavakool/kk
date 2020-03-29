@@ -134,6 +134,20 @@ def channel_detail():
 ''' 
 user routes
 '''
+APP.route('/user/profile',methods=['GET'])
+def user_profile():
+#     token = request.args.get('token')
+#     u_id = int(request.args.get('u_id'))
+    user =  
+    return dumps({ #move dictionary to user.py
+        'u_id':
+        'email':
+        'name_first':
+        'name_last':
+        'handle_str': 
+    })
+    
+
 # @APP.route('/user/profile/setname',methods=['PUT'])
 # def user_profile_setname():
 #     input_data = request.get_json()
