@@ -33,3 +33,12 @@ def channel_addowner(token,channel_id,u_id):
     #channel.add_owners(u_id, info['name_first'], info['name_last'], info['profile_img_url'])
 
 def channel_remove(token,channel_id,u_id):
+
+    # Error check that channel_id refers to a valid channel
+    check_channel(channel_id, data)
+
+    # Error check if the user is not an owner
+    channel_data = get_data()
+    data_user = auth.get_data()
+    if data_user[u_id] not in channel_data[channel_id]['owner']:
+        raise error.InputError
