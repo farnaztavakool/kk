@@ -75,8 +75,7 @@ message helper functions
 '''
 
 # finds and returns message dictionary corresponding to given message_id.
-def get_message_dictionary(message_id):
-    channels_all = storage.load_channel_all()
+def get_message_dictionary(message_id,channels_all):
     # find the message dictionary with message_id message_id.
     for channel in channels_all:
         messages = channel['messages']
@@ -85,8 +84,7 @@ def get_message_dictionary(message_id):
                 return message
     return {}
 # finds and returns messages dictionary that contains the message with given message_id.
-def get_messages_list_containing_message(message_id):
-    channels_all = storage.load_channel_all()
+def get_messages_list_containing_message(message_id,channels_all):
     # find the message dictionary with message_id message_id.
     for channel in channels_all:
         messages = channel['messages']

@@ -32,7 +32,7 @@ def standup_start(token, channel_id, length):
     ### stop standup.
     standup['is_active'] = False
     ### send the standup['message_queue'] to the channel.
-    message.message_send(token, channel_id, standup['message_queue'])
+    message_functions.message_send(token, channel_id, standup['message_queue'])
     storage.save_channel_all(channel_all)
     return {
         'time_finish': time_finish,
@@ -86,6 +86,7 @@ def standup_send(token, channel_id, message):
     user_data = user_all_data[u_id]
     handlestr = user_data['handlestr']
     standup['message_queue'] += generate_standup_message(handlestr, message)
+    storage.save_channel_all()
     return {}
 
 # helper function, only used in standup.py so won't include in helper.py for cleanliness.
