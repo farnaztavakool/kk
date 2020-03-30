@@ -61,7 +61,7 @@ def message_sendlater(token, channel_id, message, time_sent):
                             [message_data, channel_id])
     timer.start()
 
-    storage.add_message(message_data, channel_id)
+    # storage.add_message(message_data, channel_id)
     # channel['messages_list'].prepend(message_data)
     return {'message_id': message_id} 
 
