@@ -27,10 +27,10 @@ def channel_addowner(token,channel_id,u_id):
     # Error if the authorised user is not already a member of the channel
     channel_data = get_data()
     helper.check_channel(channel_id, channel_data)
-    helper.check_access(token,channel_data, channel_id)
+    helper.check_access(token, channel_data, channel_id)
 
     # Add to owner list
-    #channel.add_owners(u_id, info['name_first'], info['name_last'], info['profile_img_url'])
+    # channel.add_owners(u_id, info['name_first'], info['name_last'], info['profile_img_url'])
 
 def channel_remove(token,channel_id,u_id):
 
@@ -59,6 +59,8 @@ def channels_list(token):
         for member in channel_data[channel_id]['member']:
             if u_id == member['u_id']:
                 channel_list.append({'channel_id' : channel_id, \
-                                    'name' : channel.get_name()})
+                                    'name' :  channel_data[channel_id]['name'])
 
     return {'channels' : channel_list}
+
+
