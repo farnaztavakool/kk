@@ -137,35 +137,35 @@ user routes
 '''
 APP.route('/user/profile',methods=['GET'])
 def user_profile():
-    user_dict = get_user_profile(request.args.get('token'),
+    user_dict = user.user_profile(request.args.get('token'),
                 int(request.args.get('u_id')));
     return dumps(user_dict)
     
 
-# @APP.route('/user/profile/setname',methods=['PUT'])
-# def user_profile_setname():
-#     input_data = request.get_json()
-#     token = input_data['token']
-#     name_first = input_data['name_first']
-#     name_last = input_data['name_last']
-#     user.user_profile_setname(token, name_first, name_last)
-#     return ''
-    
-# @APP.route('/user/profile/setemail',methods=['PUT'])
-# def user_profile_setemail():
-#     input_data = request.get_json()
-#     token = input_data['token']
-#     email = input_data['email']
-#     user.user_profile_setemail(token, email)
-#     return ''
+@APP.route('/user/profile/setname',methods=['PUT'])
+def user_profile_setname():
+    token = request.form.get('token')
+    name_first = request.form.get('name_first')
+    name_last = request.form.get('name_last')
+    user_profile_setname(token, name_first, name_last)
+    return dumps({})
 
-# @APP.route('/user/profile/sethandle',methods = ["PUT"])
-# def user_profile_sethandle():
-#     input_data = request.get_json()
-#     token = input_data['token']
-#     handle_str = input_data['handle_str']
-#     user.user_profile_sethandle(token, handle_str)
-#     return ''
+    
+@APP.route('/user/profile/setemail',methods=['PUT'])
+def user_profile_setemail():
+    input_data = request.get_json()
+    token = input_data['token']
+    email = input_data['email']
+    user.user_profile_setemail(token, email)
+    return ''
+
+@APP.route('/user/profile/sethandle',methods = ["PUT"])
+def user_profile_sethandle():
+    input_data = request.get_json()
+    token = input_data['token']
+    handle_str = input_data['handle_str']
+    user.user_profile_sethandle(token, handle_str)
+    return ''
 '''
 server initialization
 '''
