@@ -14,38 +14,34 @@ def get_data():
 
 def channel_addowner(token,channel_id,u_id):
    "Make user with user id u_id an owner of this channel"
-
+    channel_id = str(channel_id)
+    channel_data = get_data()
     # Error check that channel_id refers to a valid channel
-    check_channel(channel_id, data)
+    helper.check_channel(channel_id, data)
 
     # Error check if the user is already an owner
-    channel_data = get_data()
     data_user = auth.get_data()
     if data_user[u_id] in channel_data[channel_id]['owner']:
         raise error.InputError
 
     # Error if the authorised user is not already a member of the channel
-    channel_data = get_data()
-    helper.check_channel(channel_id, channel_data)
     helper.check_access(token,channel_data, channel_id)
 
     # Add to owner list
     storage.add_owner(u_id, channel_id)
 
 def channel_removeowner(token,channel_id,u_id):
-
+    channel_id = str(channel_id)
+    channel_data = get_data()
     # Error check that channel_id refers to a valid channel
-    check_channel(channel_id, data)
+    helper.check_channel(channel_id, data)
 
     # Error check if the user is not an owner
-    channel_data = get_data()
     data_user = auth.get_data()
     if data_user[u_id] not in channel_data[channel_id]['owner']:
         raise error.InputError
 
     # Error if the authorised user is not already a member of the channel
-    channel_data = get_data()
-    helper.check_channel(channel_id, channel_data)
     helper.check_access(token,channel_data, channel_id)
 
     storage.remove_owner(u_id, channel_id)
@@ -73,7 +69,7 @@ def channels_listall(token):
     channel_list = []
 
     for channel_id in channel_data:
-        channel_list.append({'channel_id' : channel_id), 'name' : channel_data[channel_id]['name']})
+        channel_list.append({'channel_id' : channel_id, 'name' : channel_data[channel_id]['name']})
 
     return {'channels' : channel_list}
 
