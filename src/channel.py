@@ -30,4 +30,4 @@ def channel_addowner(token,channel_id,u_id):
     helper.check_access(token,channel_data, channel_id)
     
     # Add to owner list
-    # channel.add_owners(u_id, info['name_first'], info['name_last'], info['profile_img_url'])
+    storage.add_owner(u_id, channel_id)

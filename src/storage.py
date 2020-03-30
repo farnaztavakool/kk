@@ -120,3 +120,14 @@ def add_user(name_first,name_last,email,encrypted_password,token,u_id):
     user_all[u_id] = user_data
     save_user_all(user_all)
     return
+
+def add_owner(u_id, channel_id):
+    owner = {}
+    data = load_user_all()
+    owner['u_id'] = u_id
+    owner['name_first'] = data[u_id]['name_first']
+    owner['name_last'] = data[u_id]['name_last']
+    channel_all = load_channel_all()
+    channel_all[channel_id]['owner'].append(owner)
+    save_channel_all(channel_all)
+
