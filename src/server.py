@@ -9,6 +9,7 @@ import message_functions
 import channel_first
 import standup
 import reset
+from  check_data_server import *
 
 # 93858500 -->financial help
 
@@ -41,8 +42,8 @@ auth routes.
 '''
 @APP.route("/auth/register", methods=['POST'])
 def auth_register():
-    # all POST requests take input in json format.
     input_data = request.get_json()
+    register_data(input_data)
     email = input_data['email']
     password = input_data['password']
     name_first = input_data['name_first']
@@ -57,6 +58,7 @@ def auth_register():
 @APP.route('/auth/login',methods=['POST'])
 def auth_login():
     input_data = request.get_json()
+    login_data(input_data)
     email = input_data['email']
     password = input_data['password']
     returned_data = auth.auth_login(email,password)
@@ -68,9 +70,8 @@ def auth_login():
 @APP.route('/auth/logout',methods = ['POST'])
 def auth_logout():
     input_data = request.get_json()
+    logout_data(input_data)
     token = input_data['token']
-    
-    
     returned_data = auth.auth_logout(token)
     if returned_data == True:
         return dumps(True)
