@@ -9,6 +9,8 @@ import message_functions
 import channel_first
 import user
 import standup
+import reset
+from  check_data_server import *
 
 # 93858500 -->financial help
 
@@ -30,22 +32,19 @@ APP.config['TRAP_HTTP_EXCEPTIONS'] = True
 # APP.register_error_handler(Exception, defaultHandler)
 
 # Example
-@APP.route("/echo", methods=['GET'])
-def echo():
-    data = request.args.get('data')
-    if data == 'echo':
-   	    raise InputError(description='Cannot echo "echo"')
-    return dumps({
-        'data': data
-    })
+@APP.route("/workspace/reset",methods = ['POST'])
+def reset_workspace():
+    reset.reset()
+    return dumps({})
+
 
 '''
 auth routes.
 '''
 @APP.route("/auth/register", methods=['POST'])
 def auth_register():
-    # all POST requests take input in json format.
     input_data = request.get_json()
+    register_data(input_data)
     email = input_data['email']
     password = input_data['password']
     name_first = input_data['name_first']
@@ -60,6 +59,7 @@ def auth_register():
 @APP.route('/auth/login',methods=['POST'])
 def auth_login():
     input_data = request.get_json()
+    login_data(input_data)
     email = input_data['email']
     password = input_data['password']
     returned_data = auth.auth_login(email,password)
@@ -71,20 +71,14 @@ def auth_login():
 @APP.route('/auth/logout',methods = ['POST'])
 def auth_logout():
     input_data = request.get_json()
+    logout_data(input_data)
     token = input_data['token']
-    '''
-    # remember "is_success" in the spec is a boolean XD.
     returned_data = auth.auth_logout(token)
     if returned_data == True:
         return dumps(True)
     else:
         return dumps(False)
-    '''
-    return dumps(auth.auth_logout(token))
-    '''
-    if auth.auth_logout(token) == True: return "is_success"
-    return "is_failure"
-    '''
+    
 '''
 message routes.
 '''
@@ -229,6 +223,19 @@ def standup_send():
     channel_id = input_data['channel_id']
     message = input_data['message']
     returned_data = standup.standup_send(token, channel_id, message)
+    return dumps({})
+
+''' 
+admin routes
+'''
+
+@APP.route('/admin/userpermission/change',methods=['POST'])
+def admin_userpermission_change():
+    input_data = request.get_json()
+    token = input_data['token']
+    u_id = input_data['u_id']
+    permission_id = input_data['permission_id']
+    returned_data = admin.admin_userpermission_change(token,u_id,permission_id)
     return dumps({})
 if __name__ == "__main__":
     APP.run(debug = True,port=(int(sys.argv[1]) if len(sys.argv) == 2 else 8060))

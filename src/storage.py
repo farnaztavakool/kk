@@ -156,6 +156,15 @@ def add_channel(token, channel_id,name, is_public):
     channel['access'] = is_public
     channel['member'] = []
     channel['messages'] = []
+    # for use in standup.py
+    channel['standup'] = {
+        # if standup['is_active'] == False, 
+        # then 'length' and 'time_finish' should never be accessed.
+        'is_active': False, 
+        'length': 0,
+        'time_finish': 0,
+        'message_queue': '',
+    }
     channel_all[channel_id] = channel
     save_channel_all(channel_all)
 
@@ -163,3 +172,19 @@ def add_message(message_data,channel_id):
     data = load_channel_all()
     data[channel_id]['messages'].append(message_data)
     save_channel_all(data)
+
+def add_owner(u_id, channel_id):
+    owner = {}
+    data = load_user_all()
+    owner['u_id'] = u_id
+    owner['name_first'] = data[u_id]['name_first']
+    owner['name_last'] = data[u_id]['name_last']
+    channel_all = load_channel_all()
+    channel_all[channel_id]['owner'].append(owner)
+    save_channel_all(channel_all)
+
+def remove_owner(u_id, channel_id):
+    channel_all = load_channel_all()
+    delete = [i for i in channel_all[channel_id]['owner'] if i['u_id'] == u_id]
+    channel_all[channel_id]['owner'].remove(delete[0])
+    save_channel_all(channel_all)
