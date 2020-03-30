@@ -35,9 +35,15 @@ def message_sendlater(token, channel_id, message, time_sent):
 
     data = storage.load_channel_all()
     user_data = auth.get_data()
+    helper.check_access(u_id,data,channel_id)
     u_id = helper.get_id(token, user_data)
 
     message_id = helper.channel_id()
+    
+    # Channel ID is not a valid channel
+    if not helper.valid_channel_id(channel_id, data):
+        raise InputError('Channel id is not a valid channel')
+
     # helper.check_access(u_id,data, channel_id)
     if len(message) > 1000:
         raise InputError("Message should be under 1000 characters.")
@@ -46,7 +52,6 @@ def message_sendlater(token, channel_id, message, time_sent):
     if time_sent < current_time:
         raise InputError('The time entered is a time in the past')
 
-    helper.check_access(u_id,data,channel_id)
 
     message_data = {
         'message_id': message_id,
@@ -65,4 +70,4 @@ def message_sendlater(token, channel_id, message, time_sent):
     # channel['messages_list'].prepend(message_data)
     return {'message_id': message_id} 
 
-# def message_react(token, message_id, react_id):
+def message_react(token, message_id, react_id):
