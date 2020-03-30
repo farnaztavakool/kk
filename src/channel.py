@@ -57,10 +57,10 @@ def channels_list(token):
 
     channel_list = []
 
-    for channel in channel_data.values():
-        for member in channel.get_members():
+    for channel_id in channel_data:
+        for member in channel_data[channel_id]['member']:
             if u_id == member['u_id']:
-                channel_list.append({'channel_id' : channel.get_channel_id(), \
+                channel_list.append({'channel_id' : channel_id, \
                                     'name' : channel.get_name()})
 
     return {'channels' : channel_list}
@@ -71,7 +71,7 @@ def channels_listall(token):
     channel_data = get_data()
     channel_list = []
 
-    for channel in channel_data.values():
-        channel_list.append({'channel_id' : channel.get_channel_id(), 'name' : channel.get_name()})
+    for channel_id in channel_data:
+        channel_list.append({'channel_id' : channel_id, 'name' : channel.get_name()})
 
     return {'channels' : channel_list}
