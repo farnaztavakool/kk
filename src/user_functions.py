@@ -46,8 +46,19 @@ def user_profile_sethandle(token, handle_str):
     user_all[u_id]['handle'] = handle_str
     storage.save_user_all(user_all)
 
-
-
+def users_all(token):
+    user_all = storage.load_user_all()
+    users = []
+    for user in user_all:
+        user_data = {
+            'u_id': user['u_id'],
+            'email': user['email'],
+            'name_first': user['name_first'],
+            'name_last': user['name_last'],
+            'handle_str': user['handle'],
+        }
+        users.append(user_data)
+    return users
             
         
     
