@@ -1,6 +1,9 @@
 import re
 import error
 from random import randint
+import datetime
+import auth 
+
 def check_email(email):
     regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
     if re.search(regex,email): return True
@@ -38,6 +41,9 @@ def check_channel_name(name):
 
 def check_public_channel(data,channel_id):
     if data[channel_id]['access'] == False: raise error.AccessError
+# usage: 
+# user_all_data = auth.get_data()
+# u_id = helper.get_id(token,user_all_data)
 def get_id(token,data):
     x = [i for i in data if data[i]['token'] == token]
     return x[0]
@@ -48,11 +54,91 @@ def u_id():
 def channel_id():
     return randint(0,500)
 
+def get_u_id_from_token(token):
+    user_all = storage.load_user_all()
+    for u_id in user_all[u_id]:
+        if token = user_all[u_id]['token']:
+            return u_id
+
+'''
+time helper functions.
+'''
+# returns current time as a python **datetime** object (note: NOT a Unix timestamp).
+def get_current_time_as_datetime():
+    return datetime.datetime.now()
+
+# converts given python datetime object to a Unix timestamp.
+def convert_datetime_to_unix_timestamp(datetime_object):
+    # don't bother understanding this code LOL. idek.
+    return datetime_object.replace(tzinfo=timezone.utc).timestamp()
+
+# returns current time as a Unix timestamp.
+def get_current_time_as_unix_timestamp():
+    current_time_as_datetime = get_current_time_as_datetime()
+    current_time_as_unix_timestamp = convert_datetime_to_unix_timestamp(current_time_as_datetime)
+    return current_time_as_unix_timestamp
+
+'''
+message helper functions
+'''
+
+# finds and returns message dictionary corresponding to given message_id.
+def get_message_dictionary(message_id,channels_all):
+    # find the message dictionary with message_id message_id.
+    for channel in channels_all:
+        messages = channel['messages']
+        for message in messages:
+            if message['message_id'] == message_id:
+                return message
+    return {}
+# finds and returns messages dictionary that contains the message with given message_id.
+def get_messages_list_containing_message(message_id,channels_all):
+    # find the message dictionary with message_id message_id.
+    for channel in channels_all:
+        messages = channel['messages']
+        for message in messages:
+            if message['message_id'] == message_id:
+                return messages
+    return {}
+
 # make it 
     
 def valid_channel_id(channel_id, data):
-
     for channel_ids in data:
         if channel_id == channel_ids:
             return True
     return False
+
+
+def check_valid_id(react_id):
+    return react_id == 1
+
+# def find_user(token):
+#     user_data = auth.get_data()
+#     for user in user_data:
+#         if token == user_data[user]['token']:
+#             return user
+
+# def is_message_in_channel(channel, message_id):
+#     channel_data = get_data()
+#     for message in channel_data['messages']:
+#         if message_id == message['message_id']:
+#             return True
+#     return False
+
+# def is_user_member(u_id, channel):
+#     '''Determines if the user is a member of the channel'''
+#     for member in channel['all_members']:
+#         if u_id == member['u_id']:
+#             return True
+#     return False
+
+# def is_message_in_user_channel(token, message_id):
+#     '''Tests if message is inside user's channels'''
+#     user = find_user_struct(token)
+#     data = get_data()
+#     for channel in data['channels_']:
+#         if is_user_member(user['u_id'], channel) and \
+#             is_message_in_channel(channel, message_id):
+#             return True
+#     return False    

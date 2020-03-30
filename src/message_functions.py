@@ -70,4 +70,9 @@ def message_sendlater(token, channel_id, message, time_sent):
     # channel['messages_list'].prepend(message_data)
     return {'message_id': message_id} 
 
-def message_react(token, message_id, react_id):
+# def message_react(token, message_id, react_id):
+
+#     if not helper.check_valid_id(react_id):
+#         raise InputError('react_id is not a valid React ID')
+    
+s
