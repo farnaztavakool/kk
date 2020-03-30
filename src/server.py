@@ -7,7 +7,10 @@ import auth
 
 import message_functions
 import channel_first
+import user
 import standup
+import reset
+from  check_data_server import *
 
 # 93858500 -->financial help
 
@@ -29,22 +32,19 @@ APP.config['TRAP_HTTP_EXCEPTIONS'] = True
 # APP.register_error_handler(Exception, defaultHandler)
 
 # Example
-@APP.route("/echo", methods=['GET'])
-def echo():
-    data = request.args.get('data')
-    if data == 'echo':
-   	    raise InputError(description='Cannot echo "echo"')
-    return dumps({
-        'data': data
-    })
+@APP.route("/workspace/reset",methods = ['POST'])
+def reset_workspace():
+    reset.reset()
+    return dumps({})
+
 
 '''
 auth routes.
 '''
 @APP.route("/auth/register", methods=['POST'])
 def auth_register():
-    # all POST requests take input in json format.
     input_data = request.get_json()
+    register_data(input_data)
     email = input_data['email']
     password = input_data['password']
     name_first = input_data['name_first']
@@ -59,6 +59,7 @@ def auth_register():
 @APP.route('/auth/login',methods=['POST'])
 def auth_login():
     input_data = request.get_json()
+    login_data(input_data)
     email = input_data['email']
     password = input_data['password']
     returned_data = auth.auth_login(email,password)
@@ -70,20 +71,14 @@ def auth_login():
 @APP.route('/auth/logout',methods = ['POST'])
 def auth_logout():
     input_data = request.get_json()
+    logout_data(input_data)
     token = input_data['token']
-    '''
-    # remember "is_success" in the spec is a boolean XD.
     returned_data = auth.auth_logout(token)
     if returned_data == True:
         return dumps(True)
     else:
         return dumps(False)
-    '''
-    return dumps(auth.auth_logout(token))
-    '''
-    if auth.auth_logout(token) == True: return "is_success"
-    return "is_failure"
-    '''
+    
 '''
 message routes.
 '''
@@ -134,30 +129,37 @@ def channel_detail():
 ''' 
 user routes
 '''
-# @APP.route('/user/profile/setname',methods=['PUT'])
-# def user_profile_setname():
-#     input_data = request.get_json()
-#     token = input_data['token']
-#     name_first = input_data['name_first']
-#     name_last = input_data['name_last']
-#     user.user_profile_setname(token, name_first, name_last)
-#     return ''
+APP.route('/user/profile',methods=['GET'])
+def user_profile():
+    user_dict = user.user_profile(request.args.get('token'),
+                int(request.args.get('u_id')));
+    return dumps(user_dict)
     
-# @APP.route('/user/profile/setemail',methods=['PUT'])
-# def user_profile_setemail():
-#     input_data = request.get_json()
-#     token = input_data['token']
-#     email = input_data['email']
-#     user.user_profile_setemail(token, email)
-#     return ''
 
-# @APP.route('/user/profile/sethandle',methods = ["PUT"])
-# def user_profile_sethandle():
-#     input_data = request.get_json()
-#     token = input_data['token']
-#     handle_str = input_data['handle_str']
-#     user.user_profile_sethandle(token, handle_str)
-#     return ''
+@APP.route('/user/profile/setname',methods=['PUT'])
+def user_profile_setname():
+    token = request.form.get('token')
+    name_first = request.form.get('name_first')
+    name_last = request.form.get('name_last')
+    user_profile_setname(token, name_first, name_last)
+    return dumps({})
+
+    
+@APP.route('/user/profile/setemail',methods=['PUT'])
+def user_profile_setemail():
+    input_data = request.get_json()
+    token = input_data['token']
+    email = input_data['email']
+    user.user_profile_setemail(token, email)
+    return ''
+
+@APP.route('/user/profile/sethandle',methods = ["PUT"])
+def user_profile_sethandle():
+    input_data = request.get_json()
+    token = input_data['token']
+    handle_str = input_data['handle_str']
+    user.user_profile_sethandle(token, handle_str)
+    return ''
 '''
 server initialization
 '''
@@ -221,6 +223,19 @@ def standup_send():
     channel_id = input_data['channel_id']
     message = input_data['message']
     returned_data = standup.standup_send(token, channel_id, message)
+    return dumps({})
+
+''' 
+admin routes
+'''
+
+@APP.route('/admin/userpermission/change',methods=['POST'])
+def admin_userpermission_change():
+    input_data = request.get_json()
+    token = input_data['token']
+    u_id = input_data['u_id']
+    permission_id = input_data['permission_id']
+    returned_data = admin.admin_userpermission_change(token,u_id,permission_id)
     return dumps({})
 if __name__ == "__main__":
     APP.run(debug = True,port=(int(sys.argv[1]) if len(sys.argv) == 2 else 8060))

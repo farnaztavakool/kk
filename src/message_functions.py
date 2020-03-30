@@ -17,14 +17,14 @@ def message_send(token,channel_id,message):
     # helper.check_access(u_id,data, channel_id)
     if len(message) > 1000:
         raise InputError("Message should be under 1000 characters.")
-  
-
+    time_created = helper.get_current_time_as_unix_timestamp()
     message_data = {
         'message_id': message_id,
-        'u_id':u_id,
-        'reacts': False,
+        'u_id': u_id,
+        'reacts': {},
         'is_pinned': False,
         'message_text': message,
+        'time_created': time_created,
     }
     
     storage.add_message(message_data, channel_id)
