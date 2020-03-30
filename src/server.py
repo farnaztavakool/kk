@@ -7,6 +7,7 @@ import auth
 
 import message_functions
 import channel_first
+import user
 import standup
 
 # 93858500 -->financial help
@@ -136,16 +137,9 @@ user routes
 '''
 APP.route('/user/profile',methods=['GET'])
 def user_profile():
-#     token = request.args.get('token')
-#     u_id = int(request.args.get('u_id'))
-    user =  
-    return dumps({ #move dictionary to user.py
-        'u_id':
-        'email':
-        'name_first':
-        'name_last':
-        'handle_str': 
-    })
+    user_dict = get_user_profile(request.args.get('token'),
+                int(request.args.get('u_id')));
+    return dumps(user_dict)
     
 
 # @APP.route('/user/profile/setname',methods=['PUT'])
