@@ -64,3 +64,5 @@ def message_sendlater(token, channel_id, message, time_sent):
     storage.add_message(message_data, channel_id)
     # channel['messages_list'].prepend(message_data)
     return {'message_id': message_id} 
+
+# def message_react(token, message_id, react_id):
