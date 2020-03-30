@@ -8,11 +8,11 @@ def user_profile(token, u_id):
     user_all = storage.load_user_all()
     # I think this function is correct
     user = {
-        'u_id': u_id
-        'email': user_all[u_id]['email']
-        'name_first': user_all[u_id]['name_first']
-        'name_last': user_all[u_id]['name_last']
-        'handle_str': user_all[u_id]['token']
+        'u_id': u_id,
+        'email': user_all[u_id]['email'],
+        'name_first': user_all[u_id]['name_first'],
+        'name_last': user_all[u_id]['name_last'],
+        'handle_str': user_all[u_id]['token'],
     }
     return (user)
     
@@ -38,7 +38,7 @@ def user_profile_sethandle(token, handle_str):
         raise error.InputError
     # InputError if handle is taken by another user
     for u_id in user_all[u_id]:
-        if handle_str = user_all[u_id]['handle']:
+        if handle_str == user_all[u_id]['handle']:
             raise error.InputError
             
     user_all = storage.load_user_all()

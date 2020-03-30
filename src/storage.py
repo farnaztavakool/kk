@@ -31,7 +31,8 @@ def new_storage():
     channel_all = {}
     user_active = {}
     save_user_active(user_active)
-    save_user_all(user_all)    save_channel_all(channel_all)
+    save_user_all(user_all)    
+    save_channel_all(channel_all)
 
 '''
 database of all registered users.
