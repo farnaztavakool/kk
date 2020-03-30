@@ -17,6 +17,7 @@ def user_profile(token, u_id):
     return (user)
     
 def user_profile_setname(token, name_first, name_last): 
+    helper.check_name(name_first, name_last)
     user_all = storage.load_user_all()
     u_id = get_u_id_from_token(token)
     user_all[u_id]['name_first'] = name_first
@@ -24,7 +25,8 @@ def user_profile_setname(token, name_first, name_last):
     storage.save_user_all(user_all)
 
 def user_profile_setemail(token, email): 
-
+    helper.check_email(email)
+    helper.check_email_exist(email)
     user_all = storage.load_user_all()
     u_id = get_u_id_from_token(token)
     user_all[u_id]['email'] = name_first
