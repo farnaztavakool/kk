@@ -1,7 +1,7 @@
 import sys
 from json import dumps
 from flask import Flask, request
-from flask_cors import CORS
+# from flask_cors import CORS
 from error import InputError
 import auth
 
@@ -23,7 +23,7 @@ import standup
 #     return response
 
 APP = Flask(__name__)
-CORS(APP)
+# CORS(APP)
 
 APP.config['TRAP_HTTP_EXCEPTIONS'] = True
 # APP.register_error_handler(Exception, defaultHandler)
