@@ -31,8 +31,7 @@ def new_storage():
     channel_all = {}
     user_active = {}
     save_user_active(user_active)
-    save_user_all(user_all)
-    save_channel_all(channel_all)
+    save_user_all(user_all)    save_channel_all(channel_all)
 
 '''
 database of all registered users.
@@ -118,7 +117,7 @@ def add_user(name_first, name_last, email, encrypted_password, token, u_id):
     user_data['encrypted_password'] = encrypted_password
     user_data['token'] = token
     user_data['u_id'] = u_id
-    # user_data['handle'] = handle
+    user_data['handle'] = handle_str
     # user_data['permission_id'] = permission_id
     # recall that each u_id is unique.
     user_all[u_id] = user_data
