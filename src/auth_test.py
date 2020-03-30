@@ -1,9 +1,9 @@
 import json
 import urllib
-import flask # needed for urllib parse
 import pytest
 import requests
 import storage
+import helper
 # from login_test import *
 # from tests/Integration_Tests import *
 BASE_URL = "http://127.0.0.1:8060"
@@ -21,8 +21,11 @@ def register_user():
         'email':'tavakolfarnaz@gmail.com',
         'password':'0312138'
     }
-    requests.post(url = f"{BASE_URL}/auth/register",json = data).raise_for_status()
-    return data
+    data_register = json.loads(requests.post(url = f"{BASE_URL}/auth/register",json = data).content)
+    return {
+        "data":data,
+        "data_register":data_register
+    }
 def test_empty_arguments():
 
     data = {
@@ -38,7 +41,7 @@ def test_empty_arguments():
 # checks the server send the correct data to the functions
 def test_check_argumetns():
     reset()
-    data = register_user()
+    data = register_user()['data']
     data_send = storage.load_user_all()
     name_first = list(data_send.values())[0]['name_first']
     name_last = list(data_send.values())[0]['name_last']
@@ -58,7 +61,7 @@ def test_empty_login():
 # loging in with correct data
 def test_login_success():
     reset()
-    data1 = register_user()
+    data1 = register_user()['data']
     email = data1['email']
     password = data1['password'] 
     data = {
@@ -78,7 +81,7 @@ def test_logout_arguments():
 # loggin out an active member 
 def test_logout_sucess():
     reset()
-    data1 = register_user()
+    data1 = register_user()['data']
     email = data1['email']
     password = data1['password'] 
     

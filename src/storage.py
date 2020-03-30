@@ -17,7 +17,7 @@ def auth_register(email,password,name_first,name_last):
 '''
 
 import json
-
+import helper
 ################################################################################
 # FUNCTIONS FOR CREATING, SAVING, AND LOADING DATABASES.
 ################################################################################
@@ -130,8 +130,8 @@ def add_member(u_id, channel_id):
     member = {}
     data = load_user_all()
     member['u_id'] = u_id
-    member['name_first'] = data[u_id]['name_first']
-    member['name_last'] = data[u_id]['name_last']
+    member['name_first'] = data[str(u_id)]['name_first']
+    member['name_last'] = data[str(u_id)]['name_last']
     channel_all = load_channel_all()
     channel_all[channel_id]['member'].append(member)
     save_channel_all(channel_all)
@@ -146,10 +146,10 @@ def add_channel(token, channel_id,name, is_public):
     channel = {}
     owner = {}
     data = load_user_all()
-    u_id = [i for i in data if data[i]['token'] == token]
-    owner['u_id'] = u_id[0]
-    owner['name_first'] = data[u_id[0]]['name_first']
-    owner['name_last'] = data[u_id[0]]['name_last']
+    u_id = helper.get_id(token,data)
+    owner['u_id'] = u_id
+    owner['name_first'] = data[str(u_id)]['name_first']
+    owner['name_last'] = data[str(u_id)]['name_last']
     channel_all = load_channel_all()
     channel['owner'] = []
     channel['owner'].append(owner)
@@ -161,6 +161,7 @@ def add_channel(token, channel_id,name, is_public):
     save_channel_all(channel_all)
 
 def add_message(message_data,channel_id):
+    channel_id = str(channel_id)
     data = load_channel_all()
     data[channel_id]['messages'].append(message_data)
     save_channel_all(data)
