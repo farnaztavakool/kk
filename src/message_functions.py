@@ -48,7 +48,8 @@ def message_sendlater(token, channel_id, message, time_sent):
     if len(message) > 1000:
         raise InputError("Message should be under 1000 characters.")
 
-    current_time = get_timestamp()
+    now = datetime.now()
+    current_time = datetime.timestamp(now)
     if time_sent < current_time:
         raise InputError('The time entered is a time in the past')
 
@@ -70,4 +71,13 @@ def message_sendlater(token, channel_id, message, time_sent):
     # channel['messages_list'].prepend(message_data)
     return {'message_id': message_id} 
 
-def message_react(token, message_id, react_id):
+# def message_react(token, message_id, react_id):
+#     channels_all = storage.load_channel_all()
+#     message = helper.get_message_dictionary(message_id,channels_all)
+#     if message['reacts'] == True:
+#         raise InputError()
+#     message['reacts'] = True
+#     storage.save_channel_all(channels_all)
+#     return {}
+
+
