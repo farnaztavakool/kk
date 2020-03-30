@@ -101,3 +101,8 @@ def get_messages_list_containing_message(message_id,channels_all):
 
 # make it 
     
+def valid_channel_id(channel_id, data):
+    for channel_ids in data:
+        if channel_id == channel_ids:
+            return True
+    return False

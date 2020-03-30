@@ -188,3 +188,5 @@ def remove_owner(u_id, channel_id):
     delete = [i for i in channel_all[channel_id]['owner'] if i['u_id'] == u_id]
     channel_all[channel_id]['owner'].remove(delete[0])
     save_channel_all(channel_all)
+
+
