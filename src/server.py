@@ -7,7 +7,7 @@ import auth
 
 import message_functions
 import channel_first
-import user
+import user_functions
 import standup
 import reset
 from  check_data_server import *
