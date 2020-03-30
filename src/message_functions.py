@@ -101,7 +101,7 @@ def message_sendlater(token, channel_id, message, time_sent):
         'message_text': message,
     }
     
-    time = time_sent - get_timestamp()
+    time = time_sent - current_time
     timer = threading.Timer(interval, storage.add_message(message_data, channel_id), \
                             [message_data, channel_id])
     timer.start()
