@@ -50,3 +50,9 @@ def channel_id():
 
 # make it 
     
+def valid_channel_id(channel_id, data):
+
+    for channel_ids in data:
+        if channel_id == channel_ids:
+            return True
+    return False
