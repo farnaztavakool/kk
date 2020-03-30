@@ -164,3 +164,21 @@ def add_message(message_data,channel_id):
     data = load_channel_all()
     data[channel_id]['messages'].append(message_data)
     save_channel_all(data)
+
+def add_owner(u_id, channel_id):
+    owner = {}
+    data = load_user_all()
+    owner['u_id'] = u_id
+    owner['name_first'] = data[u_id]['name_first']
+    owner['name_last'] = data[u_id]['name_last']
+    channel_all = load_channel_all()
+    channel_all[channel_id]['owner'].append(owner)
+    save_channel_all(channel_all)
+
+def remove_owner(u_id, channel_id):
+    channel_all = load_channel_all()
+    delete = [i for i in channel_all[channel_id]['owner'] if i['u_id'] == u_id]
+    channel_all[channel_id]['owner'].remove(delete[0])
+    save_channel_all(channel_all)
+
+
