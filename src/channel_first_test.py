@@ -167,4 +167,4 @@ def test_channel_message():
     assert message['messages'][0]['message_id'] == m1['message_id']
     assert message['messages'][1]['message_id'] == m2['message_id']
 
-test_channel_message()
+# test_channel_message()
