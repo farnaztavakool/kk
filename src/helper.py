@@ -57,7 +57,7 @@ def channel_id():
 def get_u_id_from_token(token):
     user_all = storage.load_user_all()
     for u_id in user_all[u_id]:
-        if token = user_all[u_id]['token']:
+        if token == user_all[u_id]['token']:
             return u_id
 
 '''
@@ -70,7 +70,7 @@ def get_current_time_as_datetime():
 # converts given python datetime object to a Unix timestamp.
 def convert_datetime_to_unix_timestamp(datetime_object):
     # don't bother understanding this code LOL. idek.
-    return datetime_object.replace(tzinfo=timezone.utc).timestamp()
+    return datetime_object.replace(tzinfo=datetime.timezone.utc).timestamp()
 
 # returns current time as a Unix timestamp.
 def get_current_time_as_unix_timestamp():
