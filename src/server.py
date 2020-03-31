@@ -93,6 +93,15 @@ def message_send():
         'message_id': returned_data['message_id'],
     })
 
+@APP.route('/message/react',methods=['POST'])
+def message_react():
+    input_data = request.get_json()
+    token = input_data['token']
+    message_id = input_data['message_id']
+    react_id = input_data['react_id']
+    returned_data = message_functions.message_react(token, message_id, react_id)
+    return dumps({})
+
 
 '''
 channel routes
@@ -102,27 +111,30 @@ channel routes
 #token channle_id user_id
 def channel_invite():
     input_data = request.get_json()
+    channel_invite_data(input_data)
     token = input_data['token']
     channle_id = input_data['channel_id']
     u_id = input_data['u_id']
     channel_first.channel_invite(token, channle_id, u_id)
-    return "right"
+    return dumps({})
 @APP.route('/channel/create',methods=['POST'])
 def channel_create():
     input_data = request.get_json()
+    channel_create_data(input_data)
     token = input_data['token'] 
     name = input_data['name']
     is_public = input_data['is_public']
     returndata =  channel_first.channel_create(token,name,is_public)
-    return returndata
+    return str(returndata)
 @APP.route('/channel/detail',methods = ["GET"])
 def channel_detail():
     token = request.args.get('token')
     channel_id = request.args.get('channel_id')
     returndata = channel_first.channel_detail(token,channel_id)
     return dumps({
-        'owner': returndata['owner'],
-        'number_of_members': returndata['members']
+        "name": returndata['name'],
+        'owner_members': returndata['owner'],
+        'all_members': returndata['members']
     })
 
 

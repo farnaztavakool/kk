@@ -2,6 +2,8 @@ import re
 import error
 from random import randint
 import datetime
+import auth 
+
 def check_email(email):
     regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
     if re.search(regex,email): return True
@@ -30,6 +32,7 @@ def check_user(u_id,data):
     raise error.InputError
 
 def check_access(u_id, data, channel_id):
+    channel_id = str(channel_id)
     if any([i for i in data[channel_id]['member'] if i['u_id'] == u_id]): return True
     if any([i for i in data[channel_id]['owner'] if i['u_id'] == u_id]): return True
     raise error.AccessError
@@ -44,7 +47,7 @@ def check_public_channel(data,channel_id):
 # u_id = helper.get_id(token,user_all_data)
 def get_id(token,data):
     x = [i for i in data if data[i]['token'] == token]
-    return x[0]
+    return int(x[0])
 
 def u_id():
     return randint(0,500)
@@ -68,7 +71,7 @@ def get_current_time_as_datetime():
 # converts given python datetime object to a Unix timestamp.
 def convert_datetime_to_unix_timestamp(datetime_object):
     # don't bother understanding this code LOL. idek.
-    return datetime_object.replace(tzinfo=timezone.utc).timestamp()
+    return datetime_object.replace(tzinfo=datetime.timezone.utc).timestamp()
 
 # returns current time as a Unix timestamp.
 def get_current_time_as_unix_timestamp():
@@ -106,3 +109,14 @@ def valid_channel_id(channel_id, data):
         if channel_id == channel_ids:
             return True
     return False
+
+
+def check_valid_id(react_id):
+    return react_id == 1
+
+def react_struct(react_id):
+    return {
+        'react_id': react_id,
+        'u_ids': [],
+        'is_reacted': True,
+    }
