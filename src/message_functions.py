@@ -3,8 +3,16 @@ import helper
 from error import InputError, AccessError
 from datetime import datetime
 import auth 
+import threading
 # creating the database
 
+def get_data():
+    try:
+        data = storage.load_channel_all()
+    except Exception:
+        storage.new_storage()
+        data = storage.load_channel_all()
+    return data
 
 
 def message_send(token,channel_id,message):
@@ -21,7 +29,7 @@ def message_send(token,channel_id,message):
     message_data = {
         'message_id': message_id,
         'u_id': u_id,
-        'reacts': {},
+        'reacts': [],
         'is_pinned': False,
         'message_text': message,
         'time_created': time_created,
@@ -74,6 +82,7 @@ def message_sendlater(token, channel_id, message, time_sent):
 
     data = storage.load_channel_all()
     user_data = auth.get_data()
+    u_id = helper.get_id(token,user_data)
     helper.check_access(u_id,data,channel_id)
     u_id = helper.get_id(token, user_data)
 
@@ -102,12 +111,45 @@ def message_sendlater(token, channel_id, message, time_sent):
     }
     
     time = time_sent - current_time
-    timer = threading.Timer(interval, storage.add_message(message_data, channel_id), \
+    timer = threading.Timer(time, storage.add_message(message_data, channel_id), \
                             [message_data, channel_id])
     timer.start()
 
 
     return {'message_id': message_id} 
+
+def message_react(token, message_id, react_id):
+
+    if not helper.check_valid_id(react_id):
+        raise InputError('react_id is not a valid React ID')
+
+    user_data = auth.get_data()
+    u_id = helper.get_id(token, user_data)
+    channel_data = get_data()
+    react = helper.react_struct(react_id,u_id)
+    for channel_id in channel_data:
+        for message in channel_data[channel_id]['messages']:
+            if message_id == message['message_id']:
+                storage.add_react(channel_id, message_id,react)
+      
+    return {}
+
+def message_unreact(token, message_id, react_id):
+    if not helper.check_valid_id(react_id):
+        raise InputError('react_id is not a valid React ID')
+
+    user_data = auth.get_data()
+    u_id = helper.get_id(token, user_data)
+    channel_data = get_data()
+    react = helper.react_struct(react_id,u_id)
+    for channel_id in channel_data:
+        for message in channel_data[channel_id]['messages']:
+            if message_id == message['message_id']:
+                storage.remove_react(channel_id, message_id,react)
+      
+    return {}
+
+
 
 
 

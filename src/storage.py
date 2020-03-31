@@ -191,4 +191,27 @@ def remove_owner(u_id, channel_id):
     channel_all[channel_id]['owner'].remove(delete[0])
     save_channel_all(channel_all)
 
+def add_react(channel_id,message_id,react):
+    u_id = react['u_ids'][0]
+    channel_id = str(channel_id)
+    channel_all = load_channel_all()
+    message = channel_all[channel_id]['messages']
+    for i in message:
+        if i['message_id'] == message_id:
+            if not i['reacts']:
+               i['reacts'].append(react) 
+            else:
+                i['reacts'][0]['u_ids'].append(u_id)
+    save_channel_all(channel_all)
 
+def remove_react(channel_id,message_id,react):
+    u_id = react['u_ids'][0]
+    channel_id = str(channel_id)
+    channel_all = load_channel_all()
+    message = channel_all[channel_id]['messages']
+    for i in message:
+        if i['message_id'] == message_id:
+                delete = [j for j in i['reacts'][0]['u_ids'] if j['u_id'] == u_id]
+                i['reacts'][0]['u_ids'].remove(delete[0])
+    save_channel_all(channel_all)
+   
