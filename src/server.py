@@ -6,6 +6,7 @@ from error import InputError
 import auth
 
 import message_functions
+import channel
 import channel_first
 import standup
 
