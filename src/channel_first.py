@@ -16,6 +16,9 @@ import helper
 import storage
 import auth
 import error
+import datetime
+ 
+
 def get_data():
     try:
         data = storage.load_channel_all()
@@ -24,13 +27,14 @@ def get_data():
         data = storage.load_channel_all()
     return data
 
-def get_channel_id(name):
-    return name
+def get_channel_id():
+    return helper.channel_id()
 
 def channel_invite(token,channel_id,u_id):
+    u_id = str(u_id)
+    channel_id = str(channel_id)
     data_channel = get_data()
     data_user = auth.get_data()
-    print(data_channel)
     helper.check_channel(channel_id,data_channel)
     helper.check_user(u_id,data_user)
     if data_user[u_id] not in data_channel[channel_id]['member']:
@@ -40,19 +44,25 @@ def channel_invite(token,channel_id,u_id):
 
 def channel_create(token,name,is_public):
     helper.check_channel_name(name)
-    storage.add_channel(token, get_channel_id(name), name,is_public)
-    return get_channel_id(name)
+    channel_id = get_channel_id()
+    storage.add_channel(token, channel_id, name,is_public)
+
+    return channel_id
 
 def channel_detail(token, channel_id):
     channel_data = get_data()
+    data = storage.load_user_all()
     helper.check_channel(channel_id, channel_data)
-    helper.check_access(token,channel_data, channel_id)
+    u_id = helper.get_id(token,data)
+    helper.check_access(u_id,channel_data, channel_id)
     return {
+        "name":channel_data[channel_id]['name'],
         "owner":channel_data[channel_id]['owner'],
-        "members":len(channel_data[channel_id]['member'])
+        "members": channel_data[channel_id]['member']
     }
 
 def channel_leave(token,channel_id):
+    channel_id = str(channel_id)
     channel_data = get_data()
     user_data = auth.get_data()
     u_id = helper.get_id(token,user_data)
@@ -61,6 +71,7 @@ def channel_leave(token,channel_id):
     storage.remove_member(u_id,channel_id)
 
 def channel_join(token, channel_id):
+    channel_id = str(channel_id)
     channel_data = get_data()
     user_data = auth.get_data()
     # if channel_data[channel_id]['access'] == "False" : print("yeet")
@@ -69,6 +80,7 @@ def channel_join(token, channel_id):
     u_id = helper.get_id(token,user_data)
     storage.add_member(u_id,channel_id)
 def channel_message(token,channel_id,start):
+    channel_id = str(channel_id)
     user_data = auth.get_data()
     u_id = helper.get_id(token, user_data)
     channel_data = get_data()
@@ -86,3 +98,4 @@ def channel_message(token,channel_id,start):
         'start': start,
         'end': end
     }
+

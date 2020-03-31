@@ -131,3 +131,6 @@ dmypy.json
 user_all.json
 user_active.json
 channel_all.json
+/src/user_all.json
+/src/user_active.json
+/src/channel_all.json
