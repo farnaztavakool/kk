@@ -113,32 +113,9 @@ def valid_channel_id(channel_id, data):
 def check_valid_id(react_id):
     return react_id == 1
 
-# def find_user(token):
-#     user_data = auth.get_data()
-#     for user in user_data:
-#         if token == user_data[user]['token']:
-#             return user
-
-# def is_message_in_channel(channel, message_id):
-#     channel_data = get_data()
-#     for message in channel_data['messages']:
-#         if message_id == message['message_id']:
-#             return True
-#     return False
-
-# def is_user_member(u_id, channel):
-#     '''Determines if the user is a member of the channel'''
-#     for member in channel['all_members']:
-#         if u_id == member['u_id']:
-#             return True
-#     return False
-
-# def is_message_in_user_channel(token, message_id):
-#     '''Tests if message is inside user's channels'''
-#     user = find_user_struct(token)
-#     data = get_data()
-#     for channel in data['channels_']:
-#         if is_user_member(user['u_id'], channel) and \
-#             is_message_in_channel(channel, message_id):
-#             return True
-#     return False    
+def react_struct(react_id):
+    return {
+        'react_id': react_id,
+        'u_ids': [],
+        'is_reacted': True,
+    }

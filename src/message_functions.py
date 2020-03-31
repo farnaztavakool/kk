@@ -90,7 +90,7 @@ def message_react(token, message_id, react_id):
             if message_id == message['message_id']:
                 # If empty, append new react struct, append user_id
                 if not message['reacts']:
-                    message['reacts'].append(create_react_struct(react_id))
+                    message['reacts'].append(helper.react_struct(react_id))
                     message['reacts'][0]['u_ids'].append(user_id)
                     update_data(data)
                     break
@@ -98,7 +98,7 @@ def message_react(token, message_id, react_id):
                 for react in message['reacts']:
                     if react_id == react['react_id']:
                         react['u_ids'].append(user_id)
-                        react['reacts'] = True
+                        react['is_reacted'] = True
                         update_data(data)
                         break
       
