@@ -32,6 +32,7 @@ def check_user(u_id,data):
     raise error.InputError
 
 def check_access(u_id, data, channel_id):
+    channel_id = str(channel_id)
     if any([i for i in data[channel_id]['member'] if i['u_id'] == u_id]): return True
     if any([i for i in data[channel_id]['owner'] if i['u_id'] == u_id]): return True
     raise error.AccessError
@@ -46,7 +47,7 @@ def check_public_channel(data,channel_id):
 # u_id = helper.get_id(token,user_all_data)
 def get_id(token,data):
     x = [i for i in data if data[i]['token'] == token]
-    return x[0]
+    return int(x[0])
 
 def u_id():
     return randint(0,500)

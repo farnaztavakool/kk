@@ -17,7 +17,7 @@ def auth_register(email,password,name_first,name_last):
 '''
 
 import json
-
+import helper
 ################################################################################
 # FUNCTIONS FOR CREATING, SAVING, AND LOADING DATABASES.
 ################################################################################
@@ -31,7 +31,7 @@ def new_storage():
     channel_all = {}
     user_active = {}
     save_user_active(user_active)
-    save_user_all(user_all)
+    save_user_all(user_all)    
     save_channel_all(channel_all)
 
 '''
@@ -108,7 +108,7 @@ def save_channel_all(channel_all):
 functions for interacting with user_all
 '''
 # adds user to database given email, password, name_first, name_last.
-def add_user(name_first, name_last, email, encrypted_password, token, u_id):
+def add_user(name_first, name_last, email, encrypted_password, token, u_id, handle_str):
     user_all = load_user_all()
     # generate a user dictionary unique to the given user.
     user_data = {}
@@ -118,7 +118,7 @@ def add_user(name_first, name_last, email, encrypted_password, token, u_id):
     user_data['encrypted_password'] = encrypted_password
     user_data['token'] = token
     user_data['u_id'] = u_id
-    # user_data['handle'] = handle
+    user_data['handle'] = handle_str
     # user_data['permission_id'] = permission_id
     # recall that each u_id is unique.
     user_all[u_id] = user_data
@@ -130,8 +130,8 @@ def add_member(u_id, channel_id):
     member = {}
     data = load_user_all()
     member['u_id'] = u_id
-    member['name_first'] = data[u_id]['name_first']
-    member['name_last'] = data[u_id]['name_last']
+    member['name_first'] = data[str(u_id)]['name_first']
+    member['name_last'] = data[str(u_id)]['name_last']
     channel_all = load_channel_all()
     channel_all[channel_id]['member'].append(member)
     save_channel_all(channel_all)
@@ -146,10 +146,10 @@ def add_channel(token, channel_id,name, is_public):
     channel = {}
     owner = {}
     data = load_user_all()
-    u_id = [i for i in data if data[i]['token'] == token]
-    owner['u_id'] = u_id[0]
-    owner['name_first'] = data[u_id[0]]['name_first']
-    owner['name_last'] = data[u_id[0]]['name_last']
+    u_id = helper.get_id(token,data)
+    owner['u_id'] = u_id
+    owner['name_first'] = data[str(u_id)]['name_first']
+    owner['name_last'] = data[str(u_id)]['name_last']
     channel_all = load_channel_all()
     channel['owner'] = []
     channel['owner'].append(owner)
@@ -157,10 +157,38 @@ def add_channel(token, channel_id,name, is_public):
     channel['access'] = is_public
     channel['member'] = []
     channel['messages'] = []
+    # for use in standup.py
+    channel['standup'] = {
+        # if standup['is_active'] == False, 
+        # then 'length' and 'time_finish' should never be accessed.
+        'is_active': False, 
+        'length': 0,
+        'time_finish': 0,
+        'message_queue': '',
+    }
     channel_all[channel_id] = channel
     save_channel_all(channel_all)
 
 def add_message(message_data,channel_id):
+    channel_id = str(channel_id)
     data = load_channel_all()
     data[channel_id]['messages'].append(message_data)
     save_channel_all(data)
+
+def add_owner(u_id, channel_id):
+    owner = {}
+    data = load_user_all()
+    owner['u_id'] = u_id
+    owner['name_first'] = data[u_id]['name_first']
+    owner['name_last'] = data[u_id]['name_last']
+    channel_all = load_channel_all()
+    channel_all[channel_id]['owner'].append(owner)
+    save_channel_all(channel_all)
+
+def remove_owner(u_id, channel_id):
+    channel_all = load_channel_all()
+    delete = [i for i in channel_all[channel_id]['owner'] if i['u_id'] == u_id]
+    channel_all[channel_id]['owner'].remove(delete[0])
+    save_channel_all(channel_all)
+
+
