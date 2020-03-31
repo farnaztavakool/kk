@@ -98,6 +98,18 @@ def message_send():
         'message_id': returned_data['message_id'],
     })
 
+@APP.route('/message/sendlater',methods=['POST'])
+def message_sendlater()
+    input_data = request.get_json()
+    token = input_data['token']
+    channel_id = input_data['channel_id']
+    message = input_data['message']
+    time_sent = input_data['time_sent']
+    returned_data = message_functions.message_sendlater(token, channel_id, message, time_sent)
+    return dumps({
+        'message_id': returned_data['message_id'],
+    })
+
 @APP.route('/message/react',methods=['POST'])
 def message_react():
     input_data = request.get_json()
@@ -121,6 +133,7 @@ def channel_invite():
     u_id = input_data['u_id']
     channel_first.channel_invite(token, channle_id, u_id)
     return "right"
+
 @APP.route('/channel/create',methods=['POST'])
 def channel_create():
     input_data = request.get_json()
@@ -129,6 +142,7 @@ def channel_create():
     is_public = input_data['is_public']
     returndata =  channel_first.channel_create(token,name,is_public)
     return returndata
+
 @APP.route('/channel/detail',methods = ["GET"])
 def channel_detail():
     token = request.args.get('token')
@@ -137,6 +151,40 @@ def channel_detail():
     return dumps({
         'owner': returndata['owner'],
         'number_of_members': returndata['members']
+    })
+
+@APP.route('/channel/addowner',methods = ["POST"])
+def channel_addowner():
+    input_data = request.get_json()
+    token = input_data['token']
+    channle_id = input_data['channel_id']
+    u_id = input_data['u_id']
+    returndata = channel.channel_addowner(token,channel_id,u_id)
+    return dumps({})
+
+@APP.route('/channel/removeowner',methods = ["POST"])
+def channel_removeowner():
+    input_data = request.get_json()
+    token = input_data['token']
+    channle_id = input_data['channel_id']
+    u_id = input_data['u_id']
+    returndata = channel.channel_removeowner(token,channel_id,u_id)
+    return dumps({})
+
+@APP.route('/channels/list',methods = ["GET"])
+def channels_list():
+    token = request.args.get('token')
+    returndata = channel.channels_list(token)
+    return dumps({
+        'channels': returndata['channels'],
+    })
+
+@APP.route('/channels/listall',methods = ["GET"])
+def channels_listall():
+    token = request.args.get('token')
+    returndata = channel.channels_list(token)
+    return dumps({
+        'channels': returndata['channels'],
     })
 
 
