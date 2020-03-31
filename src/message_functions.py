@@ -3,6 +3,7 @@ import helper
 from error import InputError, AccessError
 from datetime import datetime
 import auth 
+import threading
 # creating the database
 
 def get_data():
@@ -28,7 +29,7 @@ def message_send(token,channel_id,message):
     message_data = {
         'message_id': message_id,
         'u_id': u_id,
-        'reacts': {},
+        'reacts': [],
         'is_pinned': False,
         'message_text': message,
         'time_created': time_created,
@@ -81,6 +82,7 @@ def message_sendlater(token, channel_id, message, time_sent):
 
     data = storage.load_channel_all()
     user_data = auth.get_data()
+    u_id = helper.get_id(token,user_data)
     helper.check_access(u_id,data,channel_id)
     u_id = helper.get_id(token, user_data)
 
@@ -109,7 +111,7 @@ def message_sendlater(token, channel_id, message, time_sent):
     }
     
     time = time_sent - current_time
-    timer = threading.Timer(interval, storage.add_message(message_data, channel_id), \
+    timer = threading.Timer(time, storage.add_message(message_data, channel_id), \
                             [message_data, channel_id])
     timer.start()
 
@@ -124,22 +126,23 @@ def message_react(token, message_id, react_id):
     user_data = auth.get_data()
     u_id = helper.get_id(token, user_data)
     channel_data = get_data()
+    react = helper.react_struct(react_id,u_id)
     for channel_id in channel_data:
-        for message in channel_data[channel_id]['message']:
+        for message in channel_data[channel_id]['messages']:
             if message_id == message['message_id']:
-                # If there is no react
-                if not message['reacts']:
-                    message['reacts'].append(helper.react_struct(react_id))
-                    message['reacts'][0]['u_ids'].append(u_id)
-                    update_data(data)
-                    break
-                # if not, append user_id and make is_reacted == True
-                for react in message['reacts']:
-                    if react_id == react['react_id']:
-                        react['u_ids'].append(u_id)
-                        react['is_reacted'] = True
-                        update_data(data)
-                        break
+
+                # If empty, append new react struct, append user_id
+
+                # if not message['reacts']:
+                storage.add_react(channel_id, message_id,react)
+                    # break
+                # Else, append user_id and make is_this_user_reacted == True
+                # for react in message['reacts']:
+                #     if react_id == react['react_id']:
+                #         react['u_ids'].append(u_id)
+                #         storage.save_channel_all(channel_data)
+
+ 
       
     return {}
 

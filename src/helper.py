@@ -114,9 +114,11 @@ def valid_channel_id(channel_id, data):
 def check_valid_id(react_id):
     return react_id == 1
 
-def react_struct(react_id):
+def react_struct(react_id, u_id):
+    react_id = [react_id]
+    u_id = [u_id]
     return {
         'react_id': react_id,
-        'u_ids': [],
+        'u_ids': u_id,
         'is_reacted': True,
     }
