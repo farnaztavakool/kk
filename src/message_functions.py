@@ -5,6 +5,13 @@ from datetime import datetime
 import auth 
 # creating the database
 
+def get_data():
+    try:
+        data = storage.load_channel_all()
+    except Exception:
+        storage.new_storage()
+        data = storage.load_channel_all()
+    return data
 
 
 def message_send(token,channel_id,message):
@@ -70,9 +77,37 @@ def message_sendlater(token, channel_id, message, time_sent):
     # channel['messages_list'].prepend(message_data)
     return {'message_id': message_id} 
 
-# def message_react(token, message_id, react_id):
+def message_react(token, message_id, react_id):
 
-#     if not helper.check_valid_id(react_id):
-#         raise InputError('react_id is not a valid React ID')
-    
-s
+    if not helper.check_valid_id(react_id):
+        raise InputError('react_id is not a valid React ID')
+
+    user_data = auth.get_data()
+    u_id = helper.get_id(token, user_data)
+    channel_data = get_data()
+    for channel_id in channel_data:
+        for message in channel_data[channel_id]['message']:
+            if message_id == message['message_id']:
+                # If empty, append new react struct, append user_id
+                if not message['reacts']:
+                    message['reacts'].append(create_react_struct(react_id))
+                    message['reacts'][0]['u_ids'].append(user_id)
+                    update_data(data)
+                    break
+                # Else, append user_id and make is_this_user_reacted == True
+                for react in message['reacts']:
+                    if react_id == react['react_id']:
+                        react['u_ids'].append(user_id)
+                        react['reacts'] = True
+                        update_data(data)
+                        break
+      
+    return {}
+
+# def message_unreact()
+
+
+
+
+
+
