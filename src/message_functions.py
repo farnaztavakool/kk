@@ -130,7 +130,7 @@ def message_react(token, message_id, react_id):
     for channel_id in channel_data:
         for message in channel_data[channel_id]['messages']:
             if message_id == message['message_id']:
-<<<<<<< HEAD
+
                 # If empty, append new react struct, append user_id
 
                 # if not message['reacts']:
