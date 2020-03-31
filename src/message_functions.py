@@ -127,16 +127,16 @@ def message_react(token, message_id, react_id):
     for channel_id in channel_data:
         for message in channel_data[channel_id]['message']:
             if message_id == message['message_id']:
-                # If empty, append new react struct, append user_id
+                # If there is no react
                 if not message['reacts']:
                     message['reacts'].append(helper.react_struct(react_id))
-                    message['reacts'][0]['u_ids'].append(user_id)
+                    message['reacts'][0]['u_ids'].append(u_id)
                     update_data(data)
                     break
-                # Else, append user_id and make is_this_user_reacted == True
+                # if not, append user_id and make is_reacted == True
                 for react in message['reacts']:
                     if react_id == react['react_id']:
-                        react['u_ids'].append(user_id)
+                        react['u_ids'].append(u_id)
                         react['is_reacted'] = True
                         update_data(data)
                         break
