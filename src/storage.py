@@ -194,7 +194,7 @@ def remove_owner(u_id, channel_id):
 
 
 def add_react(channel_id,message_id,react):
-    u_id = react['u_ids']
+    u_id = react['u_ids'][0]
     channel_id = str(channel_id)
     channel_all = load_channel_all()
     message = channel_all[channel_id]['messages']
@@ -203,7 +203,7 @@ def add_react(channel_id,message_id,react):
             if not i['reacts']:
                i['reacts'].append(react) 
             else:
-                i['reacts']['react_id'].append(u_id)
+                i['reacts'][0]['u_ids'].append(u_id)
             
                 
 
