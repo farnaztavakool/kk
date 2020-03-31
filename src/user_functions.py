@@ -6,7 +6,7 @@ import helper
 # database in storage.py, and returns data as a dictionary
 def user_profile(token, u_id):
     user_all = storage.load_user_all()
-    # I think this function is correct
+    check_user(u_id, user_all)
     user = {
         'u_id': u_id,
         'email': user_all[u_id]['email'],

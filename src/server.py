@@ -7,7 +7,7 @@ import auth
 
 import message_functions
 import channel_first
-import user_functions
+import user_functions as user
 import standup
 import reset
 from  check_data_server import *
@@ -150,19 +150,25 @@ def user_profile_setname():
     
 @APP.route('/user/profile/setemail',methods=['PUT'])
 def user_profile_setemail():
-    input_data = request.get_json()
-    token = input_data['token']
-    email = input_data['email']
+    token = request.form.get('token')
+    email = request.form.get('email')
     user.user_profile_setemail(token, email)
-    return ''
+    return dumps({})
 
 @APP.route('/user/profile/sethandle',methods = ["PUT"])
 def user_profile_sethandle():
-    input_data = request.get_json()
-    token = input_data['token']
-    handle_str = input_data['handle_str']
+    token = request.form.get('token')
+    handle_str = request.form.get('handle_str')
     user.user_profile_sethandle(token, handle_str)
-    return ''
+    return dumps({})
+    
+@APP.route('/users/all', methods=['GET'])
+def users_all():
+    token = request.form.get('token')
+    all_users = user.users_all(token)
+    return dumps(all_users)
+
+
 '''
 server initialization
 '''
