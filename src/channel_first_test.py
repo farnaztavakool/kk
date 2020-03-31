@@ -10,21 +10,21 @@ from  auth_test import *
 BASE_URL = "http://127.0.0.1:8060"
 def create_channel():
     data1 = register_user()['data_register']
-    # print(data1)
+    print(data1['token'])
     data = {
         'token': data1['token'],
         'name' : "channel1",
-        'is_public':True
+        'is_public': True
     }
-    channel_id = json.loads(requests.post(url = f"{BASE_URL}/channel/create",json = data).content)
+    channel_id = json.loads(requests.post(url = f"{BASE_URL}/channel/create",json = data).content)['channel_id']
     return {
         'channel_id':channel_id,
         'owner_data': data1,
         "channel_property": data
     }
-def test_create_channel():
+# def test_create_channel():
     reset()
-    assert create_channel()
+
 
 def test_empty_arguments_invite():
     reset()
@@ -167,4 +167,3 @@ def test_channel_message():
     assert message['messages'][0]['message_id'] == m1['message_id']
     assert message['messages'][1]['message_id'] == m2['message_id']
 
-# test_channel_message()
