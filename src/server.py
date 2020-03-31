@@ -93,6 +93,15 @@ def message_send():
         'message_id': returned_data['message_id'],
     })
 
+@APP.route('/message/react',methods=['POST'])
+def message_react():
+    input_data = request.get_json()
+    token = input_data['token']
+    message_id = input_data['message_id']
+    react_id = input_data['react_id']
+    returned_data = message_functions.message_react(token, message_id, react_id)
+    return dumps({})
+
 
 '''
 channel routes

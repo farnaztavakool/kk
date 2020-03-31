@@ -2,6 +2,7 @@ import re
 import error
 from random import randint
 import datetime
+import auth 
 
 def check_email(email):
     regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
@@ -108,3 +109,14 @@ def valid_channel_id(channel_id, data):
         if channel_id == channel_ids:
             return True
     return False
+
+
+def check_valid_id(react_id):
+    return react_id == 1
+
+def react_struct(react_id):
+    return {
+        'react_id': react_id,
+        'u_ids': [],
+        'is_reacted': True,
+    }
