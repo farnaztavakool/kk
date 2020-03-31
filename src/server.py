@@ -99,7 +99,7 @@ def message_send():
     })
 
 @APP.route('/message/sendlater',methods=['POST'])
-def message_sendlater()
+def message_sendlater():
     input_data = request.get_json()
     token = input_data['token']
     channel_id = input_data['channel_id']
