@@ -130,24 +130,24 @@ def message_react(token, message_id, react_id):
     for channel_id in channel_data:
         for message in channel_data[channel_id]['messages']:
             if message_id == message['message_id']:
-
-                # If empty, append new react struct, append user_id
-
-                # if not message['reacts']:
                 storage.add_react(channel_id, message_id,react)
-                    # break
-                # Else, append user_id and make is_this_user_reacted == True
-                # for react in message['reacts']:
-                #     if react_id == react['react_id']:
-                #         react['u_ids'].append(u_id)
-                #         storage.save_channel_all(channel_data)
-
- 
       
     return {}
 
-# def message_unreact()
+def message_unreact(token, message_id, react_id):
+    if not helper.check_valid_id(react_id):
+        raise InputError('react_id is not a valid React ID')
 
+    user_data = auth.get_data()
+    u_id = helper.get_id(token, user_data)
+    channel_data = get_data()
+    react = helper.react_struct(react_id,u_id)
+    for channel_id in channel_data:
+        for message in channel_data[channel_id]['messages']:
+            if message_id == message['message_id']:
+                storage.remove_react(channel_id, message_id,react)
+      
+    return {}
 
 
 
