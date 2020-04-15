@@ -6,8 +6,9 @@ import helper
 # database in storage.py, and returns data as a dictionary
 def user_profile(token, u_id):
     user_all = storage.load_user_all()
-    # email = 
-    # I think this function is correct
+
+    helper.check_user(u_id, user_all)
+
     user = {
         'u_id': u_id,
         'email': user_all[str(u_id)]['email'],
@@ -26,15 +27,17 @@ def user_profile_setname(token, name_first, name_last):
     storage.save_user_all(user_all)
 
 def user_profile_setemail(token, email): 
+    data = storage.load_user_all()
     helper.check_email(email)
-    helper.check_email_exist(email)
+    helper.check_email_exist(email,data)
     user_all = storage.load_user_all()
     u_id = helper.get_u_id_from_token(token)
-    user_all[u_id]['email'] = name_first
+    user_all[u_id]['email'] = email
     storage.save_user_all(user_all)
 
 def user_profile_sethandle(token, handle_str): 
     # InputError if length of handle_str invalid
+    user_all = storage.load_user_all()
     if len(handle_str) < 2 or len(handle_str) > 20:
         raise error.InputError
     # InputError if handle is taken by another user
