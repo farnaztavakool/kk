@@ -2,12 +2,13 @@ import storage
 import error
 import helper
 
+
 # gets data of a single user identified by u_id from user_all 
 # database in storage.py, and returns data as a dictionary
 def user_profile(token, u_id):
     user_all = storage.load_user_all()
 
-    helper.check_user(u_id, user_all)
+    # helper.check_user(u_id, user_all)
 
     user = {
         'u_id': u_id,
@@ -21,18 +22,19 @@ def user_profile(token, u_id):
 def user_profile_setname(token, name_first, name_last): 
     helper.check_name(name_first, name_last)
     user_all = storage.load_user_all()
-    u_id = helper.get_u_id_from_token(token)
-    user_all[u_id]['name_first'] = name_first
-    user_all[u_id]['name_last'] = name_last
+    u_id = helper.get_id(token,user_all)
+    user_all[str(u_id)]['name_first'] = name_first
+    user_all[str(u_id)]['name_last'] = name_last
     storage.save_user_all(user_all)
 
 def user_profile_setemail(token, email): 
     data = storage.load_user_all()
+    
     helper.check_email(email)
     helper.check_email_exist(email,data)
     user_all = storage.load_user_all()
-    u_id = helper.get_u_id_from_token(token)
-    user_all[u_id]['email'] = email
+    u_id = helper.get_id(token,data)
+    user_all[str(u_id)]['email'] = email
     storage.save_user_all(user_all)
 
 def user_profile_sethandle(token, handle_str): 
@@ -41,12 +43,13 @@ def user_profile_sethandle(token, handle_str):
     if len(handle_str) < 2 or len(handle_str) > 20:
         raise error.InputError
     # InputError if handle is taken by another user
-    for u_id in user_all[u_id]:
-        if handle_str == user_all[u_id]['handle']:
+    u_id = str(helper.get_id(token,user_all))
+    for user in user_all:
+        if handle_str == user_all[user]['handle']:
             raise error.InputError
             
     user_all = storage.load_user_all()
-    u_id = helper.get_u_id_from_token(token)
+   
     user_all[u_id]['handle'] = handle_str
     storage.save_user_all(user_all)
 

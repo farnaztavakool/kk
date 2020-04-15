@@ -166,24 +166,30 @@ def user_profile():
 
 @APP.route('/user/profile/setname',methods=['PUT'])
 def user_profile_setname():
-    token = request.form.get('token')
-    name_first = request.form.get('name_first')
-    name_last = request.form.get('name_last')
+    data = request.get_json()
+    token = data['token']
+    name_first =  data['name_first']
+    name_last =  data['name_last']
     user.user_profile_setname(token, name_first, name_last)
+    
     return dumps({})
 
     
 @APP.route('/user/profile/setemail',methods=['PUT'])
 def user_profile_setemail():
-    token = request.form.get('token')
-    email = request.form.get('email')
+    data = request.get_json()
+    token = data['token']
+    email = str(data['email'])
+    print(email)
+    # return "hey"
     user.user_profile_setemail(token, email)
     return dumps({})
 
 @APP.route('/user/profile/sethandle',methods = ["PUT"])
 def user_profile_sethandle():
-    token = request.form.get('token')
-    handle_str = request.form.get('handle_str')
+    data = request.get_json()
+    token = data['token']
+    handle_str = data['handle_str']
     user.user_profile_sethandle(token, handle_str)
 
     return ''
@@ -271,4 +277,4 @@ def admin_userpermission_change():
     returned_data = admin.admin_userpermission_change(token,u_id,permission_id)
     return dumps({})
 if __name__ == "__main__":
-    APP.run(debug = True,port=(int(sys.argv[1]) if len(sys.argv) == 2 else 8060))
+    APP.run(debug = True,port=(int(sys.argv[1]) if len(sys.argv) == 2 else 8050))
