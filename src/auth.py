@@ -47,9 +47,10 @@ def auth_register(email, password, name_first, name_last):
 def auth_login(email, password):
     helper.check_email(email)
     data = get_data()
-   
+    
     
     user = [i for i in data if data[i]['email'] == email]
+    print(user)
     if user:
         password = encrypt_pass(password)
         if data[user[0]]['encrypted_password'] == password:

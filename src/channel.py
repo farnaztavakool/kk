@@ -64,6 +64,8 @@ def channels_listall(token):
     "Provide a list of all channels (and their associated details)"
 
     channel_data = get_data()
+    # return channel_data
+    # print(channel_data)
     channel_list = []
 
     for channel_id in channel_data:

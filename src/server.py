@@ -1,14 +1,13 @@
 import sys
 from json import dumps
 from flask import Flask, request
-# from flask_cors import CORS
+from flask_cors import CORS
 from error import InputError
 import auth
-
 import message_functions
 import channel
 import channel_first
-import user_functions
+import user_functions as user
 import standup
 import reset
 from  check_data_server import *
@@ -28,9 +27,9 @@ from  check_data_server import *
 #     return response
 
 APP = Flask(__name__)
-# CORS(APP)
+CORS(APP)
 
-APP.config['TRAP_HTTP_EXCEPTIONS'] = True
+# APP.config['TRAP_HTTP_EXCEPTIONS'] = True
 # APP.register_error_handler(Exception, defaultHandler)
 
 # Example
@@ -119,7 +118,7 @@ def channel_invite():
     u_id = input_data['u_id']
     channel_first.channel_invite(token, channle_id, u_id)
     return dumps({})
-@APP.route('/channel/create',methods=['POST'])
+@APP.route('/channels/create',methods=['POST'])
 def channel_create():
     input_data = request.get_json()
     channel_create_data(input_data)
@@ -128,7 +127,7 @@ def channel_create():
     is_public = input_data['is_public']
     returndata =  channel_first.channel_create(token,name,is_public)
     return dumps({'channel_id':returndata})
-@APP.route('/channel/detail',methods = ["GET"])
+@APP.route('/channel/details',methods = ["GET"])
 def channel_detail():
     token = request.args.get('token')
     channel_id = request.args.get('channel_id')
@@ -139,14 +138,28 @@ def channel_detail():
         'all_members': returndata['members']
     })
 
+@APP.route('/channels/list',methods = ["GET"])
+def channels_list():
+    token = request.args.get('token')
+    returndata = channel.channels_list(token)
+    return dumps({
+        'channels': returndata['channels'],
+    })
 
+@APP.route('/channels/listall',methods = ["GET"])
+def channels_listall():
+    token = request.args.get('token')
+    returndata = channel.channels_listall(token)
+    # print(returndata)
+    return dumps({
+        'channels': returndata['channels'],
+    })
 ''' 
 user routes
 '''
-APP.route('/user/profile',methods=['GET'])
+@APP.route('/user/profile',methods=['GET'])
 def user_profile():
-    user_dict = user.user_profile(request.args.get('token'),
-                int(request.args.get('u_id')));
+    user_dict = user.user_profile(request.args.get('token'),int(request.args.get('u_id')))
     return dumps(user_dict)
     
 
@@ -155,7 +168,7 @@ def user_profile_setname():
     token = request.form.get('token')
     name_first = request.form.get('name_first')
     name_last = request.form.get('name_last')
-    user_profile_setname(token, name_first, name_last)
+    user.user_profile_setname(token, name_first, name_last)
     return dumps({})
 
     
@@ -174,11 +187,17 @@ def user_profile_sethandle():
     handle_str = input_data['handle_str']
     user.user_profile_sethandle(token, handle_str)
     return ''
+@APP.route('/users/all', methods=['GET'])
+def users_all():
+    token = request.form.get('token')
+    all_users = user.users_all(token)
+    return dumps(all_users)
+
 '''
 server initialization
 '''
 
-@APP.route('/channel/message',methods = ['GET'])
+@APP.route('/channel/messages',methods = ['GET'])
 def channel_message():
     token = request.args.get('token')
     channel_id = request.args.get('channel_id')
@@ -221,9 +240,9 @@ def standup_start():
 
 @APP.route('/standup/active',methods = ["GET"])
 def standup_active():
-    input_data = request.get_json()
-    token = input_data['token']
-    channel_id = input_data['channel_id']
+    token = request.args.get('token')
+    # token = input_data['token']
+    channel_id =request.args.get('channel_id')
     returned_data = standup.standup_active(token, channel_id)
     return dumps({
         'is_active': returned_data['is_active'],

@@ -6,15 +6,16 @@ import helper
 # database in storage.py, and returns data as a dictionary
 def user_profile(token, u_id):
     user_all = storage.load_user_all()
+    # email = 
     # I think this function is correct
     user = {
         'u_id': u_id,
-        'email': user_all[u_id]['email'],
-        'name_first': user_all[u_id]['name_first'],
-        'name_last': user_all[u_id]['name_last'],
-        'handle_str': user_all[u_id]['token'],
+        'email': user_all[str(u_id)]['email'],
+        'name_first': user_all[str(u_id)]['name_first'],
+        'name_last': user_all[str(u_id)]['name_last'],
+        'handle_str': user_all[str(u_id)]['token'],
     }
-    return (user)
+    return user
     
 def user_profile_setname(token, name_first, name_last): 
     helper.check_name(name_first, name_last)
@@ -48,16 +49,16 @@ def user_profile_sethandle(token, handle_str):
 
 def users_all(token):
     user_all = storage.load_user_all()
-    users = []
+    users = {"users":[]}
     for user in user_all:
         user_data = {
-            'u_id': user['u_id'],
-            'email': user['email'],
-            'name_first': user['name_first'],
-            'name_last': user['name_last'],
-            'handle_str': user['handle'],
+            'u_id': user_all[user]['u_id'],
+            'email': user_all[user]['email'],
+            'name_first': user_all[user]['name_first'],
+            'name_last': user_all[user]['name_last'],
+            'handle_str': user_all[user]['handle'],
         }
-        users.append(user_data)
+        users["users"].append(user_data)
     return users
             
         
