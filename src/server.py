@@ -191,8 +191,19 @@ def user_profile_sethandle():
     token = data['token']
     handle_str = data['handle_str']
     user.user_profile_sethandle(token, handle_str)
-
     return ''
+    
+@APP.route('/user/profiles/uploadphoto', methods=['POST'])
+def user_profiles_uploadphoto_fn():
+    token = request.form.get('token')
+    img_url = request.form.get('img_url')
+    x_start = request.form.get('x_start')
+    y_start = request.form.get('y_start')
+    x_end = request.form.get('x_end')
+    y_end = request.form.get('y_end')
+    user.user_profiles_uploadphoto(token, img_url, x_start, y_start, x_end, y_end)
+    return ''
+
 @APP.route('/users/all', methods=['GET'])
 def users_all():
     token = request.form.get('token')
