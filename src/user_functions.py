@@ -8,6 +8,7 @@ import string
 from PIL import Image
 import os
 
+# why is git so weird. 
 # gets data of a single user identified by u_id from user_all 
 # database in storage.py, and returns data as a dictionary
 def user_profile(token, u_id):
