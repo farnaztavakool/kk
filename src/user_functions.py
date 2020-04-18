@@ -1,8 +1,15 @@
 import storage
 import error
 import helper
+import requests
+import shutil
+import random
+import string
+from PIL import Image
+import os
 
 
+# why is git so weird. 
 # gets data of a single user identified by u_id from user_all 
 # database in storage.py, and returns data as a dictionary
 def user_profile(token, u_id):
@@ -16,6 +23,7 @@ def user_profile(token, u_id):
         'name_first': user_all[str(u_id)]['name_first'],
         'name_last': user_all[str(u_id)]['name_last'],
         'handle_str': user_all[str(u_id)]['token'],
+        'profile_img_url': user_all[str(u_id)]['profile_img_url'],
     }
     return user
     
@@ -63,6 +71,7 @@ def users_all(token):
             'name_first': user_all[user]['name_first'],
             'name_last': user_all[user]['name_last'],
             'handle_str': user_all[user]['handle'],
+            'profile_img_url': user_all[user]['profile_img_url'],
         }
         users["users"].append(user_data)
     return users
@@ -141,5 +150,7 @@ def user_profiles_uploadphoto(token, img_url, x_start, y_start, x_end, y_end):
                 member['profile_img_url'] = profile_img_url
     storage.save_channel_all(channel_all)
     return {}
-    
+def get_random_alphaNumeric_string(stringLength):
+    lettersAndDigits = string.ascii_letters + string.digits
+    return ''.join((random.choice(lettersAndDigits) for i in range(stringLength)))
 
