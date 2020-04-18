@@ -145,6 +145,7 @@ def user_profiles_uploadphoto(token, img_url, x_start, y_start, x_end, y_end):
         for member in member_list:
             if member['u_id'] == u_id:
                 member['profile_img_url'] = profile_img_url
+    storage.save_channel_all(channel_all)
     return {}
     
 def get_random_alphaNumeric_string(stringLength):
