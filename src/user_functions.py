@@ -5,7 +5,7 @@ import requests
 import shutil
 import random
 import string
-import PIL
+from PIL import Image
 import os
 
 # gets data of a single user identified by u_id from user_all 
@@ -79,11 +79,11 @@ def user_profiles_uploadphoto(token, img_url, x_start, y_start, x_end, y_end):
     # get file from img_url.
     response = requests.get(img_url, stream=True)
     if response.status_code != 200:
-        raise error.InputError()
+        raise error.InputError("Not 200 code!")
     # make a new file with filename: image12characters.jpg.
     filename = f'{get_random_alphaNumeric_string(12)}.jpg'
     # stored in filepath: /pictures.
-    filepath = f'/pictures/{filename}'
+    filepath = f'/Users/uni/Documents/Uni/20T1/Comp1531/Assignments/iteration_1/W17A-17/src/static/pictures/{filename}'
     with open(filepath, 'wb') as OUT_FILE:
         # copy data into file without checking its type.
         shutil.copyfileobj(response.raw, OUT_FILE)
@@ -91,7 +91,7 @@ def user_profiles_uploadphoto(token, img_url, x_start, y_start, x_end, y_end):
 
     # check file is a jpg.
     try:
-        with PIL.Image.open(filepath) as IMAGE_FILE:
+        with Image.open(filepath) as IMAGE_FILE:
             if IMAGE_FILE.format != 'JPEG':
                 # remove the file we created.
                 os.remove(filepath)
@@ -101,9 +101,13 @@ def user_profiles_uploadphoto(token, img_url, x_start, y_start, x_end, y_end):
         os.remove(filepath)
         raise InputError("PIL failed to open the file. Likely file isn't a valid image.")
 
+    x_start = int(x_start)
+    x_end = int(x_end)
+    y_start = int(y_start)
+    y_end = int(y_end)
     # we now know filepath *is* a jpg image.
     # check the dimensions of the image.
-    with PIL.Image.open(filepath) as IMAGE_FILE:
+    with Image.open(filepath) as IMAGE_FILE:
         # IMAGE_FILE.size returns tuple (width, height) of IMAGE_FILE.
         width, height = IMAGE_FILE.size
         if ((x_end - x_start) >= width) or ((y_end - y_start) >= height):
@@ -112,19 +116,19 @@ def user_profiles_uploadphoto(token, img_url, x_start, y_start, x_end, y_end):
             raise InputError("You gave the wrong dimensions for cropping dummy.")
 
     # crop image.
-    with PIL.Image.open(filepath) as IMAGE_FILE:
+    with Image.open(filepath) as IMAGE_FILE:
         box = (x_start,y_start,x_end,y_end)
         CROPPED_IMAGE_FILE = IMAGE_FILE.crop(box)
         # save cropped image into a new file.
         new_filename = 'cropped' + filename
-        new_filepath = f'/pictures/{new_filename}'
+        new_filepath = f'/Users/uni/Documents/Uni/20T1/Comp1531/Assignments/iteration_1/W17A-17/src/static/pictures/{new_filename}'
         CROPPED_IMAGE_FILE.save(new_filepath)
         # for debugging purposes, don't bother removing the IMAGE_FILE.
 
     ### hmmm now how to let front end know where the file is...
     user_all = storage.load_user_all()
     u_id = helper.get_id(token,user_all)
-    profile_img_url = 'http://localhost:5001' + new_filepath
+    profile_img_url = 'http://localhost:8050/static/pictures/' + new_filename
     user_all[str(u_id)]['profile_img_url'] = profile_img_url
     storage.save_user_all(user_all)
     return {}

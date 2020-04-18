@@ -145,6 +145,7 @@ def add_member(u_id, channel_id):
     member['u_id'] = u_id
     member['name_first'] = data[str(u_id)]['name_first']
     member['name_last'] = data[str(u_id)]['name_last']
+    member['profile_img_url'] = data[str(u_id)]['profile_img_url']
     channel_all = load_channel_all()
     channel_all[channel_id]['member'].append(member)
     save_channel_all(channel_all)
@@ -194,6 +195,7 @@ def add_owner(u_id, channel_id):
     owner['u_id'] = u_id
     owner['name_first'] = data[u_id]['name_first']
     owner['name_last'] = data[u_id]['name_last']
+    owner['profile_img_url'] = data[u_id]['profile_img_url']
     channel_all = load_channel_all()
     channel_all[channel_id]['owner'].append(owner)
     save_channel_all(channel_all)
