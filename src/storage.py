@@ -26,6 +26,9 @@ import helper
 database initialization.
 '''
 # creates new empty database, stored in json files.
+def new_code_file():
+    codes = {}
+    save_code_file(codes)
 def new_storage():
     user_all = {}
     channel_all = {}
@@ -42,6 +45,15 @@ database of all registered users.
 ### user_all['u_id1'] is a dictionary of information unique to the user with u_id 'u_id1'.
 ### the keys in a user dictionary are:
 ### 'name_first','name_last','email','encrypted_password','token','u_id'.
+def load_code_file():
+    with open("code_file.json","r") as FILE:
+        code_all = json.load(FILE)
+        return code_all
+def save_code_file(code):
+    with open("code_file.json", "w") as FILE:
+        json.dump(code, FILE)
+        return
+
 def load_user_all():
     with open("user_all.json", "r") as FILE:
         user_all = json.load(FILE)

@@ -12,6 +12,7 @@ import standup
 import reset
 import admin
 from  check_data_server import *
+import password
 
 
 # 93858500 -->financial help
@@ -80,6 +81,21 @@ def auth_logout():
         return dumps(True)
     else:
         return dumps(False)
+
+@APP.route("/auth/passwordreset/request",methods = ['POST'])
+def auth_passwordreset_request():
+    data = request.get_json()
+    email = data['email']
+    password.auth_passwordreset_request(email)
+    return dumps({})
+
+@APP.route("/auth/passwordreset/reset",methods = ['POST'])
+def auth_passwordreset_reset():
+    input_data = request.get_json()
+    code = input_data['reset_code']
+    new_pass = input_data['new_password']
+    password.auth_passwordreset(code,new_pass)
+    return dumps({})
     
 '''
 message routes.
