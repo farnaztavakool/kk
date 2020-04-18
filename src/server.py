@@ -15,7 +15,7 @@ from  check_data_server import *
 import password
 
 
-# 93858500 -->financial help
+
 
 # def defaultHandler(err):
 #     response = err.get_response()
