@@ -120,7 +120,7 @@ def save_channel_all(channel_all):
 functions for interacting with user_all
 '''
 # adds user to database given email, password, name_first, name_last.
-def add_user(name_first, name_last, email, encrypted_password, token, u_id, handle_str):
+def add_user(name_first, name_last, email, encrypted_password, token, u_id, handle_str, profile_img_url):
     user_all = load_user_all()
     # generate a user dictionary unique to the given user.
     user_data = {}
@@ -133,6 +133,7 @@ def add_user(name_first, name_last, email, encrypted_password, token, u_id, hand
     user_data['handle'] = handle_str
     # user_data['permission_id'] = permission_id
     # recall that each u_id is unique.
+    user_data['profile_img_url'] = profile_img_url
     user_all[u_id] = user_data
     save_user_all(user_all)
     return

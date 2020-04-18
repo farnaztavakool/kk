@@ -21,6 +21,7 @@ def user_profile(token, u_id):
         'name_first': user_all[str(u_id)]['name_first'],
         'name_last': user_all[str(u_id)]['name_last'],
         'handle_str': user_all[str(u_id)]['token'],
+        'profile_img_url': user_all[str(u_id)]['profile_img_url'],
     }
     return user
     
@@ -68,6 +69,7 @@ def users_all(token):
             'name_first': user_all[user]['name_first'],
             'name_last': user_all[user]['name_last'],
             'handle_str': user_all[user]['handle'],
+            'profile_img_url': user_all[user]['profile_img_url'],
         }
         users["users"].append(user_data)
     return users
@@ -119,10 +121,12 @@ def user_profiles_uploadphoto(token, img_url, x_start, y_start, x_end, y_end):
         CROPPED_IMAGE_FILE.save(new_filepath)
         # for debugging purposes, don't bother removing the IMAGE_FILE.
 
-    # attach the CROPPED_IMAGE_FILE to its respective user profile image.
-
     ### hmmm now how to let front end know where the file is...
-    
+    user_all = storage.load_user_all()
+    u_id = helper.get_id(token,user_all)
+    profile_img_url = 'http://localhost:5001' + new_filepath
+    user_all[str(u_id)]['profile_img_url'] = profile_img_url
+    storage.save_user_all(user_all)
     return {}
     
 def get_random_alphaNumeric_string(stringLength):

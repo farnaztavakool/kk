@@ -36,7 +36,8 @@ def auth_register(email, password, name_first, name_last):
     helper.check_pass(password)
     password = encrypt_pass(password)
     u_id = helper.u_id()
-    storage.add_user(name_first, name_last, email, password, token(name_first,name_last), u_id,handle(name_first,name_last))
+    profile_img_url = 'http://localhost:5001/pictures/default'
+    storage.add_user(name_first, name_last, email, password, token(name_first,name_last), u_id,handle(name_first,name_last),profile_img_url)
     # print(storage.load_user_all())
     
     return {
