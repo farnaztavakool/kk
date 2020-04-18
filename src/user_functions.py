@@ -83,7 +83,8 @@ def user_profiles_uploadphoto(token, img_url, x_start, y_start, x_end, y_end):
     # make a new file with filename: image12characters.jpg.
     filename = f'{get_random_alphaNumeric_string(12)}.jpg'
     # stored in filepath: /pictures.
-    filepath = f'/Users/uni/Documents/Uni/20T1/Comp1531/Assignments/iteration_1/W17A-17/src/static/pictures/{filename}'
+    #filepath = f'/Users/uni/Documents/Uni/20T1/Comp1531/Assignments/iteration_1/W17A-17/src/static/pictures/{filename}'
+    filepath = f'{os.getcwd()}/static/pictures/{filename}'
     with open(filepath, 'wb') as OUT_FILE:
         # copy data into file without checking its type.
         shutil.copyfileobj(response.raw, OUT_FILE)
@@ -121,7 +122,7 @@ def user_profiles_uploadphoto(token, img_url, x_start, y_start, x_end, y_end):
         CROPPED_IMAGE_FILE = IMAGE_FILE.crop(box)
         # save cropped image into a new file.
         new_filename = 'cropped' + filename
-        new_filepath = f'/Users/uni/Documents/Uni/20T1/Comp1531/Assignments/iteration_1/W17A-17/src/static/pictures/{new_filename}'
+        new_filepath = f'{os.getcwd()}/static/pictures/{new_filename}'
         CROPPED_IMAGE_FILE.save(new_filepath)
         # for debugging purposes, don't bother removing the IMAGE_FILE.
 
