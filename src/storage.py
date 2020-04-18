@@ -164,6 +164,7 @@ def add_channel(token, channel_id,name, is_public):
     owner['u_id'] = u_id
     owner['name_first'] = data[str(u_id)]['name_first']
     owner['name_last'] = data[str(u_id)]['name_last']
+    owner['profile_img_url'] = data[str(u_id)]['profile_img_url']
     channel_all = load_channel_all()
     channel['owner'] = []
     channel['owner'].append(owner)

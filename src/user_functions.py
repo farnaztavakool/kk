@@ -131,6 +131,20 @@ def user_profiles_uploadphoto(token, img_url, x_start, y_start, x_end, y_end):
     profile_img_url = 'http://localhost:8050/static/pictures/' + new_filename
     user_all[str(u_id)]['profile_img_url'] = profile_img_url
     storage.save_user_all(user_all)
+
+    # update profile_img_url for the user in all other channels.
+    channel_all = storage.load_channel_all()
+    # woops didn't know channel was the key, not the value.
+    for channel_id in channel_all:
+        channel = channel_all[channel_id]
+        owner_list = channel['owner']
+        for owner in owner_list:
+            if owner['u_id'] == u_id:
+                owner['profile_img_url'] = profile_img_url
+        member_list = channel['member']
+        for member in member_list:
+            if member['u_id'] == u_id:
+                member['profile_img_url'] = profile_img_url
     return {}
     
 def get_random_alphaNumeric_string(stringLength):
