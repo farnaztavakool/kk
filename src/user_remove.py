@@ -1,4 +1,3 @@
-import smtplib
 import storage
 import helper
 import error
@@ -13,7 +12,12 @@ import error
 # Input error: u_id does not refer to a valid user
 # Access error: The authorised user is not an owner of the slackr
 def user_remove(token, u_id):
+    # Check valid user
     user_all = storage.load_user_all()
+    helper.check_user(u_id, user_all)
+    # The authorised user is not an owner of the slackr
+    t_u_id = 
+        
     delete = [i for i in user_all if i['u_id'] == u_id]
-    user_all[u_id].remove(delete[0])
-    save_user_all(user_all)
+    user_all[str(u_id)].remove(delete[0])
+    storage.save_user_all(user_all)
