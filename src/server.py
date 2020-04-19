@@ -7,6 +7,7 @@ import auth
 import message_functions
 import channel
 import channel_first
+import user_remove
 import user_functions as user
 import standup
 import reset
@@ -229,9 +230,12 @@ def users_all():
 
 @APP.route('/admin/user/remove', methods=['DELETE'])
 def user_remove():
-    token = request.form.get('token')
-    all_users = user.users_all(token)
-    return dumps(all_users)
+    data = request.get_json()
+    token = data['token']
+    u_id = data['u_id']
+    user_remove.user_remove(token, u_id)
+    return ''
+
 
 '''
 server initialization
