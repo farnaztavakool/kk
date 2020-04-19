@@ -1,5 +1,5 @@
 import storage
-import error
+from error import InputError, AccessError
 import helper
 import requests
 import shutil
