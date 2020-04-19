@@ -227,6 +227,12 @@ def users_all():
     all_users = user.users_all(token)
     return dumps(all_users)
 
+@APP.route('/admin/user/remove', methods=['DELETE'])
+def user_remove():
+    token = request.form.get('token')
+    all_users = user.users_all(token)
+    return dumps(all_users)
+
 '''
 server initialization
 '''
