@@ -56,7 +56,7 @@ if __name__ == "__main__":
     reload_state_data()
 
 def save_state_data():
-    with open("user_all_state.json"w") as FILE1:
+    with open("user_all_state.json", "w") as FILE1:
         dump(storage.user_all, FILE1)
     with open("channel_all_state.json", "w") as FILE2:
         dump(storage.channel_all, FILE2)
