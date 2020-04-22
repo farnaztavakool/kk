@@ -54,6 +54,8 @@ def auth_passwordreset(code,new_pass):
     # find the user to change their email
     i = [i for i in user if user[i]['email'] == email][0]
     user[i]['encrypted_password'] = new_pass
+    del(data[code])
+    storage.save_code_file(data)
     storage.save_user_all(user)
     
         

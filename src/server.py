@@ -107,6 +107,7 @@ def message_send():
     channel_id = input_data['channel_id']
     message = input_data['message']
     returned_data = message_functions.message_send(token,channel_id,message)
+    if returned_data == -1: return dumps({"code":-1})
     return dumps({
         'message_id': returned_data['message_id'],
     })
@@ -304,4 +305,4 @@ def admin_userpermission_change():
     returned_data = admin.admin_userpermission_change(token,u_id,permission_id)
     return dumps({})
 if __name__ == "__main__":
-    APP.run(debug = True,port=(int(sys.argv[1]) if len(sys.argv) == 2 else 8050))
+    APP.run(debug = True,port=(int(sys.argv[1]) if len(sys.argv) == 2 else 8010))
