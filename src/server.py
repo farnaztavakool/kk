@@ -1,5 +1,5 @@
 import sys
-from json import dumps
+from json import dumps, dump, load
 from flask import Flask, request
 from flask_cors import CORS
 from error import InputError
@@ -7,15 +7,17 @@ import auth
 import message_functions
 import channel
 import channel_first
+import user_remove
 import user_functions as user
 import standup
 import reset
 import admin
 from  check_data_server import *
 import password
+import threading
+import storage
 
 
-# 93858500 -->financial help
 
 # def defaultHandler(err):
 #     response = err.get_response()
@@ -33,6 +35,39 @@ CORS(APP)
 
 # APP.config['TRAP_HTTP_EXCEPTIONS'] = True
 # APP.register_error_handler(Exception, defaultHandler)
+
+'''
+Automatic persistent data saving and loading
+'''
+def reload_state_data():
+    try:
+        with open("user_all_state.json", "r") as FILE1:
+            storage.user_all = load(FILE1)
+        with open("channel_all_state.json", "r") as FILE2:
+            storage.channel_all = load(FILE2)
+        with open("user_active_state.json", "r") as FILE3:
+            storage.user_active = load(FILE3)
+    except Exception:
+        storage.user_all = {}
+        storage.channel_all = {}
+        storage.user_active = {}
+
+if __name__ == "__main__":
+    reload_state_data()
+
+def save_state_data():
+    with open("user_all_state.json"w") as FILE1:
+        dump(storage.user_all, FILE1)
+    with open("channel_all_state.json", "w") as FILE2:
+        dump(storage.channel_all, FILE2)
+    with open("user_active_state.json", "w") as FILE3:
+        dump(storage.user_active, FILE3)
+    t1 = threading.Timer(1.0, save_state_data)
+    t1.daemon = True
+    t1.start()
+    
+save_state_data()
+
 
 # Example
 @APP.route("/workspace/reset",methods = ['POST'])
@@ -210,14 +245,15 @@ def user_profile_sethandle():
     user.user_profile_sethandle(token, handle_str)
     return ''
     
-@APP.route('/user/profiles/uploadphoto', methods=['POST'])
+@APP.route('/user/profile/uploadphoto', methods=['POST'])
 def user_profiles_uploadphoto_fn():
-    token = request.form.get('token')
-    img_url = request.form.get('img_url')
-    x_start = request.form.get('x_start')
-    y_start = request.form.get('y_start')
-    x_end = request.form.get('x_end')
-    y_end = request.form.get('y_end')
+    data = request.get_json()
+    token = data['token']
+    img_url = data['img_url']
+    x_start = data['x_start']
+    y_start = data['y_start']
+    x_end = data['x_end']
+    y_end = data['y_end']
     user.user_profiles_uploadphoto(token, img_url, x_start, y_start, x_end, y_end)
     return ''
 
@@ -226,6 +262,15 @@ def users_all():
     token = request.form.get('token')
     all_users = user.users_all(token)
     return dumps(all_users)
+
+@APP.route('/admin/user/remove', methods=['DELETE'])
+def user_remove():
+    data = request.get_json()
+    token = data['token']
+    u_id = data['u_id']
+    user_remove.user_remove(token, u_id)
+    return ''
+
 
 '''
 server initialization
