@@ -26,6 +26,9 @@ import helper
 database initialization.
 '''
 # creates new empty database, stored in json files.
+def new_code_file():
+    codes = {}
+    save_code_file(codes)
 def new_storage():
     user_all = {}
     channel_all = {}
@@ -42,6 +45,15 @@ database of all registered users.
 ### user_all['u_id1'] is a dictionary of information unique to the user with u_id 'u_id1'.
 ### the keys in a user dictionary are:
 ### 'name_first','name_last','email','encrypted_password','token','u_id'.
+def load_code_file():
+    with open("code_file.json","r") as FILE:
+        code_all = json.load(FILE)
+        return code_all
+def save_code_file(code):
+    with open("code_file.json", "w") as FILE:
+        json.dump(code, FILE)
+        return
+
 def load_user_all():
     with open("user_all.json", "r") as FILE:
         user_all = json.load(FILE)
@@ -108,7 +120,7 @@ def save_channel_all(channel_all):
 functions for interacting with user_all
 '''
 # adds user to database given email, password, name_first, name_last.
-def add_user(name_first, name_last, email, encrypted_password, token, u_id, handle_str):
+def add_user(name_first, name_last, email, encrypted_password, token, u_id, handle_str, profile_img_url):
     user_all = load_user_all()
     # generate a user dictionary unique to the given user.
     user_data = {}
@@ -121,6 +133,7 @@ def add_user(name_first, name_last, email, encrypted_password, token, u_id, hand
     user_data['handle'] = handle_str
     # user_data['permission_id'] = permission_id
     # recall that each u_id is unique.
+    user_data['profile_img_url'] = profile_img_url
     user_all[u_id] = user_data
     save_user_all(user_all)
     return
@@ -132,6 +145,7 @@ def add_member(u_id, channel_id):
     member['u_id'] = u_id
     member['name_first'] = data[str(u_id)]['name_first']
     member['name_last'] = data[str(u_id)]['name_last']
+    member['profile_img_url'] = data[str(u_id)]['profile_img_url']
     channel_all = load_channel_all()
     channel_all[channel_id]['member'].append(member)
     save_channel_all(channel_all)
@@ -150,6 +164,7 @@ def add_channel(token, channel_id,name, is_public):
     owner['u_id'] = u_id
     owner['name_first'] = data[str(u_id)]['name_first']
     owner['name_last'] = data[str(u_id)]['name_last']
+    owner['profile_img_url'] = data[str(u_id)]['profile_img_url']
     channel_all = load_channel_all()
     channel['owner'] = []
     channel['owner'].append(owner)
@@ -181,6 +196,7 @@ def add_owner(u_id, channel_id):
     owner['u_id'] = u_id
     owner['name_first'] = data[u_id]['name_first']
     owner['name_last'] = data[u_id]['name_last']
+    owner['profile_img_url'] = data[u_id]['profile_img_url']
     channel_all = load_channel_all()
     channel_all[channel_id]['owner'].append(owner)
     save_channel_all(channel_all)

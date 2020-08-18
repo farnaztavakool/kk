@@ -10,43 +10,43 @@ from  auth_test import *
 BASE_URL = "http://127.0.0.1:8060"
 def create_channel():
     data1 = register_user()['data_register']
-    # print(data1)
+    print(data1['token'])
     data = {
         'token': data1['token'],
         'name' : "channel1",
-        'is_public':True
+        'is_public': True
     }
-    channel_id = json.loads(requests.post(url = f"{BASE_URL}/channel/create",json = data).content)
+    channel_id = json.loads(requests.post(url = f"{BASE_URL}/channels/create",json = data).content)['channel_id']
     return {
         'channel_id':channel_id,
         'owner_data': data1,
         "channel_property": data
     }
-def test_create_channel():
+# def test_create_channel():
     reset()
-    assert create_channel()
 
-def test_empty_arguments_invite():
-    reset()
-    data = {
-        'token':'',
-        'u_id':'',
-        'channel_id':'',
+
+# def test_empty_arguments_invite():
+#     reset()
+#     data = {
+#         'token':'',
+#         'u_id':'',
+#         'channel_id':'',
         
-    }
-    # channel_id = create_channel()['channel_id']
-    with pytest.raises(requests.exceptions.HTTPError):
-        requests.post(url = f"{BASE_URL}/channel/invite",json = data).raise_for_status()
+#     }
+#     # channel_id = create_channel()['channel_id']
+#     with pytest.raises(requests.exceptions.HTTPError):
+#         requests.post(url = f"{BASE_URL}/channel/invite",json = data).raise_for_status()
 
-def test_empty_arguments_create():
-    reset()
-    data = {
-        "token":"",
-        "name" :"",
-        "is_public":""
-    }
-    with pytest.raises(requests.exceptions.HTTPError):
-        requests.post(url = f"{BASE_URL}/channel/create",json = data).raise_for_status()
+# def test_empty_arguments_create():
+#     reset()
+#     data = {
+#         "token":"",
+#         "name" :"",
+#         "is_public":""
+#     }
+#     with pytest.raises(requests.exceptions.HTTPError):
+#         requests.post(url = f"{BASE_URL}/channels/create",json = data).raise_for_status()
 
 def test_create_arguments():
     reset()
@@ -73,7 +73,7 @@ def test_channel_detail_success():
         'token':token,
         'channel_id':channel_id
     }
-    data = json.loads(requests.get(url = f"{BASE_URL}/channel/detail",params =data ).content)
+    data = json.loads(requests.get(url = f"{BASE_URL}/channel/details",params =data ).content)
     u_id = channel_data['owner_data']['u_id']
     u_id_return = int(data['owner_members'][0]['u_id'])
     assert data['name'] == channel_data['channel_property']['name']
@@ -157,14 +157,13 @@ def test_channel_message():
         "start": 3
     }
     with pytest.raises(requests.exceptions.HTTPError):
-        requests.get(url = f"{BASE_URL}/channel/message",params = data).raise_for_status()
+        requests.get(url = f"{BASE_URL}/channel/messages",params = data).raise_for_status()
     data = {
         "token": token,
         "channel_id": channel_id,
         "start": 1
     }
-    message = json.loads(requests.get(url = f"{BASE_URL}/channel/message",params = data).content)
+    message = json.loads(requests.get(url = f"{BASE_URL}/channel/messages",params = data).content)
     assert message['messages'][0]['message_id'] == m1['message_id']
     assert message['messages'][1]['message_id'] == m2['message_id']
 
-# test_channel_message()

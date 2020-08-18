@@ -46,7 +46,7 @@ def standup_active(token, channel_id):
     ### finding is_active.
     channel = channel_all[channel_id]
     standup = channel['standup']
-    is_active = channel['is_active']
+    is_active = standup['is_active']
     ### finding time_finish.
     if is_active == True:
         time_finish = standup['time_finish']

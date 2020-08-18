@@ -55,7 +55,7 @@ def u_id():
 def channel_id():
     return randint(0,500)
 
-def get_u_id_from_token(token):
+# def get_u_id_from_token(token):
     user_all = storage.load_user_all()
     for u_id in user_all[u_id]:
         if token == user_all[u_id]['token']:

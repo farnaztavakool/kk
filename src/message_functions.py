@@ -37,6 +37,7 @@ def message_send(token,channel_id,message):
     
     storage.add_message(message_data, channel_id)
     # channel['messages_list'].prepend(message_data)
+    if message == "/hangman": return -1
     return {'message_id': message_id} 
 
 

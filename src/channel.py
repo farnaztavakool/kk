@@ -13,7 +13,6 @@ def get_data():
 
 
 def channel_addowner(token,channel_id,u_id):
-   "Make user with user id u_id an owner of this channel"
     channel_id = str(channel_id)
     channel_data = get_data()
     # Error check that channel_id refers to a valid channel
@@ -56,8 +55,7 @@ def channels_list(token):
     for channel_id in channel_data:
         for member in channel_data[channel_id]['member']:
             if u_id == member['u_id']:
-                channel_list.append({'channel_id' : channel_id, \
-                                    'name' :  channel_data[channel_id]['name'])
+                channel_list.append({'channel_id' : channel_id,'name' :  channel_data[channel_id]['name']})
 
     return {'channels' : channel_list}
 
@@ -66,6 +64,8 @@ def channels_listall(token):
     "Provide a list of all channels (and their associated details)"
 
     channel_data = get_data()
+    # return channel_data
+    # print(channel_data)
     channel_list = []
 
     for channel_id in channel_data:

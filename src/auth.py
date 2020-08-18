@@ -36,7 +36,8 @@ def auth_register(email, password, name_first, name_last):
     helper.check_pass(password)
     password = encrypt_pass(password)
     u_id = helper.u_id()
-    storage.add_user(name_first, name_last, email, password, token(name_first,name_last), u_id,handle(name_first,name_last))
+    profile_img_url = 'http://localhost:8050/static/pictures/default.jpg'
+    storage.add_user(name_first, name_last, email, password, token(name_first,name_last), u_id,handle(name_first,name_last),profile_img_url)
     # print(storage.load_user_all())
     
     return {
@@ -47,9 +48,10 @@ def auth_register(email, password, name_first, name_last):
 def auth_login(email, password):
     helper.check_email(email)
     data = get_data()
-   
+    
     
     user = [i for i in data if data[i]['email'] == email]
+    print(user)
     if user:
         password = encrypt_pass(password)
         if data[user[0]]['encrypted_password'] == password:
