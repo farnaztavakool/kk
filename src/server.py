@@ -7,7 +7,10 @@ import auth
 import message_functions
 import channel
 import channel_first
+
+
 import user_remove
+
 import user_functions as user
 import standup
 import reset
@@ -245,6 +248,22 @@ def user_profile_sethandle():
     user.user_profile_sethandle(token, handle_str)
     return ''
     
+
+@APP.route('/user/profile/setemail',methods=['PUT'])
+def user_profile_setemail():
+    token = request.form.get('token')
+    email = request.form.get('email')
+    user.user_profile_setemail(token, email)
+    return dumps({})
+
+@APP.route('/user/profile/sethandle',methods = ["PUT"])
+def user_profile_sethandle():
+    token = request.form.get('token')
+    handle_str = request.form.get('handle_str')
+    user.user_profile_sethandle(token, handle_str)
+    return dumps({})
+    
+
 @APP.route('/user/profile/uploadphoto', methods=['POST'])
 def user_profiles_uploadphoto_fn():
     data = request.get_json()
@@ -257,11 +276,14 @@ def user_profiles_uploadphoto_fn():
     user.user_profiles_uploadphoto(token, img_url, x_start, y_start, x_end, y_end)
     return ''
 
+
 @APP.route('/users/all', methods=['GET'])
 def users_all():
     token = request.form.get('token')
     all_users = user.users_all(token)
     return dumps(all_users)
+
+
 
 @APP.route('/admin/user/remove', methods=['DELETE'])
 def user_remove():
@@ -270,6 +292,7 @@ def user_remove():
     u_id = data['u_id']
     user_remove.user_remove(token, u_id)
     return ''
+
 
 
 '''

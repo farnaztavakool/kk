@@ -15,7 +15,11 @@ import os
 def user_profile(token, u_id):
     user_all = storage.load_user_all()
 
+    check_user(u_id, user_all)
+
+
     # helper.check_user(u_id, user_all)
+
 
     user = {
         'u_id': u_id,
