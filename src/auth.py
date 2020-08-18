@@ -1,21 +1,4 @@
-'''
-# EXAMPLE IMPLMENTATION OF auth.py !!!
-# typical use case, say in auth.py (EXAMPLE!!!)
-import storage
-def auth_register(email,password,name_first,name_last):
-    u_id = generate_u_id()                  # "unique" u_id.
-    token = generate_token()                # "unique" token.
-    handle = generate_handle()              # "unique" handle.
-    permission_id = DEFAULT_PERM_ID         # check spec for this i guess.
-    encrypted_password = encrypt(password)
 
-    # storage.add_user() is what calls storage.load_user_all() and storage.save_user_all().
-    storage.add_user(name_first,name_last,email,encrypted_password,token,u_id,handle,permission_id)
-    return {
-        'u_id': u_id,
-        'token': token,
-    }
-'''
 import hashlib
 import storage
 import helper
@@ -34,8 +17,11 @@ def get_data():
     
     # storage.new_storage()
 
-def token(fname, lname):
+def handle(fname, lname):
     return fname+lname
+
+def token(fname, lname):
+    return lname+fname
 
 def encrypt_pass(password):
     
@@ -50,8 +36,9 @@ def auth_register(email, password, name_first, name_last):
     helper.check_pass(password)
     password = encrypt_pass(password)
     u_id = helper.u_id()
-    storage.add_user(name_first, name_last, email, password, token(name_first,name_last), u_id)
-    print(storage.load_user_all())
+    profile_img_url = 'http://localhost:8050/static/pictures/default.jpg'
+    storage.add_user(name_first, name_last, email, password, token(name_first,name_last), u_id,handle(name_first,name_last),profile_img_url)
+    # print(storage.load_user_all())
     
     return {
         'u_id':u_id ,
@@ -61,9 +48,10 @@ def auth_register(email, password, name_first, name_last):
 def auth_login(email, password):
     helper.check_email(email)
     data = get_data()
-   
+    
     
     user = [i for i in data if data[i]['email'] == email]
+    print(user)
     if user:
         password = encrypt_pass(password)
         if data[user[0]]['encrypted_password'] == password:
@@ -78,8 +66,9 @@ def auth_login(email, password):
 
 
 def auth_logout(token):
-    data = get_data()
+    data = storage.load_user_active()
     if token in data:
         storage.unactivate(token)
         return True
-    return False
+    raise Exception
+    # return False

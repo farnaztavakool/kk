@@ -38,9 +38,5 @@
     - Dictionary.
     - Keys: finish_time, message_queue, is_active.
 
-### If we want to only use only one .p file, we can make a list (array) of 2 dictionaries, one dictionary being the dictionary in userAll.p, and the other dictionary being the dictionary in channelAll.p.
 
-### Is this smart??? I have no clue.
-
-# wtf. :tada:
 
