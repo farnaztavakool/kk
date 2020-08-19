@@ -139,6 +139,7 @@ def add_user(name_first, name_last, email, encrypted_password, token, u_id, hand
     return
 
 
+
 def add_member(u_id, channel_id):
     member = {}
     data = load_user_all()
@@ -190,16 +191,20 @@ def add_message(message_data,channel_id):
     data[channel_id]['messages'].append(message_data)
     save_channel_all(data)
 
+
 def add_owner(u_id, channel_id):
     owner = {}
     data = load_user_all()
     owner['u_id'] = u_id
     owner['name_first'] = data[u_id]['name_first']
     owner['name_last'] = data[u_id]['name_last']
+
     owner['profile_img_url'] = data[u_id]['profile_img_url']
+
     channel_all = load_channel_all()
     channel_all[channel_id]['owner'].append(owner)
     save_channel_all(channel_all)
+
 
 def remove_owner(u_id, channel_id):
     channel_all = load_channel_all()
@@ -230,4 +235,4 @@ def remove_react(channel_id,message_id,react):
                 delete = [j for j in i['reacts'][0]['u_ids'] if j['u_id'] == u_id]
                 i['reacts'][0]['u_ids'].remove(delete[0])
     save_channel_all(channel_all)
-   
+
